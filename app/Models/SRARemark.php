@@ -33,7 +33,7 @@ class SRARemark extends Model
 
     public function receivedID(): BelongsTo
     {
-        return $this->belongsTo(SRA::class, 'sra_id', 'id');
+        return $this->belongsTo(SRA::class, 'sra_id', 'sra_id');
     }
 
     public function raisedBy(): BelongsTo

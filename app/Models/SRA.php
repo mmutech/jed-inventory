@@ -14,6 +14,7 @@ class SRA extends Model
 
     protected $table = 's_r_a_s';
     protected $fillable = [
+        'sra_id',
         'sra_code',
         'consignment_note_no',
         'invoice_no',

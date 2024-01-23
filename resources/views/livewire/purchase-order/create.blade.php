@@ -110,8 +110,8 @@
                                         <th>Description</th>
                                         <th>Unit</th>
                                         <th>Quantity</th>
-                                        <th>Rate</th>
-                                        <th>Amount</th>
+                                        <th>Rate(&#8358;)</th>
+                                        <th>Amount(&#8358;)</th>
                                         <th></th>
                                         </tr>
                                     </thead>

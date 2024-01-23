@@ -77,8 +77,8 @@
                                                 <th>Stock Code</th>
                                                 <th>Description</th>
                                                 <th>Quantity</th>
-                                                <th>Price</th>
-                                                <th>Value</th>
+                                                <th>Price (&#8358;)</th>
+                                                <th>Value (&#8358;)</th>
                                                 <th>Quality Check</th>
                                             </tr>
                                         </thead>
@@ -96,8 +96,8 @@
                                                     <td>{{$item->stock_code}}</td>
                                                     <td>{{$item->description}}</td>
                                                     <td>{{ number_format($item->confirm_qty)}}</td>
-                                                    <td>{{ number_format($item->confirm_rate)}}</td>
-                                                    <td>{{ number_format($amount) }}</td>
+                                                    <td>{{ number_format(round($item->confirm_rate, 2))}}</td>
+                                                    <td>{{ number_format(round($amount, 2)) }}</td>
                                                     <td>
                                                     @if($item->quality_check == 1)
                                                         <span class="text-success"><i class="bx bx-check"></i></span>
@@ -127,17 +127,17 @@
                                             <div class="invoice-calculations">
                                             <div class="d-flex justify-content-between mb-1">
                                                 <span class="w-px-100">Subtotal:</span>
-                                                <span class="fw-medium">{{ number_format($subtotal) }}</span>
+                                                <span class="fw-medium">&#8358; {{ number_format(round($subtotal, 2)) }}</span>
                                             </div>
                                             <div class="d-flex justify-content-between mb-1">
                                                 <span class="w-px-100">VAT:</span>
                                                 <!-- <span class="fw-medium">{{$vat}}%</span> -->
-                                                <span class="fw-medium">{{number_format($vatAmount)}}</span>
+                                                <span class="fw-medium">&#8358; {{number_format(round($vatAmount, 2))}}</span>
                                             </div>
                                             <hr class="mb-1 mt-1">
                                             <div class="d-flex justify-content-between mb-3">
                                                 <span class="w-px-100">Total:</span>
-                                                <span class="fw-medium">{{ number_format($totalAmount) }}</span>
+                                                <span class="fw-medium">&#8358; {{ number_format(round($totalAmount, 2)) }}</span>
                                             </div>
                                             </div>
                                         </div>

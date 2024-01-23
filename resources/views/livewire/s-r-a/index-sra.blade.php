@@ -91,7 +91,7 @@
                     @if(!empty($data))
                         @foreach ($data as $key => $sra)
                         <tr>
-                            <td><a href="{{ url('show-sra', $sra->sra_id) }}">{{ $sra->purchaseOrderID->purchase_order_no }}</a></td>
+                            <td><a href="{{ url('show-sra', $sra->purchase_order_id) }}">{{ $sra->purchaseOrderID->purchase_order_no }}</a></td>
                             <td>{{ $sra->receivedID->consignment_note_no }}</td>
                             <td>{{ $sra->receivedID->invoice_no }}</td>
                             <td>{{ $sra->received_date }}</td>

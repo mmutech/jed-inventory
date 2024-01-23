@@ -32,12 +32,13 @@ class ConfirmItem extends Component
 
     public function confirmed()
     {
-        if (!SRARemark::where('sra_id', $this->sraID)->exists()) {
+        if (!SRARemark::where('purchase_order_id', $this->poID)->exists()) {
             // Create SRA
             SRA::create([
                 'consignment_note_no' => $this->consignment_note_no,
                 'invoice_no' => $this->invoice_no,
                 'sra_code' => 'SRA-'.$this->sraID,
+                'sra_id' => $this->sraID,
             ]);
 
              // SRA Remark

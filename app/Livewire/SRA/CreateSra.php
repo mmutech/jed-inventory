@@ -18,7 +18,7 @@ class CreateSra extends Component
     public function render()
     {
         return view('livewire.s-r-a.create-sra')->with([
-            'data' => PurchaseOrders::where('status', 'Approved')
+            'data' => PurchaseOrders::where('status', 'Approved')->latest()
             ->where(function ($filter){
                     $filter->where('status', 'like', '%'.$this->search.'%')
                         ->orWhere('purchase_order_no', 'like', '%'.$this->search.'%');

@@ -101,12 +101,12 @@
                                                         <tr>
                                                         <th>Stock Code</th>
                                                         <th>Description</th>
-                                                        <th>Quantity/Unit</th>
+                                                        <th>Quantity/(Unit)</th>
                                                         <th>Rate</th>
-                                                        <th>Job Order Amount</th>
+                                                        <th>Job Order Amount (&#8358;)</th>
                                                         <th>Confirm Quantity</th>
-                                                        <th>Confirm Rate</th>
-                                                        <th>New Amount</th>
+                                                        <th>Confirm Rate (&#8358;)</th>
+                                                        <th>New Amount (&#8358;)</th>
                                                         <th></th>
                                                         </tr>
                                                     </thead>
