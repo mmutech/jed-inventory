@@ -1,0 +1,1 @@
+"use strict";!function(){var e=document.createElement("style");e.innerHTML="@media print { body { -webkit-print-color-adjust: exact; color-adjust: exact; transform: scale(0.7); } @page { size: A4; margin: 0; } }",document.head.appendChild(e),window.print()}();
