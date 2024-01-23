@@ -115,33 +115,33 @@
                                                 </tr>
                                             @endif
                                     </table>
-                                    <!-- Summary and vat calculations -->
-                                    <div class="row py-sm-1">
-                                        <div class="col-md-6 mb-md-0 mb-1"></div>
-                                        @php
-                                            $vat = 7.5;
-                                            $vatAmount = ($subtotal * $vat) / 100;
-                                            $totalAmount = $subtotal + $vatAmount;
-                                        @endphp
-                                        <div class="col-md-6 d-flex justify-content-end">
-                                            <div class="invoice-calculations">
-                                            <div class="d-flex justify-content-between mb-1">
-                                                <span class="w-px-100">Subtotal:</span>
-                                                <span class="fw-medium">&#8358; {{ number_format(round($subtotal, 2)) }}</span>
-                                            </div>
-                                            <div class="d-flex justify-content-between mb-1">
-                                                <span class="w-px-100">VAT:</span>
-                                                <!-- <span class="fw-medium">{{$vat}}%</span> -->
-                                                <span class="fw-medium">&#8358; {{number_format(round($vatAmount, 2))}}</span>
-                                            </div>
-                                            <hr class="mb-1 mt-1">
-                                            <div class="d-flex justify-content-between mb-3">
-                                                <span class="w-px-100">Total:</span>
-                                                <span class="fw-medium">&#8358; {{ number_format(round($totalAmount, 2)) }}</span>
-                                            </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Summary and vat calculations -->
+                        <div class="row py-sm-1">
+                            <div class="col-md-6 mb-md-0 mb-1"></div>
+                            @php
+                                $vat = 7.5;
+                                $vatAmount = ($subtotal * $vat) / 100;
+                                $totalAmount = $subtotal + $vatAmount;
+                            @endphp
+                            <div class="col-md-6 d-flex justify-content-end">
+                                <div class="invoice-calculations">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="w-px-100">Subtotal:</span>
+                                    <span class="fw-medium">&#8358; {{ number_format(round($subtotal, 2)) }}</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="w-px-100">VAT:</span>
+                                    <!-- <span class="fw-medium">{{$vat}}%</span> -->
+                                    <span class="fw-medium">&#8358; {{number_format(round($vatAmount, 2))}}</span>
+                                </div>
+                                <hr class="mb-1 mt-1">
+                                <div class="d-flex justify-content-between mb-3">
+                                    <span class="w-px-100">Total:</span>
+                                    <span class="fw-medium">&#8358; {{ number_format(round($totalAmount, 2)) }}</span>
+                                </div>
                                 </div>
                             </div>
                         </div>
