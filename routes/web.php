@@ -20,6 +20,9 @@ use App\Livewire\SRA\EditSra;
 use App\Livewire\SRA\IndexSra;
 use App\Livewire\SRA\QualityCheck;
 use App\Livewire\SRA\ShowSra;
+use App\Livewire\Store\StoreCreate;
+use App\Livewire\Store\StoreEdit;
+use App\Livewire\Store\StoreIndex;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,5 +63,10 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/show-sra/{poID}', ShowSra::class);
     Route::get('/edit-sra/{sraID}', EditSra::class);
     Route::get('/quality-check/{poID}', QualityCheck::class);
+
+    //Store
+    Route::get('/store-index', StoreIndex::class);
+    Route::get('/store-create', StoreCreate::class);
+    Route::get('/store-edit/{stID}', StoreEdit::class);
 });
 

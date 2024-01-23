@@ -50,20 +50,20 @@
                 </li>
               </ul>
             </li>
+            
+            <!-- SCRN -->
+            <li class="menu-item">
+              <a href="cards-basic.html" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-layout"></i>
+                <div data-i18n="Basic">SCRN</div>
+              </a>
+            </li> 
 
              <!-- SRIN -->
              <li class="menu-item">
               <a href="cards-basic.html" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-layout"></i>
                 <div data-i18n="Basic">SRIN</div>
-              </a>
-            </li> 
-
-            <!-- SCRN -->
-            <li class="menu-item">
-              <a href="cards-basic.html" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-layout"></i>
-                <div data-i18n="Basic">SCRN</div>
               </a>
             </li> 
 
@@ -75,7 +75,13 @@
               </a>
             </li> 
 
-           
+            <!-- Store -->
+            <li class="menu-item">
+              <a href="{{url('store-index');}}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-layout"></i>
+                <div data-i18n="Basic">Store</div>
+              </a>
+            </li> 
 
             <li class="menu-header small text-uppercase">
               <span class="menu-header-text">Users</span>
