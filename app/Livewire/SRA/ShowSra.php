@@ -4,20 +4,17 @@ namespace App\Livewire\SRA;
 
 use Livewire\Component;
 use Livewire\Attributes\Rule; 
-use Livewire\WithPagination;
-use Livewire\WithFileUploads;
 use Livewire\Attributes\Locked;
-use App\Models\SRA;
+use App\Models\StoreBinCard;
 use App\Models\SRARemark;
 use App\Models\PurchaseOrders;
 use App\Models\Item;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 
 class ShowSra extends Component
 {
     public $title = 'New SRA';
+    public $items, $reference;
 
     #[Rule('required')]
     public $account_operation_remark_date, $account_operation_remark_by, $account_operation_action, $account_operation_remark_note;
@@ -44,6 +41,22 @@ class ShowSra extends Component
                 'status' => 'Completed',
             ]);
 
+             // Create Store Bin Card
+             foreach ($this->items as $item) {
+                if (isset($item->stock_code, $item->purchase_order_id, $item->quantity)) {
+                    StoreBinCard::create([
+                        'stock_code_id' => $item->stock_code,
+                        'reference'     => $this->reference,
+                        'station_id'    => $item->purchase_order_id,
+                        'in'            => $item->quantity,
+                        'balance'       => $item->quantity,
+                        'date_receipt'  => now(),
+                        'created_by'    => Auth::user()->id,
+                    ]);
+                } else {
+
+                }
+            }
 
             $this->dispatch('info', message: 'SRA Approved By Account Operation!');
         }
@@ -52,8 +65,9 @@ class ShowSra extends Component
     public function mount($poID)
     {
         $this->poID = $poID;
-
-        // dd($approved);
+        $this->items = Item::where('purchase_order_id', $poID)->get();
+        $this->reference = SRARemark::where('purchase_order_id', $poID)->pluck('sra_id')->first();
+        //dd($this->reference);
     }
 
     public function render()

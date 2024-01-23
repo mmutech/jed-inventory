@@ -20,6 +20,8 @@ use App\Livewire\SRA\EditSra;
 use App\Livewire\SRA\IndexSra;
 use App\Livewire\SRA\QualityCheck;
 use App\Livewire\SRA\ShowSra;
+use App\Livewire\Store\BinCardIndex;
+use App\Livewire\Store\BinCardShow;
 use App\Livewire\Store\StoreCreate;
 use App\Livewire\Store\StoreEdit;
 use App\Livewire\Store\StoreIndex;
@@ -68,5 +70,9 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/store-index', StoreIndex::class);
     Route::get('/store-create', StoreCreate::class);
     Route::get('/store-edit/{stID}', StoreEdit::class);
+
+    //Stores Bin Card
+    Route::get('/bin-card-index', BinCardIndex::class);
+    Route::get('/bin-card-show/{scID}', BinCardShow::class);
 });
 

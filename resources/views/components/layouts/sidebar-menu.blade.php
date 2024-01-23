@@ -83,6 +83,14 @@
               </a>
             </li> 
 
+            <!-- Store Bin Card-->
+            <li class="menu-item">
+              <a href="{{url('bin-card-index');}}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-layout"></i>
+                <div data-i18n="Basic">Stores Bin Card</div>
+              </a>
+            </li> 
+
             <li class="menu-header small text-uppercase">
               <span class="menu-header-text">Users</span>
             </li>
