@@ -15,31 +15,9 @@
                 <div class="row g-3">
                     <input type="hidden" wire:model="storeID" class="form-control">
                     <div class="col-sm-6">
-                        <label class="form-label" for="name">Store Name:</label>
+                        <label class="form-label" for="name">Stock Category:</label>
                         <input type="text" wire:model="name" class="form-control">
                         @error('name') <span class="error">{{ $message }}</span> @enderror 
-                    </div>
-
-                    <div class="col-sm-6">
-                        <label class="form-label" for="location">Location Name</label>
-                        <select class="form-select mb-4" wire:model="location">
-                            <option value="">Select ...</option>
-                            @foreach($locations as $location)
-                             <option value="{{$location->id}}">{{$location->name}}</option>
-                            @endforeach
-                        </select>
-                        @error('location') <span class="error">{{ $message }}</span> @enderror 
-                    </div>
-
-                    <div class="col-sm-6">
-                        <label class="form-label" for="store_officer">Store Officer</label>
-                        <select class="form-select mb-4" wire:model="store_officer">
-                            <option value="">Select ...</option>
-                            @foreach($users as $user)
-                                <option value="{{$user->id}}">{{$user->name}}</option>
-                            @endforeach
-                        </select>
-                        @error('store_officer') <span class="error">{{ $message }}</span> @enderror 
                     </div>
 
                     <div class="col-sm-6">

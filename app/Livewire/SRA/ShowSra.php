@@ -7,6 +7,7 @@ use Livewire\Attributes\Rule;
 use Livewire\Attributes\Locked;
 use App\Models\StoreBinCard;
 use App\Models\SRARemark;
+use App\Models\SRA;
 use App\Models\PurchaseOrders;
 use App\Models\Item;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 class ShowSra extends Component
 {
     public $title = 'New SRA';
-    public $items, $reference;
+    public $items, $reference, $sraCode, $stationID;
 
     #[Rule('required')]
     public $account_operation_remark_date, $account_operation_remark_by, $account_operation_action, $account_operation_remark_note;
@@ -43,15 +44,17 @@ class ShowSra extends Component
 
              // Create Store Bin Card
              foreach ($this->items as $item) {
-                if (isset($item->stock_code, $item->purchase_order_id, $item->quantity)) {
+                if (isset($item->stock_code, $item->purchase_order_id, $item->confirm_qty)) {
                     StoreBinCard::create([
-                        'stock_code_id' => $item->stock_code,
-                        'reference'     => $this->reference,
-                        'station_id'    => $item->purchase_order_id,
-                        'in'            => $item->quantity,
-                        'balance'       => $item->quantity,
-                        'date_receipt'  => now(),
-                        'created_by'    => Auth::user()->id,
+                        'stock_code_id'         => $item->stock_code,
+                        'reference'             => $this->reference,
+                        'purchase_order_id'     => $item->purchase_order_id,
+                        'station_id'            => $this->stationID,
+                        'in'                    => $item->confirm_qty,
+                        'balance'               => $item->confirm_qty,
+                        'unit'                  => $item->unit,
+                        'date_receipt'          => now(),
+                        'created_by'            => Auth::user()->id,
                     ]);
                 } else {
 
@@ -66,8 +69,10 @@ class ShowSra extends Component
     {
         $this->poID = $poID;
         $this->items = Item::where('purchase_order_id', $poID)->get();
-        $this->reference = SRARemark::where('purchase_order_id', $poID)->pluck('sra_id')->first();
-        //dd($this->reference);
+        $this->sraCode = SRARemark::where('purchase_order_id', $poID)->pluck('sra_id')->first();
+        $this->reference = SRA::where('sra_id', $this->sraCode)->pluck('sra_code')->first();
+        $this->stationID = PurchaseOrders::where('purchase_order_id', $poID)->pluck('delivery_address')->first();
+        // dd($this->stationID);
     }
 
     public function render()

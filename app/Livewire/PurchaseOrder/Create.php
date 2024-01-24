@@ -4,16 +4,10 @@ namespace App\Livewire\PurchaseOrder;
 
 use Livewire\Component;
 use Livewire\Attributes\Rule; 
-use Livewire\Attributes\Locked;
-use Livewire\WithPagination;
-use Livewire\WithFileUploads;
 use App\Models\PurchaseOrders;
 use App\Models\Item;
 use App\Models\ApprovalPO;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Redirect;
+use App\Models\Store;
 
 class Create extends Component
 {
@@ -100,6 +94,8 @@ class Create extends Component
 
     public function render()
     {
-        return view('livewire.purchase-order.create');
+        return view('livewire.purchase-order.create')->with([
+            'stations' => Store::where('status', 'Active')->latest()->get(),
+        ]);
     }
 }

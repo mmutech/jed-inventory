@@ -1,6 +1,6 @@
 <div>
     <h6 class="py-1 mb-2">
-    <span class="text-muted fw-light"><a href="{{url('dashboard');}}">Dashboard</a> /</span> Stores Bin Card
+    <span class="text-muted fw-light"><a href="{{url('dashboard');}}">Dashboard</a> /</span> Stock Category List
     </h6>
 
     <div class="card mb-4">
@@ -74,6 +74,8 @@
                             </label>
                         </div>
                     </div>
+                    <!-- Create user -->
+                    <a class="btn btn-primary" href="{{ url('stock-category-create')}}"><i class="bx bx-plus"></i>  Create Stock Category</a>
                 </div>
 
                 <div class="col-xl-4 col-sm-4 col-md-4 mx-auto"></div>
@@ -85,20 +87,22 @@
             <div class="table-responsive text-nowrap">
                 <table class="table">
                     <tr>
-                        <th>Vocab No.</th>
-                        <th>Reference</th>
-                        <th>Station</th>
-                        <th>Date Receipt</th>
+                        <th>Stock Category</th>
+                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                     @if(!empty($data))
-                        @foreach ($data as $key => $bin)
+                        @foreach ($data as $key => $stockCat)
                         <tr>
-                            <td>{{ $bin->stockCodeID->stock_code }}</td>
-                            <td>{{ $bin->reference }}</td>
-                            <td>{{ $bin->stationID->name }}</td>
-                            <td>{{ $bin->date_receipt }}</td>
-                        <td><a href="{{ url('bin-card-show', $bin->stock_code_id) }}"><i class="bx bx-show-alt text-primary"></i></a></td>
+                            <td>{{ $stockCat->name }}</td>
+
+                            <td>
+                            @if($stockCat->status == 'Active')
+                                <label class="badge bg-label-success">{{ $stockCat->status }}</label>
+                            @else
+                                <label class="badge bg-label-danger">{{ $stockCat->status }}</label>
+                            @endif
+                        <td><a href="{{ url('stock-category-edit', $stockCat->id) }}"><i class="bx bx-pencil text-info"></i></a></td>
                         </tr>
                         @endforeach
                     @else

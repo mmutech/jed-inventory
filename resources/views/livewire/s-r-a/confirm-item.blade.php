@@ -52,7 +52,7 @@
                                 <input type="text" class="form-control" wire:model="purchase_order_name" disabled>
                             </div>
                             <div class="col-sm-6">
-                                <label class="form-label" for="location">Location:</label>
+                                <label class="form-label" for="location">Station:</label>
                                 <input type="text" class="form-control" wire:model="delivery_address" disabled>
                             </div>
                             <div class="col-sm-6">
@@ -123,8 +123,10 @@
                                                             <td class="col-sm-4">
                                                                 <input type="hidden" wire:model="itemIDs.{{ $key }}" class="form-control">
                                                                 <select class="form-select mb-4" wire:model="stock_codes.{{ $key }}">
-                                                                    <option value="123-456">(123-456) Test Item</option>
-                                                                    <option value="789-012">(789-012) Test Item 2</option>
+                                                                    <option value="">Select ...</option>
+                                                                    @foreach($stock_code as $stCode)
+                                                                    <option value="{{$stCode->id}}">{{$stCode->stock_code}} - {{$stCode->name}}</option>
+                                                                    @endforeach
                                                                 </select>
                                                                 @error("stock_code.$key") <span class="error">{{ $message }}</span> @enderror 
                                                             </td>

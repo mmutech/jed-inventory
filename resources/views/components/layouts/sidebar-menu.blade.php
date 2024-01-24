@@ -34,7 +34,7 @@
             <!-- SRA -->
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-dock-top"></i>
+                <i class="menu-icon tf-icons bx bx-folder-open"></i>
                 <div data-i18n="sra Settings">SRA</div>
               </a>
               <ul class="menu-sub">
@@ -91,12 +91,37 @@
               </a>
             </li> 
 
+             <!-- STock -->
+             <li class="menu-item">
+              <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-folder-open"></i>
+                <div data-i18n="sra Settings">Stock</div>
+              </a>
+              <ul class="menu-sub">
+              <li class="menu-item">
+                  <a href="{{url('stock-category-index');}}" class="menu-link">
+                    <div data-i18n="category">Category</div>
+                  </a>
+                </li>
+                <li class="menu-item">
+                  <a href="{{url('stock-class-index');}}" class="menu-link">
+                    <div data-i18n="class">Class</div>
+                  </a>
+                </li>
+                <li class="menu-item">
+                  <a href="{{url('stock-code-index');}}" class="menu-link">
+                    <div data-i18n="code">Codes</div>
+                  </a>
+                </li>
+              </ul>
+            </li>
+
             <li class="menu-header small text-uppercase">
               <span class="menu-header-text">Users</span>
             </li>
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-dock-top"></i>
+                <i class="menu-icon tf-icons bx bx-folder-open"></i>
                 <div data-i18n="Account Settings">Account Settings</div>
               </a>
               <ul class="menu-sub">

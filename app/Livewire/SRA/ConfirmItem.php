@@ -11,6 +11,7 @@ use App\Models\SRA;
 use App\Models\SRARemark;
 use App\Models\PurchaseOrders;
 use App\Models\Item;
+use App\Models\StockCode;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -116,6 +117,7 @@ class ConfirmItem extends Component
     {
         return view('livewire.s-r-a.confirm-item')->with([
             'items' => Item::where('purchase_order_id', $this->poID)->get(),
+            'stock_code' => StockCode::where('status', 'Active')->latest()->get(),
         ]);
     }
 }

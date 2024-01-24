@@ -93,8 +93,8 @@
                                                     $subtotal += $amount;
                                                 @endphp
                                                 <tr>
-                                                    <td>{{$item->stock_code}}</td>
-                                                    <td>{{$item->description}}</td>
+                                                    <td>{{$item->stockCodeID->stock_code}}</td>
+                                                    <td>{{$item->stockCodeID->name}}</td>
                                                     <td>{{ number_format($item->confirm_qty)}}</td>
                                                     <td>{{ number_format(round($item->confirm_rate, 2))}}</td>
                                                     <td>{{ number_format(round($amount, 2)) }}</td>

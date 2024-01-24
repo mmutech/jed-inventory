@@ -67,9 +67,14 @@
                     @error('vendor_name') <span class="error">{{ $message }}</span> @enderror 
                 </div>
 
-                <div class="col-sm-12">
+                <div class="col-sm-6">
                     <label class="form-label" for="delivery_address">Delivery Address</label>
-                    <textarea class="form-control" wire:model="delivery_address" id="delivery_address" cols="10" rows="2"></textarea>
+                    <select class="form-select mb-4" wire:model="delivery_address">
+                        <option value="">Select ...</option>
+                        @foreach($stations as $station)
+                            <option value="{{$station->id}}">{{$station->name}}</option>
+                        @endforeach
+                    </select>
                     @error('delivery_address') <span class="error">{{ $message }}</span> @enderror 
                 </div>
                 

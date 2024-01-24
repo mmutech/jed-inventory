@@ -20,6 +20,18 @@ use App\Livewire\SRA\EditSra;
 use App\Livewire\SRA\IndexSra;
 use App\Livewire\SRA\QualityCheck;
 use App\Livewire\SRA\ShowSra;
+//Stock Category
+use App\Livewire\Stock\Category\StockCategoryCreate;
+use App\Livewire\Stock\Category\StockCategoryEdit;
+use App\Livewire\Stock\Category\StockCategoryIndex;
+//Stock Class
+use App\Livewire\Stock\Class\StockClassCreate;
+use App\Livewire\Stock\Class\StockClassEdit;
+use App\Livewire\Stock\Class\StockClassIndex;
+use App\Livewire\Stock\Code\StockCodeCreate;
+use App\Livewire\Stock\Code\StockCodeEdit;
+use App\Livewire\Stock\Code\StockCodeIndex;
+//Store
 use App\Livewire\Store\BinCardIndex;
 use App\Livewire\Store\BinCardShow;
 use App\Livewire\Store\StoreCreate;
@@ -73,6 +85,21 @@ Route::group(['middleware' => ['auth']], function() {
 
     //Stores Bin Card
     Route::get('/bin-card-index', BinCardIndex::class);
-    Route::get('/bin-card-show/{scID}', BinCardShow::class);
+    Route::get('/bin-card-show/{binID}', BinCardShow::class);
+
+    //Stock Category
+    Route::get('/stock-category-index', StockCategoryIndex::class);
+    Route::get('/stock-category-create', StockCategoryCreate::class);
+    Route::get('/stock-category-edit/{stCategoryID}', StockCategoryEdit::class);
+
+    //Stock Class
+    Route::get('/stock-class-index', StockClassIndex::class);
+    Route::get('/stock-class-create', StockClassCreate::class);
+    Route::get('/stock-class-edit/{stClassID}', StockClassEdit::class);
+
+    //Stock Codes
+    Route::get('/stock-code-index', StockCodeIndex::class);
+    Route::get('/stock-code-create', StockCodeCreate::class);
+    Route::get('/stock-code-edit/{stCodeID}', StockCodeEdit::class);
 });
 

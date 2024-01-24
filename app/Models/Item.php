@@ -34,4 +34,9 @@ class Item extends Model
     {
         return $this->belongsTo(PurchaseOrders::class, 'purchase_order_id');
     }
+
+    public function stockCodeID(): BelongsTo
+    {
+        return $this->belongsTo(StockCode::class, 'stock_code');
+    }
 }

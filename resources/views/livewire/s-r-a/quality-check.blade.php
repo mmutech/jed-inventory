@@ -34,8 +34,8 @@
                                 @endphp
                                     <tr class="input-container">
                                         <input type="text" wire:model="itemIDs.{{ $key }}"  value="{{$item->id}}" hidden>
-                                        <td><p>{{$item->stock_code}}</p></td>
-                                        <td><p>{{$item->description}}</p></td>
+                                        <td><p>{{$item->stockCodeID->stock_code}}</p></td>
+                                        <td><p>{{$item->stockCodeID->name}}</p></td>
                                         <td><p>{{$item->confirm_qty}} ({{$item->confirm_rate}})</p></td>
                                         <td><p class="mb-0 ">{{number_format($amount)}}</p></td>
                                         <td>
