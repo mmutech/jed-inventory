@@ -8,18 +8,25 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SRAController;
 use App\Http\Controllers\UserController;
 use App\Livewire\DashboardComponent;
+//Purchase Order Number
 use App\Livewire\PurchaseOrder\Create;
 use App\Livewire\PurchaseOrder\Edit;
 use App\Livewire\PurchaseOrder\EditItem;
 use App\Livewire\PurchaseOrder\Index;
 use App\Livewire\PurchaseOrder\Show;
+//SRA
 use App\Livewire\SRA\ConfirmItem;
 use App\Livewire\SRA\CreateSra;
 use App\Livewire\SRA\EditSra;
-//SRA
 use App\Livewire\SRA\IndexSra;
 use App\Livewire\SRA\QualityCheck;
 use App\Livewire\SRA\ShowSra;
+//SRCN
+use App\Livewire\SRCN\SRCNCreate;
+use App\Livewire\SRCN\SRCNEdit;
+use App\Livewire\SRCN\SRCNIndex;
+use App\Livewire\SRCN\SRCNIssue;
+use App\Livewire\SRCN\SRCNShow;
 //Stock Category
 use App\Livewire\Stock\Category\StockCategoryCreate;
 use App\Livewire\Stock\Category\StockCategoryEdit;
@@ -77,6 +84,13 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/show-sra/{poID}', ShowSra::class);
     Route::get('/edit-sra/{sraID}', EditSra::class);
     Route::get('/quality-check/{poID}', QualityCheck::class);
+
+    //SRCN
+    Route::get('/srcn-index', SRCNIndex::class);
+    Route::get('/srcn-create', SRCNCreate::class);
+    Route::get('/srcn-edit/{srcnID}', SRCNEdit::class);
+    Route::get('/srcn-show/{srcnID}', SRCNShow::class);
+    Route::get('/srcn-issue/{srcnID}', SRCNIssue::class);
 
     //Store
     Route::get('/store-index', StoreIndex::class);

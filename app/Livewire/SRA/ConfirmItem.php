@@ -8,7 +8,6 @@ use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Locked;
 use App\Models\SRA;
-use App\Models\SRARemark;
 use App\Models\PurchaseOrders;
 use App\Models\Item;
 use App\Models\StockCode;
@@ -33,24 +32,16 @@ class ConfirmItem extends Component
 
     public function confirmed()
     {
-        if (!SRARemark::where('purchase_order_id', $this->poID)->exists()) {
+        if (!SRA::where('purchase_order_id', $this->poID)->exists()) {
             // Create SRA
             SRA::create([
+                'sra_id' => $this->sraID,
                 'consignment_note_no' => $this->consignment_note_no,
                 'invoice_no' => $this->invoice_no,
                 'sra_code' => 'SRA-'.$this->sraID,
-                'sra_id' => $this->sraID,
-            ]);
-
-             // SRA Remark
-            SRARemark::create([
-                'sra_id' => $this->sraID,
                 'purchase_order_id' => $this->poID,
-                'raised_date' => now(),
-                'raised_by' => auth()->user()->id,
-                'received_note' => $this->received_note,
-                'received_by' => auth()->user()->id,
                 'received_date' => now(),
+                'created_by' => Auth::user()->id
             ]);
 
             //Confirm Items
@@ -87,7 +78,7 @@ class ConfirmItem extends Component
         if ($purchase) {
             $this->purchase_order_no = $purchase->purchase_order_no;
             $this->purchase_order_name = $purchase->purchase_order_name;
-            $this->delivery_address = $purchase->delivery_address;
+            $this->delivery_address = $purchase->storeID->name;
             $this->vendor_name = $purchase->vendor_name;
             $this->invoice_no = $purchase->invoice_no;
             $this->consignment_note_no = $purchase->consignment_note_no;
@@ -97,7 +88,6 @@ class ConfirmItem extends Component
         // Get Item for Confirmation
         $items = Item::where('purchase_order_id', $this->poID)->get();
         if ($items->count() > 0) {
-
             foreach ($items as $key => $data) {
                 $this->itemIDs[$key] = $data->id;
                 $this->confirm_qtys[$key] = $data->confirm_qty;

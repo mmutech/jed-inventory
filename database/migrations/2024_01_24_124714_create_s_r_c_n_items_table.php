@@ -11,15 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('s_r_a_s', function (Blueprint $table) {
+        Schema::create('s_r_c_n_items', function (Blueprint $table) {
             $table->id();
-            $table->integer('purchase_order_id');
-            $table->integer('sra_id');
-            $table->string('sra_code');
-            $table->string('consignment_note_no');
-            $table->string('invoice_no');
-            $table->date('received_date');
-            $table->integer('created_by');
+            $table->integer('srcn_id');
+            $table->integer('stock_code_id');
+            $table->string('unit');
+            $table->integer('required_qty');
+            $table->integer('issued_qty')->nullable();
             $table->integer('updated_by')->nullable();
             $table->timestamps();
         });
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('s_r_a_s');
+        Schema::dropIfExists('s_r_c_n_items');
     }
 };

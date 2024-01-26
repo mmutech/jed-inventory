@@ -86,7 +86,7 @@
                                                 <tr>
                                                     <td>{{ $item->date_receipt }} {{ $item->date_issue }}</td>
                                                     <td>{{ $item->reference }}</td>
-                                                    <td>{{ $item->purchaseOrderID->vendor_name }}</td>
+                                                    <td>{{ $item->purchaseOrderID->vendor_name ?? '' }}</td>
                                                     <td>{{ $item->stationID->name }}</td>
                                                     <td>{{ $item->in }}</td>
                                                     <td>{{ $item->out }}</td>

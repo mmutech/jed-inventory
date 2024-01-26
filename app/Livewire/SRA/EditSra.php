@@ -44,11 +44,11 @@ class EditSra extends Component
         $this->sraID = $sraID;
 
         // Get SRA for display
-        $sra = SRARemark::where('sra_id', $this->sraID)->first();
+        $sra = SRA::where('id', $this->sraID)->first();
 
         if ($sra) {
-            $this->consignment_note_no = $sra->receivedID->consignment_note_no;
-            $this->invoice_no = $sra->receivedID->invoice_no;
+            $this->consignment_note_no = $sra->consignment_note_no;
+            $this->invoice_no = $sra->invoice_no;
             $this->purchase_order_no = $sra->purchaseOrderID->purchase_order_no;
         }
     }

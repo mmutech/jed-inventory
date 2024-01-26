@@ -28,7 +28,7 @@
                             
                             <div class="col-md-6">
                                 <span class="fw-bolder">Invoice Number:</span>
-                                <span>{{$data->receivedID->invoice_no}}</span>
+                                <span>{{$data->invoice_no}}</span>
                                 <hr class="mb-0 mt-0">
                             </div>
 
@@ -46,7 +46,7 @@
 
                             <div class="col-md-6">
                                 <span class="fw-bolder">Consign Note No:</span>
-                                <span>{{$data->receivedID->consignment_note_no}}</span>
+                                <span>{{$data->consignment_note_no}}</span>
                                 <hr class="mb-0 mt-0">
                             </div>
 
@@ -118,6 +118,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <!-- Summary and vat calculations -->
                         <div class="row py-sm-1">
                             <div class="col-md-6 mb-md-0 mb-1"></div>
@@ -150,11 +151,11 @@
                         <h6 class="text-capitalize mb-2 text-nowrap fw-bolder">REMARKS</h6>
                         <div class="row">
                             <!--Received of SRA -->
-                            @if(!empty($data->received_by))
+                            @if(!empty($data->created_by))
                                 <hr class="mx-n1">
                                 <div class="col-sm-8">
                                     <span class="fw-bolder">Received by: </span>
-                                    <span>{{$data->receivedBy->name ?? ''}}</span>
+                                    <span>{{$data->createdBy->name ?? ''}}</span>
                                 </div>
                                 <div class="col-sm-4">
                                     <span class="fw-bolder">Date: </span>
@@ -163,28 +164,28 @@
                             @endif
 
                             <!--Quality Checks -->
-                            @if(!empty($data->quality_check_by))
+                            @if(!empty($qualityCheck->quality_check_by))
                                 <hr class="mx-n1">
                                 <div class="col-sm-8">
-                                    <span class="fw-bolder">Checked by: </span>
-                                    <span>{{$data->qualityCheckBy->name ?? '' }}</span>
+                                    <span class="fw-bolder">{{$qualityCheck->quality_check_action ?? '' }} by: </span>
+                                    <span>{{$qualityCheck->QualityCheckBy->name ?? '' }}</span>
                                 </div>
                                 <div class="col-sm-4">
                                     <span class="fw-bolder">Date: </span>
-                                    <span>{{$data->quality_check_date}}</span>
+                                    <span>{{$qualityCheck->quality_check_date}}</span>
                                 </div>
                             @endif
 
                             <!--Account Remarks -->
-                            @if(!empty($data->account_operation_remark_by))
+                            @if(!empty($approval->approved_by))
                                 <hr class="mx-n1">
                                 <div class="col-sm-8">
-                                    <span class="fw-bolder">{{$data->account_operation_action}} by: </span>
-                                    <span>{{$data->accountRemarkBy->name ?? '' }}</span>
+                                    <span class="fw-bolder">{{$approval->approved_action}} by: </span>
+                                    <span>{{$approval->approvedID->name ?? '' }}</span>
                                 </div>
                                 <div class="col-sm-4">
                                     <span class="fw-bolder">Date: </span>
-                                    <span>{{$data->account_operation_remark_date}}</span>
+                                    <span>{{$approval->approved_date}}</span>
                                 </div>
                             @endif
                         </div>
@@ -197,15 +198,15 @@
             <div class="col-lg-3 col-12 invoice-actions">
                 <div class="card-header mb-2"> 
                     <!--Print-->
-                    @if(!empty($data->account_operation_remark_by))
+                    @if(!empty($approval->approved_by))
                     <button class="btn btn-label-primary d-grid w-100">
                         <span class="d-flex align-items-center justify-content-center text-nowrap">
                         <i class="bx bx-file bx-xs me-1"></i>Print</span>
                     </button>
                     @endif
 
-                    @if(!empty($data->quality_check_by))
-                        @if(empty($data->account_operation_remark_by))
+                    @if(!empty($qualityCheck->quality_check_by))
+                        @if(empty($approval->approved_by))
                         <button class="btn btn-label-primary d-grid w-100 mt-2" 
                             data-bs-toggle="offcanvas" 
                             data-bs-target="#account-operation">
@@ -220,26 +221,20 @@
                 <!-- Approval Note -->
                 <div class="card mb-4">
                     <div class="card-body">
-
-                    @if(!empty($data->received_by))
-                        <h6 class="fw-bolder">Received Note:</h6>
-                        <p>{{$data->received_note}}</p>
-                    @endif
-
-                    @if(!empty($data->quality_check_by))
+                    @if(!empty($qualityCheck->quality_check_by))
                         <h6 class="fw-bolder">Quality Check Note:</h6>
-                        <p>{{$data->quality_check_note}}</p>
+                        <p>{{$qualityCheck->quality_check_note}}</p>
                     @endif
 
-                    @if(!empty($data->account_operation_remark_by))
+                    @if(!empty($approval->approved_by))
                         <h6 class="fw-bolder">Account Operation Remark:</h6>
-                        <p>{{$data->account_operation_remark_note}}</p>
+                        <p>{{$approval->approved_note}}</p>
                     @endif
                     </div>
                 </div>
 
                     <!-- Modify SRA / Quality Check -->
-                    @if(empty($data->account_operation_remark_by))
+                    @if(empty($approval->approved_by))
                     <div class="card">
                         <div class="card-header">
                             <p class="mb-2 fw-bolder">Modify SRA / Item</p>
@@ -249,7 +244,7 @@
                             <label for="payment-terms" class="mb-0">SRA</label>
                             <label class="switch switch-primary me-0">
                                 <span class="switch-label">
-                                    <a href="{{ url('edit-sra/'.$data->sra_id) }}">
+                                    <a href="{{ url('edit-sra/'.$data->id) }}">
                                     <i class="bx bx-pencil bx-sm me-sm-n2"></i></a>
                                 </span>
                             </label>

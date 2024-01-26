@@ -48,6 +48,11 @@ class StoreBinCard extends Model
         return $this->belongsTo(PurchaseOrders::class, 'purchase_order_id');
     }
 
+    public function sraID(): BelongsTo
+    {
+        return $this->belongsTo(SRA::class, 'reference');
+    }
+
     public function stationID(): BelongsTo
     {
         return $this->belongsTo(Store::class, 'station_id');

@@ -10,7 +10,7 @@ use App\Traits\CreatedUpdatedBy;
 class Item extends Model
 {
     use HasFactory;
-    use CreatedUpdatedBy;
+    // use CreatedUpdatedBy;
 
     protected $table = 'items';
     protected $fillable = [
@@ -19,7 +19,6 @@ class Item extends Model
         'unit',
         'quantity',
         'rate',
-        'created_by',
         'updated_by',
         'confirm_qty',
         'confirm_rate',

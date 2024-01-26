@@ -16,6 +16,9 @@ class DatabaseSeeder extends Seeder
             CreateAdminUserSeeder::class,
             PermissionTableSeeder::class,
             LocationSeeder::class,
+            pollinate_StockCategories::class,
+            pollinate_StockClasses::class,
+            pollinate_StockCodes::class,
         ]);
         
         // \App\Models\User::factory(10)->create();

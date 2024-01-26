@@ -22,11 +22,22 @@ class PurchaseOrders extends Model
         'delivery_address',
         'purchase_order_date',
         'status',
+        'created_by',
         'updated_by'
     ];
 
-    public function updatedID(): BelongsTo
+    public function updatedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'updated_by');
+    }
+
+    public function createdBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function storeID(): BelongsTo
+    {
+        return $this->belongsTo(Store::class, 'delivery_address');
     }
 }

@@ -16,12 +16,12 @@ return new class extends Migration
             $table->integer('stock_code_id');
             $table->string('reference');
             $table->integer('station_id');
-            $table->integer('purchase_order_id');
+            $table->integer('purchase_order_id')->nullable();
             $table->double('in')->nullable();
             $table->double('out')->nullable();
             $table->double('balance');
             $table->string('unit');
-            $table->date('date_receipt');
+            $table->date('date_receipt')->nullable();
             $table->date('date_issue')->nullable();
             $table->integer('created_by');
             $table->integer('updated_by')->nullable();

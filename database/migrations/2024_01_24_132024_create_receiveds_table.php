@@ -11,16 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('s_r_a_s', function (Blueprint $table) {
+        Schema::create('receiveds', function (Blueprint $table) {
             $table->id();
-            $table->integer('purchase_order_id');
-            $table->integer('sra_id');
-            $table->string('sra_code');
-            $table->string('consignment_note_no');
-            $table->string('invoice_no');
+            $table->string('reference');
+            $table->integer('received_by');
+            $table->string('received_note');
+            $table->enum('received_action', ['Received', 'Rejected'])->default('Received');
             $table->date('received_date');
-            $table->integer('created_by');
-            $table->integer('updated_by')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('s_r_a_s');
+        Schema::dropIfExists('receiveds');
     }
 };

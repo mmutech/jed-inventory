@@ -57,14 +57,8 @@ class Create extends Component
                 'delivery_address' => $this->delivery_address,
                 'purchase_order_date' => now(),
                 'purchase_order_id' => $poID,
+                'created_by' => auth()->user()->id,
             ]); 
-
-              // Initiator
-            ApprovalPO::create([
-                'purchase_order_id' => $poID,
-                'initiator_action' => 'Initiated',
-                'initiator' => auth()->user()->id,
-            ]);
 
             // Items
             foreach ($this->descriptions as $key => $description) {

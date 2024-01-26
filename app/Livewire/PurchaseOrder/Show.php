@@ -3,17 +3,12 @@
 namespace App\Livewire\PurchaseOrder;
 
 use Livewire\Component;
-use Livewire\Attributes\Rule; 
 use Livewire\Attributes\Locked;
-use Livewire\WithPagination;
-use Livewire\WithFileUploads;
 use App\Models\PurchaseOrders;
 use App\Models\Item;
 use App\Models\ApprovalPO;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Redirect;
+use App\Models\Approvals;
+use App\Models\Recommendations;
 
 
 class Show extends Component
@@ -32,11 +27,12 @@ class Show extends Component
         // $this->validate();
     
         if($this->poID){
-            ApprovalPO::where('purchase_order_id', $this->poID)->first()->update([
-                'recommend_note' => $this->recommend_note,
-                'recommended_action' => $this->recommended_action,
-                'recommended_by' => auth()->user()->id,
-                'date_recommended' => now()
+            Recommendations::create([
+                'reference'         => $this->poID,
+                'recommend_note'    => $this->recommend_note,
+                'recommend_action'  => $this->recommended_action,
+                'recommend_by'      => auth()->user()->id,
+                'recommend_date'    => now()
             ]);
         }
         
@@ -49,11 +45,12 @@ class Show extends Component
         // $this->validate();
 
         if($this->poID){
-            ApprovalPO::where('purchase_order_id', $this->poID)->first()->update([
-                'approved_note' => $this->approved_note,
-                'approved_action' => $this->approved_action,
-                'approved_by' => auth()->user()->id,
-                'date_approved' => now()
+            Approvals::create([
+                'reference'         => $this->poID,
+                'approved_note'     => $this->approved_note,
+                'approved_action'   => $this->approved_action,
+                'approved_by'       => auth()->user()->id,
+                'approved_date'     => now()
             ]);
         }
 
@@ -74,7 +71,8 @@ class Show extends Component
         return view('livewire.purchase-order.show')->with([
             'data' => PurchaseOrders::where('purchase_order_id', $this->poID)->first(),
             'items' => Item::where('purchase_order_id', $this->poID)->get(),
-            'actions' => ApprovalPO::where('purchase_order_id', $this->poID)->first(),
+            'recommend' => Recommendations::where('reference', $this->poID)->first(),
+            'approval' => Approvals::where('reference', $this->poID)->first(),
         ]);
     }
 }

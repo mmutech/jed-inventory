@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('unit');
             $table->integer('quantity');
             $table->double('rate');
-            $table->integer('created_by');
             $table->integer('updated_by')->nullable();
             $table->integer('confirm_qty')->nullable();
             $table->double('confirm_rate')->nullable();

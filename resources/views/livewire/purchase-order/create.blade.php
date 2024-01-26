@@ -104,53 +104,53 @@
                             <div class="d-flex border rounded position-relative pe-0">
                             <div class="row w-100 m-0 p-3">
                                 <div class="table-responsive text-nowrap">
-                                <div class="d-flex justify-content-end">  
-                                    <button type="button" class="btn btn-primary" wire:click="addInput" data-repeater-create="">Add Item</button>
-                                </div>
-                                <div id="dynamicFieldsContainer">
-                                    <table class="table" id="itemsTable">
-                                    <thead>
-                                        <tr>
-                                        <th>#</th>
-                                        <th>Description</th>
-                                        <th>Unit</th>
-                                        <th>Quantity</th>
-                                        <th>Rate(&#8358;)</th>
-                                        <th>Amount(&#8358;)</th>
-                                        <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    @foreach($inputs as $key => $value)
-                                        <tr>
-                                            <td></td>
-                                            <td class="col-sm-4">
-                                                <input type="text" wire:model="descriptions.{{ $key }}" class="form-control" placeholder="Item Description">
-                                                @error("descriptions.$key") <span class="error">{{ $message }}</span> @enderror 
-                                            </td>
-                                            <td class="col-sm-2">
-                                                <input type="text" wire:model="units.{{ $key }}" class="form-control invoice-item-unit" placeholder="Unit" min="1">
-                                                @error("units.$key") <span class="error">{{ $message }}</span> @enderror 
-                                            </td>
-                                            <td class="col-sm-2">
-                                                <input type="number" wire:model="quantities.{{ $key }}" class="form-control invoice-item-qty" step="1" min="1" oninput="calculateAmount(this)">
-                                                @error("quantities.$key") <span class="error">{{ $message }}</span> @enderror 
-                                            </td>
-                                            <td class="col-sm-2">
-                                                <input type="number" wire:model="rates.{{ $key }}" class="form-control invoice-item-rate" step="0.01" min="1" oninput="calculateAmount(this)">
-                                                @error("rates.$key") <span class="error">{{ $message }}</span> @enderror 
-                                            </td>
-                                            <td class="col-sm-2 amount"><p class="mb-0 "></p></td>
-                                            <td>
-                                            @if($key !== 0)
-                                                <a href="#" wire:click="removeInput({{ $key }})"><i class="bx bx-x text-danger"></i></a>
-                                            @endif
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                    </tbody>
-                                    </table>
-                                </div>
+                                    <div class="d-flex justify-content-end">  
+                                        <button type="button" class="btn btn-primary" wire:click="addInput" data-repeater-create="">Add Item</button>
+                                    </div>
+                                    <div id="dynamicFieldsContainer">
+                                        <table class="table" id="itemsTable">
+                                            <thead>
+                                                <tr>
+                                                <th>#</th>
+                                                <th>Description</th>
+                                                <th>Unit</th>
+                                                <th>Quantity</th>
+                                                <th>Rate(&#8358;)</th>
+                                                <th>Amount(&#8358;)</th>
+                                                <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($inputs as $key => $value)
+                                                    <tr>
+                                                        <td></td>
+                                                        <td class="col-sm-4">
+                                                            <input type="text" wire:model="descriptions.{{ $key }}" class="form-control" placeholder="Item Description">
+                                                            @error("descriptions.$key") <span class="error">{{ $message }}</span> @enderror 
+                                                        </td>
+                                                        <td class="col-sm-2">
+                                                            <input type="text" wire:model="units.{{ $key }}" class="form-control invoice-item-unit" placeholder="Unit" min="1">
+                                                            @error("units.$key") <span class="error">{{ $message }}</span> @enderror 
+                                                        </td>
+                                                        <td class="col-sm-2">
+                                                            <input type="number" wire:model="quantities.{{ $key }}" class="form-control invoice-item-qty" step="1" min="1" oninput="calculateAmount(this)">
+                                                            @error("quantities.$key") <span class="error">{{ $message }}</span> @enderror 
+                                                        </td>
+                                                        <td class="col-sm-2">
+                                                            <input type="number" wire:model="rates.{{ $key }}" class="form-control invoice-item-rate" step="0.01" min="1" oninput="calculateAmount(this)">
+                                                            @error("rates.$key") <span class="error">{{ $message }}</span> @enderror 
+                                                        </td>
+                                                        <td class="col-sm-2 amount"><p class="mb-0 "></p></td>
+                                                        <td>
+                                                        @if($key !== 0)
+                                                            <a href="#" wire:click="removeInput({{ $key }})"><i class="bx bx-x text-danger"></i></a>
+                                                        @endif
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                             </div>

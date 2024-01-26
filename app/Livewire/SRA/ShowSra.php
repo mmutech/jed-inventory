@@ -2,6 +2,7 @@
 
 namespace App\Livewire\SRA;
 
+use App\Models\Approvals;
 use Livewire\Component;
 use Livewire\Attributes\Rule; 
 use Livewire\Attributes\Locked;
@@ -10,6 +11,7 @@ use App\Models\SRARemark;
 use App\Models\SRA;
 use App\Models\PurchaseOrders;
 use App\Models\Item;
+use App\Models\QualityChecks;
 use Illuminate\Support\Facades\Auth;
 
 class ShowSra extends Component
@@ -29,13 +31,15 @@ class ShowSra extends Component
         // $this->validate();
 
         // Remark by Account Operations
-        if ($this->poID) {
-            SRARemark::where('purchase_order_id', $this->poID)->first()->update([
-                'account_operation_action' => $this->account_operation_action,
-                'account_operation_remark_note' => $this->account_operation_remark_note,
-                'account_operation_remark_date' => now(),
-                'account_operation_remark_by' => Auth::user()->id
-            ]);
+            if($this->poID){
+                Approvals::create([
+                    'reference'         => $this->reference,
+                    'approved_note'     => $this->account_operation_remark_note,
+                    'approved_action'   => $this->account_operation_action,
+                    'approved_by'       => auth()->user()->id,
+                    'approved_date'     => now()
+                ]);
+            }
 
             // Updated Purchase Order Status
             PurchaseOrders::where('purchase_order_id', $this->poID)->first()->update([
@@ -62,24 +66,24 @@ class ShowSra extends Component
             }
 
             $this->dispatch('info', message: 'SRA Approved By Account Operation!');
-        }
     }
 
     public function mount($poID)
     {
         $this->poID = $poID;
-        $this->items = Item::where('purchase_order_id', $poID)->get();
-        $this->sraCode = SRARemark::where('purchase_order_id', $poID)->pluck('sra_id')->first();
-        $this->reference = SRA::where('sra_id', $this->sraCode)->pluck('sra_code')->first();
-        $this->stationID = PurchaseOrders::where('purchase_order_id', $poID)->pluck('delivery_address')->first();
-        // dd($this->stationID);
+        $this->items = Item::where('purchase_order_id', $this->poID)->get();
+        $this->reference = SRA::where('purchase_order_id', $this->poID)->pluck('sra_code')->first();
+        $this->stationID = PurchaseOrders::where('purchase_order_id', $this->poID)->pluck('delivery_address')->first();
+        // dd($this->poID);
     }
 
     public function render()
     {
         return view('livewire.s-r-a.show-sra')->with([
-            'data' => SRARemark::where('purchase_order_id', $this->poID)->first(),
+            'data' => SRA::where('purchase_order_id', $this->poID)->first(),
             'items' => Item::where('purchase_order_id', $this->poID)->get(),
+            'approval' => Approvals::where('reference', $this->reference)->first(),
+            'qualityCheck' => QualityChecks::where('reference', $this->poID)->first(),
         ]);
     }
 }

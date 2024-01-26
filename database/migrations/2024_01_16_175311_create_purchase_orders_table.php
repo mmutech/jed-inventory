@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('delivery_address');
             $table->date('purchase_order_date');
             $table->enum('status', ['Approved', 'Completed', 'Pending'])->default('Pending');
+            $table->integer('created_by');
             $table->integer('updated_by')->nullable();
             $table->timestamps();
         });

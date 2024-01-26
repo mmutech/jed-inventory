@@ -8,7 +8,7 @@ use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Locked;
 use App\Models\SRA;
-use App\Models\SRARemark;
+use App\Models\QualityChecks;
 use App\Models\PurchaseOrders;
 use App\Models\Item;
 use Illuminate\Support\Facades\Auth;
@@ -22,7 +22,7 @@ class QualityCheck extends Component
     public $item;
 
     #[Rule('required')]
-    public $quality_check_note;
+    public $quality_check_note, $quality_check_action;
 
     #[Locked]
     public $poID;
@@ -40,10 +40,12 @@ class QualityCheck extends Component
          // Validation
          $this->validate();
          
-        // Quality Check Remard
-        SRARemark::where('purchase_order_id', $this->poID)->first()->update([
+        // Quality Check Remark
+        QualityChecks::create([
+            'reference' => $this->poID,
             'quality_check_note' => $this->quality_check_note,
             'quality_check_date' => now(),
+            'quality_check_action' => $this->quality_check_action,
             'quality_check_by' => Auth::user()->id
         ]);
 
