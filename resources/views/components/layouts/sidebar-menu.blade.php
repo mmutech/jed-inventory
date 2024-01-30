@@ -51,17 +51,17 @@
               </ul>
             </li>
             
-            <!-- SCRN -->
+            <!-- SRCN -->
             <li class="menu-item">
               <a href="{{url('srcn-index');}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-layout"></i>
-                <div data-i18n="Basic">SCRN</div>
+                <div data-i18n="Basic">SRCN</div>
               </a>
             </li> 
 
              <!-- SRIN -->
              <li class="menu-item">
-              <a href="cards-basic.html" class="menu-link">
+              <a href="{{url('srin-index');}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-layout"></i>
                 <div data-i18n="Basic">SRIN</div>
               </a>

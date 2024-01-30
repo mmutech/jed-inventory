@@ -21,12 +21,21 @@ use App\Livewire\SRA\EditSra;
 use App\Livewire\SRA\IndexSra;
 use App\Livewire\SRA\QualityCheck;
 use App\Livewire\SRA\ShowSra;
+
 //SRCN
 use App\Livewire\SRCN\SRCNCreate;
 use App\Livewire\SRCN\SRCNEdit;
 use App\Livewire\SRCN\SRCNIndex;
 use App\Livewire\SRCN\SRCNIssue;
 use App\Livewire\SRCN\SRCNShow;
+
+//SRIN
+use App\Livewire\SRIN\SRINCreate;
+use App\Livewire\SRIN\SRINEdit;
+use App\Livewire\SRIN\SRINIndex;
+use App\Livewire\SRIN\SRINIssue;
+use App\Livewire\SRIN\SRINShow;
+
 //Stock Category
 use App\Livewire\Stock\Category\StockCategoryCreate;
 use App\Livewire\Stock\Category\StockCategoryEdit;
@@ -91,6 +100,13 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/srcn-edit/{srcnID}', SRCNEdit::class);
     Route::get('/srcn-show/{srcnID}', SRCNShow::class);
     Route::get('/srcn-issue/{srcnID}', SRCNIssue::class);
+
+    //SRIN
+    Route::get('/srin-index', SRINIndex::class);
+    Route::get('/srin-create', SRINCreate::class);
+    Route::get('/srin-edit/{srinID}', SRINEdit::class);
+    Route::get('/srin-show/{srinID}', SRINShow::class);
+    Route::get('/srin-issue/{srinID}', SRINIssue::class);
 
     //Store
     Route::get('/store-index', StoreIndex::class);

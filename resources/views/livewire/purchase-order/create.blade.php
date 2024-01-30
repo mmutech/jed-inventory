@@ -105,7 +105,7 @@
                             <div class="row w-100 m-0 p-3">
                                 <div class="table-responsive text-nowrap">
                                     <div class="d-flex justify-content-end">  
-                                        <button type="button" class="btn btn-primary" wire:click="addInput" data-repeater-create="">Add Item</button>
+                                        <button type="button" class="btn btn-primary" wire:click.prevent="addInput" data-repeater-create="">Add Item</button>
                                     </div>
                                     <div id="dynamicFieldsContainer">
                                         <table class="table" id="itemsTable">

@@ -30,10 +30,10 @@
                                     @foreach($inputs as $key => $value)
                                         <tr>
                                             <td>
-                                                <select class="form-select" wire:model="stock_codes.{{ $key }}">
-                                                    <option value="">Select ...</option>
+                                                <select class="form-control" wire:model.live.debounce.100ms="stock_codes.{{ $key }}">
+                                                    <option value="">Type to search...</option>
                                                     @foreach($stock_code as $stCode)
-                                                    <option value="{{$stCode->id}}">{{$stCode->stock_code}} - {{$stCode->name}}</option>
+                                                        <option value="{{$stCode->id}}">{{$stCode->stock_code}} - {{$stCode->name}}</option>
                                                     @endforeach
                                                 </select>
                                                 @error("stock_codes.$key") <span class="error">{{ $message }}</span> @enderror 

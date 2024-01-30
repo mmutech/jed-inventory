@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             pollinate_StockCategories::class,
             pollinate_StockClasses::class,
             pollinate_StockCodes::class,
+            StoreSeeder::class,
         ]);
         
         // \App\Models\User::factory(10)->create();

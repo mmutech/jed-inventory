@@ -46,19 +46,18 @@ class StockCodeCreate extends Component
     {
         // $this->stockClass = StockClass::where('stock_category_id', $stockCategoryID)->get();
 
-        $this->stockClass = StockClass::where('status', 'Active')->latest()->get();
+        // $this->stockClass = StockClass::where('status', 'Active')->latest()->get();
 
         // dd($this->stockClass);
         
         return view('livewire.stock.code.stock-code-create')->with([
             'stock_category' => StockCategory::where('status', 'Active')->latest()->get(),
-            'stockClass' => StockClass::where('status', 'Active')->latest()->get(),
         ]);
     }
 
-    public function updatedSelectedCategory($selectedCategoryID)
+    public function updatedSelectedCategory($stock_category_id)
     {
-        $this->stockClass = StockClass::where('stock_category_id', $selectedCategoryID)->get();
+        $this->stockClass = StockClass::where('stock_category_id', $stock_category_id)->get();
         // dd($this->stockClass);
     }
 }

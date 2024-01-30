@@ -23,8 +23,8 @@ class SRCNShow extends Component
     #[Locked]
     public $srcnID;
 
-    public $recommend_action, $recommend_note, $hod_approved_action, $hod_approved_note, $stockCodeID,
-    $despatched_note, $received_note, $lorry_no, $driver_name, $location, $storeID, $stockCode, $binCard, $balance;
+    public $recommend_action, $recommend_note, $approved_action, $approved_note, $issuingStore,
+    $despatched_note, $received_note, $lorry_no, $driver_name, $location, $storeID, $requisitionStore;
 
     public $items, $reference;
 
@@ -49,66 +49,101 @@ class SRCNShow extends Component
     }
 
     //HOD Approval
-    public function hodApproval()
+    public function haopApproval()
     {
         // Validation
         // $this->validate();
     
         if($this->srcnID){
-            HODApproval::create([
-                'reference'            => $this->reference,
-                'hod_approved_note'    => $this->hod_approved_note,
-                'hod_approved_action'  => $this->hod_approved_action,
-                'hod_approved_by'      => auth()->user()->id,
-                'hod_approved_date'    => now()
+            Approvals::create([
+                'reference'         => $this->reference,
+                'approved_note'    => $this->approved_note,
+                'approved_action'  => $this->approved_action,
+                'approved_by'      => auth()->user()->id,
+                'approved_date'    => now()
             ]);
         }
 
-        $this->dispatch('success', message: 'HOD Approval!');
+        $this->dispatch('success', message: 'HAOP Approval!');
         
     }
 
     //Despatched
     public function despatched()
     {
-        if($this->srcnID){
-            SRCN::where('id', $this->srcnID)->update([
-                'issuing_store' => $this->storeID,
-                'issue_date' => now(),
-                'created_by' => auth()->user()->id,
-            ]); 
+         // Check Store Bin Card
+        foreach ($this->items as $item) {
+            $binCard = StoreBinCard::where('stock_code_id', $item->stock_code_id)
+                    ->where('station_id', $this->issuingStore)
+                    ->where('balance', '>', 0)
+                    ->orderBy('created_at')
+                    ->first();
 
-            Despatched::create([
-                'reference'          => $this->reference,
-                'despatched_note'    => $this->despatched_note,
-                'despatched_by'      => auth()->user()->id,
-                'despatched_date'    => now()
-            ]);
+            if(!empty($binCard)){
+                $issuedQty = min($item->issued_qty, $binCard->balance);
 
-            Vehicle::create([
-                'reference'         => $this->reference,
-                'lorry_no'          => $this->lorry_no,
-                'driver_name'       => $this->driver_name,
-                'location'          => $this->location,
-                'created_by'        => auth()->user()->id,
-                'vehicle_date'      => now()
-            ]);
+                // Update the oldest record
+                $binCard->update([
+                    'out'          => $binCard->out + $issuedQty,
+                    'balance'      => $binCard->balance - $issuedQty,
+                    'date_issue'   => now(),
+                    'updated_by'   => auth()->user()->id,
+                ]);
 
-            // Update Store Bin Card
-            foreach ($this->items as $item) {
-                $binCard = StoreBinCard::where('stock_code_id', $item->stock_code_id)->first();
-                if ($binCard) {
-                    $binCard->update([
-                        'out'          => $binCard->out + $item->issued_qty,
-                        'balance'      => $binCard->balance - $item->issued_qty,
-                        'date_issue'   => now(),
-                        'updated_by'   => auth()->user()->id,
-                    ]);
-                } 
+                $remainingQty = $item->issued_qty - $issuedQty;
+                while ($remainingQty > 0) {
+                    $nextBinCard = StoreBinCard::where('stock_code_id', $item->stock_code_id)
+                        ->where('station_id', $this->issuingStore)
+                        ->where('balance', '>', 0)
+                        ->where('created_at', '>', $binCard->created_at)
+                        ->orderBy('created_at')
+                        ->first();
+        
+                    if ($nextBinCard) {
+                        $issuedQty = min($remainingQty, $nextBinCard->balance);
+        
+                        // Update the next record
+                        $nextBinCard->update([
+                            'out' => $nextBinCard->out + $issuedQty,
+                            'balance' => $nextBinCard->balance - $issuedQty,
+                            'date_issue' => now(),
+                            'updated_by' => auth()->user()->id,
+                        ]);
+        
+                        $remainingQty -= $issuedQty;
+                    } else {
+
+                        break;
+                    }
+                }
+
             }
-            
-            $this->dispatch('success', message: 'HOD Approval!');
-        } 
+        }
+
+        // Despatched
+        Despatched::create([
+            'reference'          => $this->reference,
+            'despatched_note'    => $this->despatched_note,
+            'despatched_by'      => auth()->user()->id,
+            'despatched_date'    => now()
+        ]);
+
+        // Vehicle and Drivers Info
+        Vehicle::create([
+            'reference'         => $this->reference,
+            'lorry_no'          => $this->lorry_no,
+            'driver_name'       => $this->driver_name,
+            'location'          => $this->location,
+            'created_by'        => auth()->user()->id,
+            'vehicle_date'      => now()
+        ]);
+
+        // Update SRCN 
+        SRCN::where('srcn_id', $this->srcnID)->first()->update([
+            'issue_date' => now(),
+        ]); 
+
+        $this->dispatch('success', message: 'Despatch Successfully!');
     }
 
     //Received
@@ -122,53 +157,53 @@ class SRCNShow extends Component
                 'received_date'    => now()
             ]);
 
-            // Create Store Bin Card
+            // Create or Update Store Bin Card
             $binCardItems = StoreBinCard::where('reference', $this->reference)->get();
             foreach ($this->items as $item) {
 
                 // Check if there's a matching StoreBinCard record
-                $checkBinCard = $binCardItems->where('stock_code_id', $item->stock_code_id)->first();
+                // $checkBinCard = $binCardItems->where('stock_code_id', $item->stock_code_id)->first();
             
-                if ($checkBinCard) {
-                    // If a matching record exists, update it
-                    $checkBinCard->update([
-                        'in'         => $checkBinCard->in + $item->issued_qty,
-                        'balance'    => $checkBinCard->balance + $item->issued_qty,
-                        'date_issue' => now(),
-                        'updated_by' => auth()->user()->id,
-                    ]);
+                // if ($checkBinCard) {
+                //     // If a matching record exists, update it
+                //     $checkBinCard->update([
+                //         'in'         => $checkBinCard->in + $item->issued_qty,
+                //         'balance'    => $checkBinCard->balance + $item->issued_qty,
+                //         'date_issue' => now(),
+                //         'date_receipt'  => now(),
+                //         'updated_by' => auth()->user()->id,
+                //     ]);
 
-                } else {
+                // } else {
                     // If no matching record exists, create a new one
                     StoreBinCard::create([
                         'stock_code_id' => $item->stock_code_id,
                         'reference'     => $this->reference,
-                        'station_id'    => $this->storeID,
+                        'station_id'    => $this->requisitionStore,
                         'in'            => $item->issued_qty,
                         'balance'       => $item->issued_qty,
                         'unit'          => $item->unit,
-                        'date_issue'    => now(),
+                        'date_receipt'  => now(),
                         'created_by'    => auth()->user()->id,
                     ]);
-                }
+                // }
             }
-        }
 
-        $this->dispatch('success', message: 'HOD Approval!');
-        
+            $this->dispatch('success', message: 'Item Received Successfully!');
+        }
     }
 
     public function mount($srcnID)
     {
         $this->srcnID = $srcnID;
-        $this->items = SRCNItem::where('srcn_id', $this->srcnID)->get();
-        $this->stockCode = SRCNItem::where('srcn_id', $this->srcnID)->get('stock_code_id');
-        $this->stockCodeID = SRCNItem::where('srcn_id', $this->srcnID)->pluck('stock_code_id')->first();
+        $this->issuingStore = SRCN::where('srcn_id', $this->srcnID)->pluck('issuing_store')->first();
+        $this->requisitionStore = SRCN::where('srcn_id', $this->srcnID)->pluck('requisitioning_store')->first();
         $this->storeID = Store::where('store_officer', Auth()->user()->id)->pluck('id')->first();
         $this->reference = SRCN::where('srcn_id', $this->srcnID)->pluck('srcn_code')->first();
-        $this->binCard = StoreBinCard::where('stock_code_id', $this->stockCodeID)->get();
-        // dd($this->items);
+        $this->items = SRCNItem::where('srcn_id', $this->srcnID)->get();
+        // dd($this->issuingStore);
     }
+    
     public function render()
     {
         return view('livewire.s-r-c-n.s-r-c-n-show')->with([

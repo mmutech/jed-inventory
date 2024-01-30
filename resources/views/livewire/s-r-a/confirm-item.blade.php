@@ -122,17 +122,17 @@
                                                         <tr class="input-container">
                                                             <td class="col-sm-4">
                                                                 <input type="hidden" wire:model="itemIDs.{{ $key }}" class="form-control">
-                                                                <select class="form-select mb-4" wire:model="stock_codes.{{ $key }}">
-                                                                    <option value="">Select ...</option>
+                                                                <select class="form-control" wire:model.live.debounce.100ms="stock_codes.{{ $key }}">
+                                                                    <option value="">Type to search...</option>
                                                                     @foreach($stock_code as $stCode)
                                                                     <option value="{{$stCode->id}}">{{$stCode->stock_code}} - {{$stCode->name}}</option>
                                                                     @endforeach
-                                                                </select>
+                                                                </select>     
                                                                 @error("stock_code.$key") <span class="error">{{ $message }}</span> @enderror 
                                                             </td>
                                                             <td><p>{{$item->description}}</p></td>
                                                             <td><p>{{$item->quantity}} ({{$item->unit}})</p></td>
-                                                            <td><p>{{$item->rate}}</p></td>
+                                                            <td><p>{{number_format($item->rate)}}</p></td>
                                                             <td><p>{{number_format($amount)}}</p></td>
                                                             <td class="col-sm-2">
                                                                 <input type="number" wire:model="confirm_qtys.{{ $key }}" class="form-control invoice-item-qty" step="1" min="1" oninput="calculateAmount(this)">

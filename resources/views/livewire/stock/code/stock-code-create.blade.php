@@ -27,7 +27,7 @@
 
                     <div class="col-sm-6">
                         <label class="form-label" for="SelectedStockCategory">Stock Category</label>
-                        <select class="form-select mb-4" id="SelectedStockCategory" wire:model="SelectedStockCategory">
+                        <select class="form-select mb-4" id="SelectedStockCategory" wire:model.live="SelectedStockCategory">
                             <option value="">Select ...</option>
                             @foreach($stock_category as $stockCat)
                              <option value="{{$stockCat->id}}">{{$stockCat->name}}</option>
@@ -38,16 +38,17 @@
 
                     <div class="col-sm-6">
                         <label class="form-label" for="stock_class_id">Stock Class</label>
-                       
+                        @if(!is_null($SelectedStockCategory))
                             <select class="form-control" id="stock_class_id" wire:model="stock_class_id">
                                 <option value="">Choose..</option>
-                                @foreach($stockClass as $key => $item)
+                                @foreach($stockClass as $item)
                                     <option value="{{$item->id}}">{{$item->name}}</option>
                                 @endforeach
                             </select>
                             @error('stock_class_id') <span class="error">{{ $message }}</span> @enderror 
-                    
-                      
+                        @elseif(is_null($SelectedStockCategory))
+                            <input type="text" class="form-control border rounded" placeholder="Select State" readonly />
+                        @endif
                     </div>
                     
                     <div class="col-12 d-flex justify-content-between">
