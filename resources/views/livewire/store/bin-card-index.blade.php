@@ -86,18 +86,16 @@
                 <table class="table">
                     <tr>
                         <th>Vocab No.</th>
-                        <th>Reference</th>
-                        <th>Station</th>
-                        <th>Date Receipt</th>
+                        <th>Description</th>
+                        <th>Count</th>
                         <th>Action</th>
                     </tr>
                     @if(!empty($data))
                         @foreach ($data as $key => $bin)
                         <tr>
                             <td>{{ $bin->stockCodeID->stock_code }}</td>
-                            <td>{{ $bin->reference }}</td>
-                            <td>{{ $bin->stationID->name }}</td>
-                            <td>{{ $bin->date_receipt }}</td>
+                            <td>{{ $bin->stockCodeID->name }}</td>
+                            <td>{{number_format($bin->count)}}</td>
                         <td><a href="{{ url('bin-card-show', $bin->stock_code_id) }}"><i class="bx bx-show-alt text-primary"></i></a></td>
                         </tr>
                         @endforeach

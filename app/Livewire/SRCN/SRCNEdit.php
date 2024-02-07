@@ -9,6 +9,7 @@ use App\Models\SRCN;
 use App\Models\SRCNItem;
 use App\Models\StockCode;
 use App\Models\Store;
+use App\Models\Unit;
 
 class SRCNEdit extends Component
 {
@@ -17,7 +18,7 @@ class SRCNEdit extends Component
     #[Locked]
     public $srcnID;
 
-    public $inputs = [''], $items;
+    public $inputs = [''], $items, $unitOfMeasure;
 
     #[Rule('required')]
     public $stock_codes = [], $units = [], $quantities = [], $itemIDs = [], 
@@ -50,15 +51,6 @@ class SRCNEdit extends Component
             ]);
         }
 
-        foreach ($this->stock_codes as $key => $stock_code) {
-            SRCNItem::create([
-                'srcn_id'       => $this->srcnID,
-                'stock_code_id' => $stock_code,
-                'unit'          => $this->unit[$key],
-                'required_qty'  => $this->quantity[$key],
-            ]);
-        }
-
         $this->dispatch('success', message: 'SRCN Updated!');
         return redirect()->to('/srcn-index');
 
@@ -67,6 +59,7 @@ class SRCNEdit extends Component
     public function mount($srcnID)
     {
         $this->srcnID = $srcnID;
+        $this->unitOfMeasure = Unit::latest()->get();
         $this->storeID = Store::where('store_officer', Auth()->user()->id)->pluck('id')->first();
 
         $items = SRCNItem::where('srcn_id', $this->srcnID)->get();

@@ -66,32 +66,32 @@ class SRINShow extends Component
                     'updated_by'   => auth()->user()->id,
                 ]);
 
-                $remainingQty = $item->issued_qty - $issuedQty;
-                while ($remainingQty > 0) {
-                    $nextBinCard = StoreBinCard::where('stock_code_id', $item->stock_code_id)
-                        ->where('station_id', $this->issuingStore)
-                        ->where('balance', '>', 0)
-                        ->where('created_at', '>', $binCard->created_at)
-                        ->orderBy('created_at')
-                        ->first();
+                // $remainingQty = $item->issued_qty - $issuedQty;
+                // while ($remainingQty > 0) {
+                //     $nextBinCard = StoreBinCard::where('stock_code_id', $item->stock_code_id)
+                //         ->where('station_id', $this->issuingStore)
+                //         ->where('balance', '>', 0)
+                //         ->where('created_at', '>', $binCard->created_at)
+                //         ->orderBy('created_at')
+                //         ->first();
         
-                    if ($nextBinCard) {
-                        $issuedQty = min($remainingQty, $nextBinCard->balance);
+                //     if ($nextBinCard) {
+                //         $issuedQty = min($remainingQty, $nextBinCard->balance);
         
-                        // Update the next record
-                        $nextBinCard->update([
-                            'out' => $nextBinCard->out + $issuedQty,
-                            'balance' => $nextBinCard->balance - $issuedQty,
-                            'date_issue' => now(),
-                            'updated_by' => auth()->user()->id,
-                        ]);
+                //         // Update the next record
+                //         $nextBinCard->update([
+                //             'out' => $nextBinCard->out + $issuedQty,
+                //             'balance' => $nextBinCard->balance - $issuedQty,
+                //             'date_issue' => now(),
+                //             'updated_by' => auth()->user()->id,
+                //         ]);
         
-                        $remainingQty -= $issuedQty;
-                    } else {
+                //         $remainingQty -= $issuedQty;
+                //     } else {
 
-                        break;
-                    }
-                }
+                //         break;
+                //     }
+                // }
 
             }
         }
@@ -101,9 +101,9 @@ class SRINShow extends Component
             StoreBinCard::create([
                 'stock_code_id' => $item->stock_code_id,
                 'reference'     => $this->reference,
-                'station_id'    => $this->requisitionStore,
-                'in'            => $item->issued_qty,
-                'balance'       => $item->issued_qty,
+                'station_id'    => $this->issuingStore,
+                'out'           => $item->issued_qty,
+                'balance'       => 0,
                 'unit'          => $item->unit,
                 'date_receipt'  => now(),
                 'created_by'    => auth()->user()->id,
@@ -140,7 +140,7 @@ class SRINShow extends Component
     {
         $this->srinID = $srinID;
         $this->items = SRIN::where('srin_id', $this->srinID)->get();
-        $this->requisitionStore = SRIN::where('srin_id', $this->srinID)->pluck('station_id')->first();
+        $this->issuingStore = SRIN::where('srin_id', $this->srinID)->pluck('issuing_store')->first();
         $this->storeID = Store::where('store_officer', Auth()->user()->id)->pluck('id')->first();
         $this->reference = SRIN::where('srin_id', $this->srinID)->pluck('srin_code')->first();
         // dd($this->srinID);

@@ -41,7 +41,12 @@
                                             @error("descriptions.$key") <span class="error">{{ $message }}</span> @enderror 
                                         </td>
                                         <td class="col-sm-2">
-                                            <input type="text" wire:model="units.{{ $key }}" class="form-control invoice-item-unit" placeholder="Unit" min="1">
+                                            <select class="form-select" wire:model="units.{{ $key }}">
+                                                <option value="">Select ...</option>
+                                                @foreach($unitOfMeasure as $unit)
+                                                    <option value="{{$unit->id}}">{{$unit->description}}</option>
+                                                @endforeach
+                                            </select>
                                             @error("units.$key") <span class="error">{{ $message }}</span> @enderror 
                                         </td>
                                         <td class="col-sm-2">

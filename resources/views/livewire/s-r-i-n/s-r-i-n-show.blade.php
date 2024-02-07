@@ -28,7 +28,7 @@
 
                             <div class="col-md-8">
                                 <span class="fw-bolder">Location:</span>
-                                <span>{{$data->stationID->name}}</span>
+                                <span>{{$data->locationID->name}}</span>
                                 <hr class="mb-3 mt-0">
                             </div>
                             <div class="col-md-4">
@@ -40,13 +40,19 @@
                             <div class="col-md-8">
                                 <span class="fw-bolder">Requisition By:</span>
                                 <span>{{$data->requisitionBy->name}}</span>
-                                <hr class="mb-0 mt-0">
+                                <hr class="mb-3 mt-0">
                             </div>
 
                             <div class="col-md-4">
                                 <span class="fw-bolder">Date:</span>
                                 <span>{{$data->requisition_date}}</span>
-                                <hr class="mb-0 mt-0">
+                                <hr class="mb-3 mt-0">
+                            </div>
+
+                            <div class="col-md-8">
+                                <span class="fw-bolder">Issuing Store:</span>
+                                <span>{{$data->issuingStore->name ?? ''}}</span>
+                                <hr class="mb-3 mt-0">
                             </div>
                             
                         </div>
@@ -74,7 +80,7 @@
                                                 <tr>
                                                     <td>{{$item->stockCodeID->stock_code}}</td>
                                                     <td>{{$item->description}}</td>
-                                                    <td>{{ number_format($item->required_qty)}}({{$item->unit}})</td>
+                                                    <td>{{ number_format($item->required_qty)}}({{$item->unitID->description}})</td>
                                                     <td>{{ number_format($item->issued_qty)}}</td>
                                                 </tr>
                                                 @endforeach
@@ -289,15 +295,6 @@
             <hr class="mx-n1">
             <div class="offcanvas-body flex-grow-1">
                 <form wire:submit="despatched">
-                    <div class="mb-3">
-                        <label for="invoice-from" class="form-label">Despatch Action</label>
-                        <select class="form-select mb-4" wire:model="despatched_action" required>
-                            <option value=""></option>
-                            <option value="Approved">Approve</option>
-                            <option value="Rejected">Reject</option>
-                        </select>
-                        @error("despatched_action") <span class="error">{{ $message }}</span> @enderror 
-                    </div>
                     <div class="mb-3">
                         <label for="invoice-message" class="form-label">Despatched Note</label>
                         <textarea class="form-control" wire:model="despatched_note" id="invoice-message" cols="3" rows="3"></textarea>

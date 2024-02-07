@@ -11,14 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('s_r_c_n_items', function (Blueprint $table) {
+        Schema::create('item_infos', function (Blueprint $table) {
             $table->id();
-            $table->integer('srcn_id');
-            $table->integer('stock_code_id');
-            $table->integer('unit');
-            $table->integer('required_qty');
-            $table->integer('issued_qty')->nullable();
-            $table->integer('updated_by')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('s_r_c_n_items');
+        Schema::dropIfExists('item_infos');
     }
 };

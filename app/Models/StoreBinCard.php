@@ -57,4 +57,9 @@ class StoreBinCard extends Model
     {
         return $this->belongsTo(Store::class, 'station_id');
     }
+
+    public function unitID(): BelongsTo
+    {
+        return $this->belongsTo(Unit::class, 'unit');
+    }
 }

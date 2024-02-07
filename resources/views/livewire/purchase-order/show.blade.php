@@ -84,7 +84,7 @@
                                             <tr>
                                                 <td><a href=""></a></td>
                                                 <td>{{$item->description}}</td>
-                                                <td>{{$item->unit}}</td>
+                                                <td>{{$item->unitID->description}}</td>
                                                 <td>{{ number_format($item->quantity)}}</td>
                                                 <td>{{ number_format(round($item->rate, 2))}}</td>
                                                 <td>{{ number_format(round($amount, 2)) }}</td>

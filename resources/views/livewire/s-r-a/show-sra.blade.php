@@ -76,7 +76,7 @@
                                             <tr>
                                                 <th>Stock Code</th>
                                                 <th>Description</th>
-                                                <th>Quantity</th>
+                                                <th>Quantity (Unit)</th>
                                                 <th>Price (&#8358;)</th>
                                                 <th>Value (&#8358;)</th>
                                                 <th>Quality Check</th>
@@ -95,7 +95,7 @@
                                                 <tr>
                                                     <td>{{$item->stockCodeID->stock_code}}</td>
                                                     <td>{{$item->stockCodeID->name}}</td>
-                                                    <td>{{ number_format($item->confirm_qty)}}</td>
+                                                    <td>{{ number_format($item->confirm_qty)}} ({{$item->unitID->description}})</td>
                                                     <td>{{ number_format(round($item->confirm_rate, 2))}}</td>
                                                     <td>{{ number_format(round($amount, 2)) }}</td>
                                                     <td>
@@ -167,7 +167,7 @@
                             @if(!empty($qualityCheck->quality_check_by))
                                 <hr class="mx-n1">
                                 <div class="col-sm-8">
-                                    <span class="fw-bolder">{{$qualityCheck->quality_check_action ?? '' }} by: </span>
+                                    <span class="fw-bolder">Checked by: </span>
                                     <span>{{$qualityCheck->QualityCheckBy->name ?? '' }}</span>
                                 </div>
                                 <div class="col-sm-4">

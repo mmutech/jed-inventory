@@ -9,10 +9,11 @@ use App\Models\Item;
 use App\Models\SRCNItem;
 use App\Models\StockCode;
 use App\Models\Store;
+use App\Models\Unit;
 
 class SRCNCreate extends Component
 {
-    public $title = 'Create SRCN';
+    public $title = 'Create SRCN', $unitOfMeasure;
 
     public $inputs = [''];
 
@@ -65,6 +66,7 @@ class SRCNCreate extends Component
     public function mount()
     {
         $this->storeID = Store::where('store_officer', Auth()->user()->id)->pluck('id')->first();
+        $this->unitOfMeasure = Unit::latest()->get();
         // dd($this->storeID);
     }
 

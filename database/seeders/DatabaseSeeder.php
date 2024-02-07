@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             pollinate_StockCategories::class,
             pollinate_StockClasses::class,
             pollinate_StockCodes::class,
+            pollinate_Units::class,
             StoreSeeder::class,
         ]);
         

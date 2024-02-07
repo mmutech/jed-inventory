@@ -40,4 +40,5 @@ class PurchaseOrders extends Model
     {
         return $this->belongsTo(Store::class, 'delivery_address');
     }
+
 }

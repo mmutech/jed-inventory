@@ -40,40 +40,17 @@
                                         @error("stock_codes.$key") <span class="error">{{ $message }}</span> @enderror 
                                         </td>
                                         <td>
-                                            <input type="text" wire:model="units.{{ $key }}" class="form-control invoice-item-unit" placeholder="Unit" min="1">
+                                            <select class="form-select" wire:model="units.{{ $key }}">
+                                                <option value="">Select ...</option>
+                                                @foreach($unitOfMeasure as $unit)
+                                                    <option value="{{$unit->id}}">{{$unit->description}}</option>
+                                                @endforeach
+                                            </select>
                                             @error("units.$key") <span class="error">{{ $message }}</span> @enderror 
                                         </td>
                                         <td>
                                             <input type="number" wire:model="quantities.{{ $key }}" class="form-control invoice-item-qty" step="1" min="1" oninput="calculateAmount(this)">
                                             @error("quantities.$key") <span class="error">{{ $message }}</span> @enderror 
-                                        </td>
-                                    </tr>
-                                @endforeach
-
-                                <!-- New Fields -->
-                                @foreach($inputs as $key => $value)
-                                    <tr>
-                                        <td>
-                                            <select class="form-select" wire:model="stock_code.{{ $key }}">
-                                                <option value="">Select ...</option>
-                                                @foreach($stockCode as $stCode)
-                                                <option value="{{$stCode->id}}">{{$stCode->stock_code}} - {{$stCode->name}}</option>
-                                                @endforeach
-                                            </select>
-                                            @error("stock_code.$key") <span class="error">{{ $message }}</span> @enderror 
-                                        </td>
-                                        <td>
-                                            <input type="text" wire:model="unit.{{ $key }}" class="form-control invoice-item-unit" placeholder="Unit" min="1">
-                                            @error("unit.$key") <span class="error">{{ $message }}</span> @enderror 
-                                        </td>
-                                        <td>
-                                            <input type="number" wire:model="quantity.{{ $key }}" class="form-control invoice-item-qty" step="1" min="1" oninput="calculateAmount(this)">
-                                            @error("quantity.$key") <span class="error">{{ $message }}</span> @enderror 
-                                        </td>
-                                        <td>
-                                        @if($key !== 0)
-                                            <a href="#" wire:click="removeInput({{ $key }})"><i class="bx bx-x text-danger"></i></a>
-                                        @endif
                                         </td>
                                     </tr>
                                 @endforeach

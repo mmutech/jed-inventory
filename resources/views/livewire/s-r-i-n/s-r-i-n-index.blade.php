@@ -59,6 +59,8 @@
                 <div class="col-xl-12 col-sm-12 col-md-12 mx-auto d-flex justify-content-between align-items-center">
                     {{-- Search --}}
                     <div class="me-3">
+                        <h6 class="mb-0">SRCN Lists</h6>
+                        <small>Search SRCN Code Here.</small>
                         <div id="DataTables_Table_0_filter" class="dataTables_filter mb-3">
                             <label>
                                 <div class="input-group input-group-merge">
@@ -88,7 +90,8 @@
                 <table class="table">
                     <tr>
                         <th>SRIN Number</th>
-                        <th>Store</th>
+                        <th>Location</th>
+                        <th>Issuing Store</th>
                         <th>Date</th>
                         <th></th>
                     </tr>
@@ -96,7 +99,8 @@
                         @foreach ($data as $key => $srin)
                         <tr>
                             <td><a href="{{ url('srin-show', $srin->srin_id) }}">{{ $srin->srin_code }}</a></td>
-                            <td>{{ $srin->stationID->name }}</td>
+                            <td>{{ $srin->locationID->name }}</td>
+                            <td>{{ $srin->issuingStore->name ?? '' }}</td>
                             <td>{{ $srin->requisition_date }}</td>
                             <td><a href="{{ url('srin-edit', $srin->srin_id) }}"><i class="bx bx-pencil text-primary"></i></a></td>
                         </tr>

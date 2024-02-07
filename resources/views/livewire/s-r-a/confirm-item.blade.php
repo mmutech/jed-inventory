@@ -106,7 +106,6 @@
                                                         <th>Job Order Amount (&#8358;)</th>
                                                         <th>Confirm Quantity</th>
                                                         <th>Confirm Rate (&#8358;)</th>
-                                                        <th>New Amount (&#8358;)</th>
                                                         <th></th>
                                                         </tr>
                                                     </thead>
@@ -131,7 +130,7 @@
                                                                 @error("stock_code.$key") <span class="error">{{ $message }}</span> @enderror 
                                                             </td>
                                                             <td><p>{{$item->description}}</p></td>
-                                                            <td><p>{{$item->quantity}} ({{$item->unit}})</p></td>
+                                                            <td><p>{{$item->quantity}} ({{$item->unitID->description}})</p></td>
                                                             <td><p>{{number_format($item->rate)}}</p></td>
                                                             <td><p>{{number_format($amount)}}</p></td>
                                                             <td class="col-sm-2">
@@ -142,7 +141,6 @@
                                                                 <input type="number" wire:model="confirm_rates.{{ $key }}" class="form-control invoice-item-rate" step="0.01" min="1" oninput="calculateAmount(this)">
                                                                 @error("confirm_rates.$key") <span class="error">{{ $message }}</span> @enderror 
                                                             </td>
-                                                            <td class="col-sm-2 confirm_amount"><p class="mb-0 "></p></td>
                                                         </tr>
                                                     @endforeach
                                                     </tbody>

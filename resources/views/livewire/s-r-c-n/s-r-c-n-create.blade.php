@@ -30,7 +30,7 @@
                                     @foreach($inputs as $key => $value)
                                         <tr>
                                             <td>
-                                                <select class="form-control" wire:model.live.debounce.100ms="stock_codes.{{ $key }}">
+                                                <select class="form-control" wire:model="stock_codes.{{ $key }}">
                                                     <option value="">Type to search...</option>
                                                     @foreach($stock_code as $stCode)
                                                         <option value="{{$stCode->id}}">{{$stCode->stock_code}} - {{$stCode->name}}</option>
@@ -39,7 +39,12 @@
                                                 @error("stock_codes.$key") <span class="error">{{ $message }}</span> @enderror 
                                             </td>
                                             <td>
-                                                <input type="text" wire:model="units.{{ $key }}" class="form-control invoice-item-unit" placeholder="Unit" min="1">
+                                                <select class="form-select" wire:model="units.{{ $key }}">
+                                                    <option value="">Select ...</option>
+                                                    @foreach($unitOfMeasure as $unit)
+                                                        <option value="{{$unit->id}}">{{$unit->description}}</option>
+                                                    @endforeach
+                                                </select>
                                                 @error("units.$key") <span class="error">{{ $message }}</span> @enderror 
                                             </td>
                                             <td>

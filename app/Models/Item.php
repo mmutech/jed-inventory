@@ -38,4 +38,9 @@ class Item extends Model
     {
         return $this->belongsTo(StockCode::class, 'stock_code');
     }
+
+    public function unitID(): BelongsTo
+    {
+        return $this->belongsTo(Unit::class, 'unit');
+    }
 }

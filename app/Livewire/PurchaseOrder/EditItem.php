@@ -8,6 +8,7 @@ use Livewire\Attributes\Locked;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use App\Models\Item;
+use App\Models\Unit;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
@@ -16,7 +17,7 @@ class EditItem extends Component
     
     public $title = 'Modify Items';
 
-    public $editItemID, $key, $itemID;
+    public $editItemID, $key, $itemID, $unitOfMeasure;
 
     public $inputs = [''], $items;
     public $description = [], $unit = [], $quantity = [], $rate = [];
@@ -67,6 +68,7 @@ class EditItem extends Component
     public function mount($editItemID)
     {
         $this->editItemID = $editItemID;
+        $this->unitOfMeasure = Unit::latest()->get();
 
         // Edit
         $items = Item::where('purchase_order_id', $this->editItemID)->get();

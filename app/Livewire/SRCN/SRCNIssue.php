@@ -8,6 +8,7 @@ use Livewire\Attributes\Rule;
 use App\Models\SRCN;
 use App\Models\SRCNItem;
 use App\Models\HODApproval;
+use App\Models\IssuingStore;
 use App\Models\StockCode;
 use App\Models\StoreBinCard;
 use Illuminate\Support\Facades\DB;
@@ -23,27 +24,97 @@ class SRCNIssue extends Component
     public $hod_approved_note, $hod_approved_action, $reference, $items, $stockCodeIDs,
     $stockCode, $binCard, $stockCodeID, $balance, $available, $issueStore;
 
-    #[Rule('required')]
-    public $issued_qty = [], $itemIDs = [], $storeID;
+    public $issuedQty;
 
-    public function issuingStore($station_id)
+    #[Rule('required')]
+    public $issued_qty = [], $itemIDs = [], $stationIDs = [], $issuedItems = [], $storeID;
+
+    public function issuingStore($station_id, $stockCodeID)
     {
-        SRCN::where('srcn_id', $this->srcnID)->first()->update([
-            'issuing_store' => $station_id,
-            // 'issue_date' => now(),
-            'created_by' => auth()->user()->id,
-        ]); 
+        $binCard = StoreBinCard::where('station_id', $station_id)
+            ->where('stock_code_id', $stockCodeID)
+            ->where('balance', '>', 0)
+            ->orderBy('created_at')
+            ->first();
+
+        // dd($this->issuedQty);
+        if (!empty($binCard)) {
+            IssuingStore::Create([
+                'stock_code_id' => $stockCodeID,
+                'reference'     => $this->reference,
+                'station_id'    => $station_id,
+                'quantity'      => $this->issuedQty,
+            ]);
+        }
+
+        // SRCN::where('srcn_id', $this->srcnID)->first()->update([
+        //     'issuing_store' => $station_id,
+        //     // 'issue_date' => now(),
+        //     'created_by' => auth()->user()->id,
+        // ]); 
+
+        // Check Store Bin Card
+        // foreach ($this->items as $key => $item) {
+        //     $binCard = StoreBinCard::where('stock_code_id', $item->stock_code_id)
+        //             ->where('station_id', $station_id)
+        //             ->where('balance', '>', 0)
+        //             ->orderBy('created_at')
+        //             ->first();
+
+        //     // dd($binCard);
+
+        //     if(!empty($binCard)){
+        //         $issuedQty = min($item->issued_qty, $binCard->balance);
+
+        //         // Update the oldest record
+        //         $binCard->update([
+        //             'out'          => $binCard->out + $issuedQty,
+        //             'balance'      => $binCard->balance - $issuedQty,
+        //             'date_issue'   => now(),
+        //             'updated_by'   => auth()->user()->id,
+        //         ]);
+
+        //         StoreBinCard::create([
+        //             'stock_code_id' => $item->stock_code_id,
+        //             'unit'          => $item->unit,
+        //             'reference'     => $this->reference,
+        //             'station_id'    => $station_id,
+        //             'in'            => $this->issued_qty[$key],
+        //             'balance'       => $this->issued_qty[$key],
+        //         ]);
+
+        //         $remainingQty = $item->issued_qty - $issuedQty;
+        //         while ($remainingQty > 0) {
+        //             $nextBinCard = StoreBinCard::where('stock_code_id', $item->stock_code_id)
+        //                 ->where('station_id', $station_id)
+        //                 ->where('balance', '>', 0)
+        //                 ->where('created_at', '>', $binCard->created_at)
+        //                 ->orderBy('created_at')
+        //                 ->first();
+        
+        //             if ($nextBinCard) {
+        //                 $issuedQty = min($remainingQty, $nextBinCard->balance);
+        
+        //                 // Update the next record
+        //                 $nextBinCard->update([
+        //                     'out' => $nextBinCard->out + $issuedQty,
+        //                     'balance' => $nextBinCard->balance - $issuedQty,
+        //                     'date_issue' => now(),
+        //                     'updated_by' => auth()->user()->id,
+        //                 ]);
+        
+        //                 $remainingQty -= $issuedQty;
+        //             } else {
+
+        //                 break;
+        //             }
+        //         }
+        //     }
+        // }
     }
 
     public function update()
     {
-        //Issue Items
-        foreach ($this->issued_qty as $key => $issued_qtys) {
-            SRCNItem::where('id', $this->itemIDs[$key])->update([
-                'issued_qty' => $issued_qtys,
-            ]);
-        }
-
         // HOD Approval and Issued by
         HODApproval::create([
             'reference'            => $this->reference,
@@ -54,7 +125,7 @@ class SRCNIssue extends Component
         ]);
 
         $this->dispatch('success', message: 'Item Issued Successfully!');
-                return redirect()->to('srcn-show/' . $this->srcnID);
+        return redirect()->to('srcn-show/' . $this->srcnID);
 
     }
 
@@ -62,25 +133,21 @@ class SRCNIssue extends Component
     {
         $this->srcnID = $srcnID;
         $this->reference = SRCN::where('srcn_id', $this->srcnID)->pluck('srcn_code')->first();
-        $this->stockCodeIDs = SRCNItem::where('srcn_id', $this->srcnID)->pluck('stock_code_id');
+        $this->stockCodeIDs = SRCNItem::where('srcn_id', $this->srcnID)->pluck('stock_code_id');  
 
-        // Get the Issue Store
-        $this->issueStore = StoreBinCard::whereIn('stock_code_id', $this->stockCodeIDs)
-        ->groupBy('stock_code_id', 'station_id')
-        ->select('stock_code_id', 'station_id', DB::raw('sum(balance) as total_balance'))
-        ->get();   
-    
-        // dd($this->items);
+         // Get the Issue Store
+         $this->issueStore = StoreBinCard::whereIn('stock_code_id', $this->stockCodeIDs)
+         ->groupBy('stock_code_id', 'station_id')
+         ->select('stock_code_id', 'station_id', DB::raw('sum(balance) as total_balance'))
+         ->get();
+ 
+         // Get the SRCN Item
+         $this->items = SRCNItem::where('srcn_id', $this->srcnID)->get();
 
-        // Get Item for Confirmation
-        $this->items = SRCNItem::select('s_r_c_n_items.stock_code_id', 's_r_c_n_items.required_qty', 's_r_c_n_items.unit', 's_r_c_n_items.issued_qty', 's_r_c_n_items.id', DB::raw('sum(store_bin_cards.balance) as total_balance'))
-        ->join('store_bin_cards', 'store_bin_cards.stock_code_id', '=', 's_r_c_n_items.stock_code_id')
-        ->where('s_r_c_n_items.srcn_id', $this->srcnID)
-        ->groupBy('s_r_c_n_items.stock_code_id', 's_r_c_n_items.required_qty', 's_r_c_n_items.unit', 's_r_c_n_items.issued_qty', 's_r_c_n_items.id')
-        ->get();
         if ($this->items->count() > 0) {
             foreach ($this->items as $key => $data) {
                 $this->itemIDs[$key] = $data->id;
+                $this->stationIDs[$key] = $data->station_id;
                 $this->issued_qty[$key] = $data->issued_qty;
             }
         } else {

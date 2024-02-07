@@ -38,14 +38,13 @@ class QualityCheck extends Component
     public function qualityCheckRemark()
     {
          // Validation
-         $this->validate();
+        //  $this->validate();
          
         // Quality Check Remark
         QualityChecks::create([
             'reference' => $this->poID,
             'quality_check_note' => $this->quality_check_note,
             'quality_check_date' => now(),
-            'quality_check_action' => $this->quality_check_action,
             'quality_check_by' => Auth::user()->id
         ]);
 
@@ -60,6 +59,7 @@ class QualityCheck extends Component
 
         // dd($approved);
     }
+
     public function render()
     {
         return view('livewire.s-r-a.quality-check')->with([

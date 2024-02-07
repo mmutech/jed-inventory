@@ -16,9 +16,7 @@ return new class extends Migration
             $table->integer('srcn_id');
             $table->string('srcn_code');
             $table->integer('requisitioning_store');
-            $table->integer('issuing_store')->nullable();
             $table->date('requisition_date');
-            $table->date('issue_date')->nullable();
             $table->integer('created_by');
             $table->integer('updated_by')->nullable();
             $table->timestamps();

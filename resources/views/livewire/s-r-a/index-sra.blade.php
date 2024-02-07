@@ -56,7 +56,7 @@
     <div class="card">
         <div class="card-header mb-3">
             <h6 class="mb-0">SRA Lists</h6>
-            <small>Search Purchase Order Number Here.</small>
+            <small>Search SRA Code, Invoice or Consignment Note Number Here.</small>
             <!--Search Filter-->
             <div class="col-xl-4 col-sm-4 col-md-4 justify-content-between">
                 {{-- Search --}}

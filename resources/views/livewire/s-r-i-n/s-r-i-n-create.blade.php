@@ -21,6 +21,16 @@
                                 </button>
                             </div>
                             <div id="dynamicFieldsContainer">
+                                <div class="col-md-4 mb-2">
+                                    <label for="">Location</label>
+                                    <select class="form-control" wire:model="locations">
+                                        <option value="">Select...</option>
+                                        @foreach($location as $loc)
+                                            <option value="{{$loc->id}}">{{$loc->name}}</option>
+                                        @endforeach
+                                    </select>
+                                    @error("locations") <span class="error">{{ $message }}</span> @enderror 
+                                </div>
                                 <table class="table" id="itemsTable">
                                     <thead>
                                         <tr>
@@ -35,7 +45,7 @@
                                         @foreach($inputs as $key => $value)
                                             <tr>
                                                 <td class="col-md-3">
-                                                    <select class="form-control" wire:model.live.debounce.100ms="stock_codes.{{ $key }}">
+                                                    <select class="form-control" wire:model="stock_codes.{{ $key }}">
                                                         <option value="">Type to search...</option>
                                                         @foreach($stock_code as $stCode)
                                                             <option value="{{$stCode->id}}">{{$stCode->stock_code}} - {{$stCode->name}}</option>
@@ -48,7 +58,12 @@
                                                     @error("descriptions.$key") <span class="error">{{ $message }}</span> @enderror 
                                                 </td>
                                                 <td>
-                                                    <input type="text" wire:model="units.{{ $key }}" class="form-control invoice-item-unit" placeholder="Unit">
+                                                    <select class="form-select" wire:model="units.{{ $key }}">
+                                                        <option value="">Select ...</option>
+                                                        @foreach($unitOfMeasure as $unit)
+                                                            <option value="{{$unit->id}}">{{$unit->description}}</option>
+                                                        @endforeach
+                                                    </select>
                                                     @error("units.$key") <span class="error">{{ $message }}</span> @enderror 
                                                 </td>
                                                 <td>

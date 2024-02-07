@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('s_r_c_n_items', function (Blueprint $table) {
+        Schema::create('issuing_stores', function (Blueprint $table) {
             $table->id();
-            $table->integer('srcn_id');
+            $table->string('reference');
+            $table->integer('station_id');
             $table->integer('stock_code_id');
-            $table->integer('unit');
-            $table->integer('required_qty');
-            $table->integer('issued_qty')->nullable();
-            $table->integer('updated_by')->nullable();
+            $table->integer('quantity');
+            $table->date('date')->nullable();
+            $table->integer('issued_by');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('s_r_c_n_items');
+        Schema::dropIfExists('issuing_stores');
     }
 };

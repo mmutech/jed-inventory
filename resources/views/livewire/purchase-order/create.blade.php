@@ -72,7 +72,7 @@
                     <select class="form-select mb-4" wire:model="delivery_address">
                         <option value="">Select ...</option>
                         @foreach($stations as $station)
-                            <option value="{{$station->id}}">{{$station->name}}</option>
+                            <option value="{{$station->store_id}}">{{$station->name}}</option>
                         @endforeach
                     </select>
                     @error('delivery_address') <span class="error">{{ $message }}</span> @enderror 
@@ -129,7 +129,12 @@
                                                             @error("descriptions.$key") <span class="error">{{ $message }}</span> @enderror 
                                                         </td>
                                                         <td class="col-sm-2">
-                                                            <input type="text" wire:model="units.{{ $key }}" class="form-control invoice-item-unit" placeholder="Unit" min="1">
+                                                            <select class="form-select" wire:model="units.{{ $key }}">
+                                                                <option value="">Select ...</option>
+                                                                @foreach($unitOfMeasure as $unit)
+                                                                    <option value="{{$unit->id}}">{{$unit->description}}</option>
+                                                                @endforeach
+                                                            </select>
                                                             @error("units.$key") <span class="error">{{ $message }}</span> @enderror 
                                                         </td>
                                                         <td class="col-sm-2">

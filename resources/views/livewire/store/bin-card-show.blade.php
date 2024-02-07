@@ -46,7 +46,7 @@
 
                             <div class="col-md-6">
                                 <span class="fw-bolder">Unit of Issue:</span>
-                                <span>{{$data->unit}}</span>
+                                <span>{{$data->unitID->description}}</span>
                                 <hr class="mb-0 mt-0">
                             </div>
 
@@ -73,7 +73,7 @@
                                             <tr>
                                                 <th>Date Receipt/Issue</th>
                                                 <th>Reference</th>
-                                                <th>Vendor Name</th>
+                                                <!-- <th>Vendor Name</th> -->
                                                 <th>station</th>
                                                 <th>In</th>
                                                 <th>Out</th>
@@ -86,7 +86,7 @@
                                                 <tr>
                                                     <td>{{ $item->date_receipt }} {{ $item->date_issue }}</td>
                                                     <td>{{ $item->reference }}</td>
-                                                    <td>{{ $item->purchaseOrderID->vendor_name ?? '' }}</td>
+                                                    <!-- <td>{{ $item->purchaseOrderID->vendor_name ?? '' }}</td> -->
                                                     <td>{{ $item->stationID->name }}</td>
                                                     <td>{{ $item->in }}</td>
                                                     <td>{{ $item->out }}</td>

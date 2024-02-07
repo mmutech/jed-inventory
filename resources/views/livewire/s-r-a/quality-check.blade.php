@@ -36,7 +36,7 @@
                                         <input type="text" wire:model="itemIDs.{{ $key }}"  value="{{$item->id}}" hidden>
                                         <td><p>{{$item->stockCodeID->stock_code}}</p></td>
                                         <td><p>{{$item->stockCodeID->name}}</p></td>
-                                        <td><p>{{$item->confirm_qty}} ({{$item->unit}})</p></td>
+                                        <td><p>{{$item->confirm_qty}} ({{$item->unitID->description}})</p></td>
                                         <td><p class="mb-0 ">{{number_format($amount)}}</p></td>
                                         <td>
                                             <div class="d-flex justify-content-between">
@@ -66,15 +66,6 @@
         <hr class="my-1">
         <form wire:submit="qualityCheckRemark">
             <div class="card-footer">
-                <div class="col-md-6 mb-3">
-                    <label for="invoice-from" class="form-label">Quality Check Action</label>
-                    <select class="form-select mb-4" wire:model="quality_check_action" required>
-                        <option value=""></option>
-                        <option value="Checked">Checked</option>
-                        <option value="Rejected">Reject</option>
-                    </select>
-                    @error("quality_check_action") <span class="error">{{ $message }}</span> @enderror 
-                </div>
                 <div class="col-sm-12 mt-4">
                     <label class="form-label" for="quality_check_note">Quality Check Note</label>
                     <textarea class="form-control" wire:model="quality_check_note"id="quality_check_note" cols="10" rows="2"></textarea>

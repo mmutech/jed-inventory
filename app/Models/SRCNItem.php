@@ -28,4 +28,15 @@ class SRCNItem extends Model
     {
         return $this->belongsTo(SRCN::class, 'srcn_id');
     }
+
+    // In SRCNItem model
+    public function storeBinCards()
+    {
+        return $this->hasMany(StoreBinCard::class, 'stock_code_id', 'stock_code_id');
+    }
+
+    public function unitID(): BelongsTo
+    {
+        return $this->belongsTo(Unit::class, 'unit');
+    }
 }

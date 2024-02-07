@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('purchase_order_id');
             $table->string('description');
-            $table->string('unit');
+            $table->integer('unit');
             $table->integer('quantity');
             $table->double('rate');
             $table->integer('updated_by')->nullable();

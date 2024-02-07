@@ -2,11 +2,13 @@
 
 namespace App\Livewire\SRIN;
 
+use App\Models\location;
 use Livewire\Component;
 use Livewire\Attributes\Rule; 
 use App\Models\SRIN;
 use App\Models\StockCode;
 use App\Models\Store;
+use App\Models\Unit;
 
 class SRINEdit extends Component
 {
@@ -15,11 +17,11 @@ class SRINEdit extends Component
     // #[Locked]
     public $srinID;
 
-    public $inputs = [''], $items;
+    public $inputs = [''], $items, $unitOfMeasure;
 
     #[Rule('required')]
     public $stock_codes = [], $units = [], $quantities = [], $descriptions = [], $itemIDs = [], 
-    $srin_code, $requisitioning_store, $storeID;
+    $srin_code, $requisitioning_store, $storeID, $locations;
     
     public $unit = [], $quantity = [], $description = [];
 
@@ -43,6 +45,7 @@ class SRINEdit extends Component
             SRIN::where('id', $this->itemIDs[$key])->update([
                 'srin_id'           => $this->srinID,
                 'stock_code_id'     => $stockCode,
+                'location'          => $this->locations,
                 'unit'              => $this->units[$key],
                 'required_qty'      => $this->quantities[$key],
                 'description'       => $this->descriptions[$key],
@@ -74,6 +77,7 @@ class SRINEdit extends Component
     {
         $this->srinID = $srinID;
         $this->storeID = Store::where('store_officer', Auth()->user()->id)->pluck('id')->first();
+        $this->unitOfMeasure = Unit::latest()->get();
 
         $items = SRIN::where('srin_id', $this->srinID)->get();
         if ($items->count() > 0) {
@@ -109,6 +113,7 @@ class SRINEdit extends Component
     {
         return view('livewire.s-r-i-n.s-r-i-n-edit')->with([
             'stockCode' => StockCode::where('status', 'Active')->latest()->get(),
+            'location' => location::where('status', 'Active')->latest()->get(),
         ]);
     }
 }

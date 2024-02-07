@@ -15,9 +15,7 @@ class SRCN extends Model
         'srcn_id',
         'srcn_code',
         'requisitioning_store',
-        'issuing_store',
         'requisition_date',
-        'issue_date',
         'created_by'
     ];
 
@@ -35,4 +33,5 @@ class SRCN extends Model
     {
         return $this->belongsTo(User::class, 'created_by');
     }
+    
 }

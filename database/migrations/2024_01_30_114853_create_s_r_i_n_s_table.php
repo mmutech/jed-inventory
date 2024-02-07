@@ -15,10 +15,11 @@ return new class extends Migration
             $table->id();
             $table->integer('srin_id');
             $table->string('srin_code');
-            $table->integer('station_id');
+            $table->integer('issuing_store')->nullable();
+            $table->string('location');
             $table->integer('stock_code_id');
             $table->string('description');
-            $table->string('unit');
+            $table->integer('unit');
             $table->integer('required_qty');
             $table->integer('issued_qty')->nullable();
             $table->date('requisition_date');

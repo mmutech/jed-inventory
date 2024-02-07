@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('purchase_order_id')->nullable();
             $table->double('in')->nullable();
             $table->double('out')->nullable();
-            $table->double('balance');
+            $table->double('balance')->nullable();
             $table->string('unit');
             $table->date('date_receipt')->nullable();
             $table->date('date_issue')->nullable();

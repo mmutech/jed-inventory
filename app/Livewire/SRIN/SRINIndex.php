@@ -12,7 +12,9 @@ class SRINIndex extends Component
     public function render()
     {
         return view('livewire.s-r-i-n.s-r-i-n-index')->with([
-            'data' => SRIN::latest()->paginate(5),
+            'data' => SRIN::latest()->where(function ($filter){
+                $filter->where('srin_code', 'like', '%'.$this->search.'%');
+            })->paginate(5),
         ]);
     }
 }

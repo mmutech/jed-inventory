@@ -8,10 +8,11 @@ use App\Models\PurchaseOrders;
 use App\Models\Item;
 use App\Models\ApprovalPO;
 use App\Models\Store;
+use App\Models\Unit;
 
 class Create extends Component
 {
-    public $title = 'Create New';
+    public $title = 'Create New', $unitOfMeasure;
 
     public $inputs = [''];
 
@@ -83,13 +84,14 @@ class Create extends Component
     public function mount()
     {
         $this->activeTab = $this->activeTab ??  'dstepper-block';
+        $this->unitOfMeasure = Unit::latest()->get();
 
     }
 
     public function render()
     {
         return view('livewire.purchase-order.create')->with([
-            'stations' => Store::where('status', 'Active')->latest()->get(),
+            'stations'  => Store::where('status', 'Active')->latest()->get(),
         ]);
     }
 }

@@ -18,10 +18,19 @@ class SRINIssue extends Component
     public $srinID;
 
     public $hod_approved_note, $hod_approved_action, $reference, $items, $stockCodeIDs,
-    $stockCode, $binCard, $stockCodeID, $balance, $available;
+    $stockCode, $binCard, $stockCodeID, $balance, $available, $issueStore, $calculatedResults;
 
     #[Rule('required')]
     public $issued_qty = [], $itemIDs = [], $storeID;
+
+    public function issuingStore($station_id)
+    {
+        SRIN::where('srin_id', $this->srinID)->first()->update([
+            'issuing_store' => $station_id,
+            // 'issue_date' => now(),
+            'created_by' => auth()->user()->id,
+        ]); 
+    }
 
     public function update()
     {
@@ -47,6 +56,16 @@ class SRINIssue extends Component
 
     }
 
+    public function calculate($index)
+    {
+        // Perform your desired calculation here
+        $item = $this->issueStore[$index];
+        $issuedQty = $item['issued_qty'];
+
+        // Implement your calculation logic and update any other properties as needed
+        $this->calculatedResults[$index] += $issuedQty;
+    }
+
     public function mount($srinID)
     {
         $this->srinID = $srinID;
@@ -54,6 +73,12 @@ class SRINIssue extends Component
         $this->stockCodeIDs = SRIN::where('srin_id', $this->srinID)->pluck('stock_code_id'); 
     
         // dd($this->items);
+
+        // Get the Issue Store
+        $this->issueStore = StoreBinCard::whereIn('stock_code_id', $this->stockCodeIDs)
+        ->groupBy('stock_code_id', 'station_id')
+        ->select('stock_code_id', 'station_id', DB::raw('sum(balance) as total_balance'))
+        ->get();
 
         // Get Item for Confirmation
         // $this->items = SRIN::select('s_r_i_n_s.stock_code_id', 's_r_i_n_s.required_qty', 's_r_i_n_s.unit', 's_r_i_n_s.issued_qty', 's_r_i_n_s.id', DB::raw('sum(store_bin_cards.balance) as total_balance'))
