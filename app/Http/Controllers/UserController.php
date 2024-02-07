@@ -14,6 +14,7 @@ use Illuminate\Http\RedirectResponse;
     
 class UserController extends Controller
 {
+    
     /**
      * Display a listing of the resource.
      *

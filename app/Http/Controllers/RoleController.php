@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;;
+use Spatie\Permission\Models\Permission;
 use DB;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -19,10 +19,10 @@ class RoleController extends Controller
      */
     function __construct()
     {
-         $this->middleware('permission:role-list|role-create|role-edit|role-delete', ['only' => ['index','store']]);
-         $this->middleware('permission:role-create', ['only' => ['create','store']]);
-         $this->middleware('permission:role-edit', ['only' => ['edit','update']]);
-         $this->middleware('permission:role-delete', ['only' => ['destroy']]);
+         //$this->middleware('Permission:role-list|role-create|role-edit|role-delete', ['only' => ['index','store']]);
+        //  $this->middleware('permission:role-create', ['only' => ['create','store']]);
+        //  $this->middleware('permission:role-edit', ['only' => ['edit','update']]);
+        //  $this->middleware('permission:role-delete', ['only' => ['destroy']]);
     }
     
     /**
@@ -33,7 +33,7 @@ class RoleController extends Controller
     public function index(Request $request): View
     {
         $roles = Role::orderBy('id','DESC')->paginate(5);
-        dd($roles);
+        //dd($roles);
 
         return view('auth.roles.index',compact('roles'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
@@ -47,7 +47,7 @@ class RoleController extends Controller
     public function create(): View
     {
         $permission = Permission::get();
-        return view('roles.create',compact('permission'));
+        return view('auth.roles.create',compact('permission'));
     }
     
     /**
@@ -82,7 +82,7 @@ class RoleController extends Controller
             ->where("role_has_permissions.role_id",$id)
             ->get();
     
-        return view('roles.show',compact('role','rolePermissions'));
+        return view('auth.roles.show',compact('role','rolePermissions'));
     }
     
     /**
@@ -99,7 +99,7 @@ class RoleController extends Controller
             ->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')
             ->all();
     
-        return view('roles.edit',compact('role','permission','rolePermissions'));
+        return view('auth.roles.edit',compact('role','permission','rolePermissions'));
     }
     
     /**
