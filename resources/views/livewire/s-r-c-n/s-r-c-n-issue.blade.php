@@ -11,7 +11,11 @@
         <hr class="my-1">
         <form wire:submit="update">
             <div class="card-body">
-            <div class="table-responsive text-nowrap mb-4">
+                <h5 class="text-capitalize mb-0 text-nowrap text-center fw-bolder mt-2">
+                    Requisition Items
+                </h5>
+                <hr class="my-1 mx-n4">
+                <div class="table-responsive text-nowrap mb-4">
                     <div id="dynamicFieldsContainer">
                         <table class="table" id="itemsTable">
                             <thead>
@@ -37,6 +41,7 @@
                 <h5 class="text-capitalize mb-0 text-nowrap text-center fw-bolder mt-2">
                     ISSUING STORE
                 </h5>
+                <hr class="my-1 mx-n4">
                 <div class="table-responsive text-nowrap mb-0">
                     <div id="dynamicFieldsContainer">
                         <table class="table" id="itemsTable">

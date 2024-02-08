@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('stock_code_id');
             $table->integer('quantity');
             $table->date('date')->nullable();
-            $table->integer('issued_by');
+            $table->integer('issued_by')->nullable();
             $table->timestamps();
         });
     }
