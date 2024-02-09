@@ -54,7 +54,7 @@
                             @endif
                         </div>
                         <!-- Issuing Store -->
-                        @if(!empty($issuedStore))
+                        @if(!empty($issuingStores))
                             <h5 class="text-capitalize mb-0 text-nowrap text-center fw-bolder mt-2">
                                 Issuing Store
                             </h5>
@@ -71,7 +71,7 @@
                                                     <th>Date</th>
                                                 </tr>
                                             </thead>
-                                                @foreach ($issuedStore as $key => $issued)
+                                                @foreach ($issuingStores as $key => $issued)
                                                 <tr>
                                                     <td>{{$issued->stockCodeID->stock_code}}</td>
                                                     <td>{{$issued->stationID->name}}</td>

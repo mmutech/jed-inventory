@@ -91,7 +91,6 @@
                     <tr>
                         <th>SRCN Number.</th>
                         <th>Requisition Store.</th>
-                        <th>Issuing Store.</th>
                         <th>Date</th>
                         <th></th>
                     </tr>
@@ -100,7 +99,6 @@
                         <tr>
                             <td><a href="{{ url('srcn-show', $srcn->srcn_id) }}">{{ $srcn->srcn_code }}</a></td>
                             <td>{{ $srcn->requisitionStationID->name }}</td>
-                            <td>{{ $srcn->issuingStoreID->name ??    '' }}</td>
                             <td>{{ $srcn->requisition_date }}</td>
                             <td><a href="{{ url('srcn-edit', $srcn->srcn_id) }}"><i class="bx bx-pencil text-primary"></i></a></td>
                         </tr>

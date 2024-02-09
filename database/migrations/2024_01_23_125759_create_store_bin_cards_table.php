@@ -20,7 +20,7 @@ return new class extends Migration
             $table->double('in')->nullable();
             $table->double('out')->nullable();
             $table->double('balance')->nullable();
-            $table->string('unit');
+            $table->integer('unit')->nullable();
             $table->date('date_receipt')->nullable();
             $table->date('date_issue')->nullable();
             $table->integer('created_by');

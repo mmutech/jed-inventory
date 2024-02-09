@@ -25,10 +25,10 @@ class SRCNShow extends Component
     #[Locked]
     public $srcnID;
 
-    public $recommend_action, $recommend_note, $approved_action, $approved_note, $issuingStore,
+    public $recommend_action, $recommend_note, $approved_action, $approved_note,
     $despatched_note, $received_note, $lorry_no, $driver_name, $location, $storeID, $requisitionStore;
 
-    public $items, $reference, $stockCodeID, $issuedStore, $issuedStoreID;
+    public $items, $reference, $stockCodeID, $issuingStore, $issuedStore, $issuedStoreID;
 
     //Recommendation
     public function recommend()
@@ -73,6 +73,9 @@ class SRCNShow extends Component
     //Despatched
     public function despatched()
     {
+        $issuedStore = IssuingStore::where('reference', $this->reference)
+            ->where('station_id', $this->storeID)->get();
+        // dd($issuedStore);
         $binCard = StoreBinCard::where('station_id', $this->issuingStore)
             ->whereIn('stock_code_id', $this->stockCodeID)
             ->where('balance', '>', 0)
@@ -80,7 +83,7 @@ class SRCNShow extends Component
             ->get();
 
         if (!empty($binCard)) {
-            foreach ($this->issuedStore as $issuedStores) {
+            foreach ($issuedStore as $issuedStores) {
                 foreach ($binCard as $value) {
                     if ($value->stock_code_id == $issuedStores->stock_code_id) {
                         StoreBinCard::where('id', $value->id)->update([
@@ -90,12 +93,12 @@ class SRCNShow extends Component
                         ]);
                     }
                 }
-            }
 
-            IssuingStore::where('id', $issuedStores->id)->update([
-                'date'      => now(),
-                'issued_by' => auth()->user()->id,
-            ]);
+                IssuingStore::where('id', $issuedStores->id)->update([
+                    'date'      => now(),
+                    'issued_by' => auth()->user()->id,
+                ]);
+            }
 
             // Despatched
             Despatched::create([
@@ -125,28 +128,20 @@ class SRCNShow extends Component
     //Received
     public function received()
     {
-        if($this->srcnID){
-            // Create Bin Card
-            $binCard = StoreBinCard::where('station_id', $this->issuingStore)
-                ->whereIn('stock_code_id', $this->stockCodeID)
-                ->where('balance', '>', 0)
-                ->orderBy('created_at')
-                ->get();
+        $issuedStore = IssuingStore::where('reference', $this->reference)
+        ->where('station_id', $this->issuedStoreID)->get();
 
-            foreach ($this->issuedStore as $issuedStores) {
-                foreach ($binCard as $value) {
-                    if ($value->stock_code_id == $issuedStores->stock_code_id) {
-                        StoreBinCard::create([
-                            'stock_code_id' => $issuedStores->stock_code_id,
-                            'unit'          => $value->unit,
-                            'reference'     => $this->reference,
-                            'station_id'    => $this->requisitionStore,
-                            'in'            => $issuedStores->quantity,
-                            'balance'       => $issuedStores->quantity,
-                            'date_receipt'  => now(),
-                        ]);
-                    }
-                }
+        // dd($issuedStore);
+        if (!empty($issuedStore)) {
+            foreach ($issuedStore as $issuedStores) {
+                StoreBinCard::create([
+                    'stock_code_id' => $issuedStores->stock_code_id,
+                    'reference'     => $this->reference,
+                    'station_id'    => $this->requisitionStore,
+                    'in'            => $issuedStores->quantity,
+                    'balance'       => $issuedStores->quantity,
+                    'date_receipt'  => now(),
+                ]);
             }
 
             Received::create([
@@ -163,7 +158,6 @@ class SRCNShow extends Component
     public function mount($srcnID)
     {
         $this->srcnID = $srcnID;
-        // $this->issuingStore = SRCN::where('srcn_id', $this->srcnID)->pluck('issuing_store')->first();
         $this->requisitionStore = SRCN::where('srcn_id', $this->srcnID)->pluck('requisitioning_store')->first();
         $this->storeID = Store::where('store_officer', Auth()->user()->id)->pluck('id')->first();
         $this->reference = SRCN::where('srcn_id', $this->srcnID)->pluck('srcn_code')->first();
@@ -172,9 +166,10 @@ class SRCNShow extends Component
         ->where('station_id', $this->storeID)->pluck('stock_code_id');
         $this->issuingStore = IssuingStore::where('reference', $this->reference)
         ->where('station_id', $this->storeID)->pluck('station_id')->first();
-        $this->issuedStore = IssuingStore::where('reference', $this->reference)
-        ->where('station_id', $this->storeID)->get();
-        // dd($this->issuedStore);
+        $this->issuedStoreID = IssuingStore::where('reference', $this->reference)
+        ->pluck('station_id')->first();
+
+        // dd($this->issuedStoreID);
     }
     
     public function render()
@@ -187,7 +182,7 @@ class SRCNShow extends Component
             'despatch'         => Despatched::where('reference', $this->reference)->first(),
             'received'         => Received::where('reference', $this->reference)->first(),
             'vehicle'          => Vehicle::where('reference', $this->reference)->first(),
-            'issuedStore'      => IssuingStore::where('reference', $this->reference)->get(),
+            'issuingStores'      => IssuingStore::where('reference', $this->reference)->get(),
         ]);
     }
 }

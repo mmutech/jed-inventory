@@ -110,33 +110,41 @@ class SRCNIssue extends Component
     public function update()
     {
         // Issue Quantity
+        $issuedQuantity = IssuingStore::where('reference', $this->reference)
+        ->whereIn('stock_code_id', $this->stockCodeIDs)
+        ->groupBy('stock_code_id')
+        ->select('stock_code_id', DB::raw('sum(quantity) as total_quantity'))
+        ->get();
+
         $srcnItem = SRCNItem::where('srcn_id', $this->srcnID)
             ->whereIn('stock_code_id', $this->stockCodeIDs)
             ->get();
-        dd($this->issuedQuantity);
 
-        if (!$this->issuedQtys->isEmpty()) {
-            foreach ($this->issuedQtys as $issued_qtys) {
+        // dd($issuedQuantity);
+
+        if (!empty($issuedQuantity)) {
+            foreach ($issuedQuantity as $issued_qtys) {
                 foreach($srcnItem as $value){
+                    // dd($value->stock_code_id);
                     if ($value->stock_code_id == $issued_qtys->stock_code_id) {
-                        SRCNItem::where('srcn_id', $this->srcnID)->update([
-                            'issued_qty' => $issued_qtys->total_balance,
+                        SRCNItem::where('id', $value->id)->update([
+                            'issued_qty' => $issued_qtys->total_quantity,
                         ]);
                     }
                 }
             }
 
             // HOD Approval and Issued by
-            // HODApproval::create([
-            //     'reference'            => $this->reference,
-            //     'hod_approved_note'    => $this->hod_approved_note,
-            //     'hod_approved_action'  => $this->hod_approved_action,
-            //     'hod_approved_by'      => auth()->user()->id,
-            //     'hod_approved_date'    => now()
-            // ]);
+            HODApproval::create([
+                'reference'            => $this->reference,
+                'hod_approved_note'    => $this->hod_approved_note,
+                'hod_approved_action'  => $this->hod_approved_action,
+                'hod_approved_by'      => auth()->user()->id,
+                'hod_approved_date'    => now()
+            ]);
 
             $this->dispatch('success', message: 'Item Issued Successfully!');
-            // return redirect()->to('srcn-show/' . $this->srcnID);
+            return redirect()->to('srcn-show/' . $this->srcnID);
 
         }else{
             $this->dispatch('danger', message: 'Item Issued Not Found!');
@@ -148,22 +156,16 @@ class SRCNIssue extends Component
         $this->srcnID = $srcnID;
         $this->reference = SRCN::where('srcn_id', $this->srcnID)->pluck('srcn_code')->first();
         $this->stockCodeIDs = SRCNItem::where('srcn_id', $this->srcnID)->pluck('stock_code_id'); 
-
-        $this->issuedQuantity = IssuingStore::where('reference', $this->reference)
-        ->whereIn('stock_code_id', $this->stockCodeIDs)
-        ->groupBy('stock_code_id')
-        ->select('stock_code_id', DB::raw('sum(quantity) as total_quantity'))
-        ->get();
         // dd($this->issuedQuantity);
 
-         // Get the Issue Store
-         $this->issueStore = StoreBinCard::whereIn('stock_code_id', $this->stockCodeIDs)
-         ->groupBy('stock_code_id', 'station_id')
-         ->select('stock_code_id', 'station_id', DB::raw('sum(balance) as total_balance'))
-         ->get();
+        // Get the Issue Store
+        $this->issueStore = StoreBinCard::whereIn('stock_code_id', $this->stockCodeIDs)
+        ->groupBy('stock_code_id', 'station_id')
+        ->select('stock_code_id', 'station_id', DB::raw('sum(balance) as total_balance'))
+        ->get();
  
-         // Get the SRCN Item
-         $this->items = SRCNItem::where('srcn_id', $this->srcnID)->get();
+        // Get the SRCN Item
+        $this->items = SRCNItem::where('srcn_id', $this->srcnID)->get();
 
         if ($this->items->count() > 0) {
             foreach ($this->items as $key => $data) {
