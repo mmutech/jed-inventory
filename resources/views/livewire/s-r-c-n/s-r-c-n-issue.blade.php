@@ -16,7 +16,7 @@
                 </h5>
                 <hr class="my-1 mx-n4">
                 <div class="table-responsive text-nowrap mb-4">
-                    <div id="dynamicFieldsContainer">
+                    <div id="dynamicFieldsContainer" wire:ignore>
                         <table class="table" id="itemsTable">
                             <thead>
                                 <tr>
@@ -69,7 +69,7 @@
                                         @error("issuedQty") <span class="error">{{ $message }}</span> @enderror 
                                     </td>
                                     <td>
-                                        <div class="d-flex justify-content-between">
+                                        <div class="d-flex justify-content-between" wire:ignore>
                                             <label for="quality-check-stub" class="mb-0"></label>
                                             <label class="switch switch-primary me-0">
                                             <input type="checkbox" wire:click="issuingStore('{{ $item->station_id }}', '{{ $item->stock_code_id }}')" class="switch-input" id="quality-check-stub">
@@ -90,8 +90,7 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
-                
+                </div>    
             </div>
             <div class="card-footer">
                 <div class="col-md-6 mb-1">

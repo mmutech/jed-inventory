@@ -121,7 +121,7 @@
                                                         <tr class="input-container">
                                                             <td class="col-sm-4">
                                                                 <input type="hidden" wire:model="itemIDs.{{ $key }}" class="form-control">
-                                                                <select class="form-control" wire:model.live.debounce.100ms="stock_codes.{{ $key }}">
+                                                                <select class="form-control" wire:model="stock_codes.{{ $key }}">
                                                                     <option value="">Type to search...</option>
                                                                     @foreach($stock_code as $stCode)
                                                                     <option value="{{$stCode->id}}">{{$stCode->stock_code}} - {{$stCode->name}}</option>
