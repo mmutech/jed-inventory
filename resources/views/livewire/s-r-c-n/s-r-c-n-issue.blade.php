@@ -57,11 +57,7 @@
                             <tbody>
                             @foreach ($issueStore as $key => $item)               
                                 <tr class="input-container">
-                                    <td>
-                                        <input type="hidden" wire:model="itemIDs.{{ $key }}" class="form-control">
-                                        <input type="hidden" wire:model="stationIDs.{{ $key }}" class="form-control">
-                                        {{$item->stationID->name}}
-                                    </td>
+                                    <td>{{$item->stationID->name}}</td>
                                     <td><p>{{$item->stockCodeID->stock_code}}</p></td>
                                     <td><p>{{$item->total_balance}}</p></td>
                                     <td class="col-sm-2">
@@ -69,10 +65,10 @@
                                         @error("issuedQty") <span class="error">{{ $message }}</span> @enderror 
                                     </td>
                                     <td>
-                                        <div class="d-flex justify-content-between" wire:ignore>
-                                            <label for="quality-check-stub" class="mb-0"></label>
+                                        <div class="d-flex justify-content-between">
+                                            <label for="issuing_store" class="mb-0"></label>
                                             <label class="switch switch-primary me-0">
-                                            <input type="checkbox" wire:click="issuingStore('{{ $item->station_id }}', '{{ $item->stock_code_id }}')" class="switch-input" id="quality-check-stub">
+                                            <input type="checkbox" wire:click.prevent="issuingStore('{{ $item->station_id }}', '{{ $item->stock_code_id }}')" class="switch-input">
                                             <span class="switch-toggle-slider">
                                                 <span class="switch-on">
                                                     <i class="bx bx-check"></i>

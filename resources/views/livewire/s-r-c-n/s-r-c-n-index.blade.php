@@ -89,8 +89,8 @@
             <div class="table-responsive text-nowrap">
                 <table class="table">
                     <tr>
-                        <th>SRCN Number.</th>
-                        <th>Requisition Store.</th>
+                        <th>SRCN Code</th>
+                        <th>Requisition Store</th>
                         <th>Date</th>
                         <th></th>
                     </tr>

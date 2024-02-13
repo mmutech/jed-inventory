@@ -16,15 +16,15 @@ class Create extends Component
 
     public $inputs = [''];
 
-    public $activeTab;
+    public $step = 1;
 
 
     #[Rule('required')]
-    public $descriptions = [], $units = [], $delivery_address, $vendor_name, $beneficiary, 
+    public $delivery_address, $vendor_name, $beneficiary, 
            $purchase_order_name, $purchase_order_no;
 
-    #[Rule('required')]
-    public $quantities = [], $rates = [];
+    // #[Rule('required')]
+    public $quantities = [], $rates = [], $descriptions = [], $units = [];
 
     public function addInput()
     {
@@ -39,9 +39,27 @@ class Create extends Component
         }
     }
 
-    public function store()
+    public function nextStep()
     {
         $this->validate();
+        $this->step++;
+    }
+
+    public function previousStep()
+    {
+        // $this->validate();
+        $this->step--;
+    }
+
+    public function store()
+    {
+        // $this->validate();
+        $this->validate([
+            'descriptions'      => ['required'],
+            'quantities'        => ['required'],
+            'units'             => ['required'],
+            'rates'             => ['required'],
+        ]);
 
         // Purchase Order ID
         $lastRecord = PurchaseOrders::latest()->first();
@@ -83,7 +101,6 @@ class Create extends Component
     
     public function mount()
     {
-        $this->activeTab = $this->activeTab ??  'dstepper-block';
         $this->unitOfMeasure = Unit::latest()->get();
 
     }

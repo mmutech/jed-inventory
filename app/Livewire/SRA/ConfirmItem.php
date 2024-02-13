@@ -19,19 +19,39 @@ class ConfirmItem extends Component
 {
     public $title = 'New SRA';
 
+    public $step = 1;
+
     #[Locked]
     public $poID;
 
-    public $purchase_order_name, $purchase_order_no, $delivery_address, $vendor_name, $item;
+    public $purchase_order_name, $purchase_order_no, $delivery_address, $vendor_name, $item,
+    $purchase_order_id, $sraID, $received_note;
 
     #[Rule('required')]
-    public $consignment_note_no, $invoice_no, $purchase_order_id, $sraID, $received_note;
+    public $consignment_note_no, $invoice_no;
 
-    #[Rule('required')]
+    // #[Rule('required')]
     public $confirm_qtys = [], $confirm_rates = [], $stock_codes = [], $itemIDs = [];
+
+    public function nextStep()
+    {
+        $this->validate();
+        $this->step++;
+    }
+
+    public function previousStep()
+    {
+        $this->step--;
+    }
 
     public function confirmed()
     {
+        $this->validate([
+            'confirm_qtys'      => ['required'],
+            'confirm_rates'     => ['required'],
+            'stock_codes'       => ['required'],
+        ]);
+
         if (!SRA::where('purchase_order_id', $this->poID)->exists()) {
             // Create SRA
             SRA::create([

@@ -31,14 +31,8 @@ class SRCNIssue extends Component
 
     public function issuingStore($station_id, $stockCodeID)
     {
-        $binCard = StoreBinCard::where('station_id', $station_id)
-            ->where('stock_code_id', $stockCodeID)
-            ->where('balance', '>', 0)
-            ->orderBy('created_at')
-            ->first();
-
         // dd($this->issuedQty);
-        if (!empty($binCard)) {
+        if (!empty($station_id)) {
             IssuingStore::Create([
                 'stock_code_id' => $stockCodeID,
                 'reference'     => $this->reference,
@@ -46,65 +40,6 @@ class SRCNIssue extends Component
                 'quantity'      => $this->issuedQty,
             ]);
         } 
-
-        // Check Store Bin Card
-        // foreach ($this->items as $key => $item) {
-        //     $binCard = StoreBinCard::where('stock_code_id', $item->stock_code_id)
-        //             ->where('station_id', $station_id)
-        //             ->where('balance', '>', 0)
-        //             ->orderBy('created_at')
-        //             ->first();
-
-        //     // dd($binCard);
-
-        //     if(!empty($binCard)){
-        //         $issuedQty = min($item->issued_qty, $binCard->balance);
-
-        //         // Update the oldest record
-        //         $binCard->update([
-        //             'out'          => $binCard->out + $issuedQty,
-        //             'balance'      => $binCard->balance - $issuedQty,
-        //             'date_issue'   => now(),
-        //             'updated_by'   => auth()->user()->id,
-        //         ]);
-
-        //         StoreBinCard::create([
-        //             'stock_code_id' => $item->stock_code_id,
-        //             'unit'          => $item->unit,
-        //             'reference'     => $this->reference,
-        //             'station_id'    => $station_id,
-        //             'in'            => $this->issued_qty[$key],
-        //             'balance'       => $this->issued_qty[$key],
-        //         ]);
-
-        //         $remainingQty = $item->issued_qty - $issuedQty;
-        //         while ($remainingQty > 0) {
-        //             $nextBinCard = StoreBinCard::where('stock_code_id', $item->stock_code_id)
-        //                 ->where('station_id', $station_id)
-        //                 ->where('balance', '>', 0)
-        //                 ->where('created_at', '>', $binCard->created_at)
-        //                 ->orderBy('created_at')
-        //                 ->first();
-        
-        //             if ($nextBinCard) {
-        //                 $issuedQty = min($remainingQty, $nextBinCard->balance);
-        
-        //                 // Update the next record
-        //                 $nextBinCard->update([
-        //                     'out' => $nextBinCard->out + $issuedQty,
-        //                     'balance' => $nextBinCard->balance - $issuedQty,
-        //                     'date_issue' => now(),
-        //                     'updated_by' => auth()->user()->id,
-        //                 ]);
-        
-        //                 $remainingQty -= $issuedQty;
-        //             } else {
-
-        //                 break;
-        //             }
-        //         }
-        //     }
-        // }
     }
 
     public function update()
