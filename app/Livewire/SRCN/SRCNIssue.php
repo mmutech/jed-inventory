@@ -48,7 +48,6 @@ class SRCNIssue extends Component
 
     public function update()
     {
-        dd($this->issuedQty);
         // Issue Quantity
         $issuedQuantity = IssuingStore::where('reference', $this->reference)
         ->whereIn('stock_code_id', $this->stockCodeIDs)
