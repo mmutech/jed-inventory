@@ -25,7 +25,7 @@ class ConfirmItem extends Component
     public $poID;
 
     public $purchase_order_name, $purchase_order_no, $delivery_address, $vendor_name, $item,
-    $purchase_order_id, $sraID, $received_note;
+    $purchase_order_id, $sraID, $received_note, $search;
 
     #[Rule('required')]
     public $consignment_note_no, $invoice_no;
@@ -127,7 +127,10 @@ class ConfirmItem extends Component
     {
         return view('livewire.s-r-a.confirm-item')->with([
             'items' => Item::where('purchase_order_id', $this->poID)->get(),
-            'stock_code' => StockCode::where('status', 'Active')->latest()->get(),
+            'stock_code' => StockCode::where(function ($filter){
+                $filter->where('stock_code', 'like', '%'.$this->search.'%')
+                    ->orWhere('name', 'like', '%'.$this->search.'%');
+            })->get(),
         ]);
     }
 }

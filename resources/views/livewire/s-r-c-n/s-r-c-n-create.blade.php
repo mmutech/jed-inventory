@@ -20,7 +20,7 @@
                             <table class="table" id="itemsTable">
                                 <thead>
                                     <tr>
-                                    <th>Stock Code</th>
+                                    <th colspan="2">Stock Code</th>
                                     <th>Unit</th>
                                     <th>Quantity</th>
                                     <th></th>
@@ -29,16 +29,19 @@
                                 <tbody>
                                     @foreach($inputs as $key => $value)
                                         <tr>
+                                            <td class="col-md-3">
+                                            <input type="text" wire:model.live="search" class="form-control" placeholder="Type to Search...">
+                                            </td>
                                             <td>
                                                 <select class="form-control" wire:model="stock_codes.{{ $key }}">
-                                                    <option value="">Type to search...</option>
+                                                    <option value="">Select...</option>
                                                     @foreach($stock_code as $stCode)
                                                         <option value="{{$stCode->id}}">{{$stCode->stock_code}} - {{$stCode->name}}</option>
                                                     @endforeach
                                                 </select>
                                                 @error("stock_codes.$key") <span class="error">{{ $message }}</span> @enderror 
                                             </td>
-                                            <td>
+                                            <td class="col-md-3">
                                                 <select class="form-select" wire:model="units.{{ $key }}">
                                                     <option value="">Select ...</option>
                                                     @foreach($unitOfMeasure as $unit)

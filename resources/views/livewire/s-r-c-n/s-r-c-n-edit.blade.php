@@ -29,8 +29,11 @@
                                 <!-- Existing Fields -->
                                 @foreach($stock_codes as $key => $stock_code)
                                     <tr>
-                                        <td>
                                         <input type="hidden" wire:model="itemIDs.{{ $key }}" class="form-control">
+                                        <!-- <td class="col-md-3">
+                                            <input type="text" wire:model.live="search.{{ $key }}" class="form-control" placeholder="Type to Search...">
+                                        </td> -->
+                                        <td>
                                         <select class="form-select" wire:model="stock_codes.{{ $key }}">
                                             <option value="">Select ...</option>
                                             @foreach($stockCode as $stCode)
@@ -39,7 +42,7 @@
                                         </select>
                                         @error("stock_codes.$key") <span class="error">{{ $message }}</span> @enderror 
                                         </td>
-                                        <td>
+                                        <td class="col-md-3">
                                             <select class="form-select" wire:model="units.{{ $key }}">
                                                 <option value="">Select ...</option>
                                                 @foreach($unitOfMeasure as $unit)

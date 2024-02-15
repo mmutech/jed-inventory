@@ -158,10 +158,11 @@
                                                                 $subtotal += $amount;
                                                             @endphp
                                                             <tr class="input-container">
-                                                                <td class="col-sm-4">
-                                                                    <input type="hidden" wire:model="itemIDs.{{ $key }}" class="form-control">
+                                                                <input type="hidden" wire:model="itemIDs.{{ $key }}" class="form-control">
+                                                                <td class="col-sm-2">
+                                                                <input type="text" wire:model.live="search" class="form-control" placeholder="Type to Search...">
                                                                     <select class="form-control" wire:model="stock_codes.{{ $key }}">
-                                                                        <option value="">Type to search...</option>
+                                                                        <option value="">Select...</option>
                                                                         @foreach($stock_code as $stCode)
                                                                         <option value="{{$stCode->id}}">{{$stCode->stock_code}} - {{$stCode->name}}</option>
                                                                         @endforeach
