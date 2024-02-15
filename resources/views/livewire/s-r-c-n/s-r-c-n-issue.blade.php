@@ -54,21 +54,21 @@
                                     <th class="text-end">Action</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody wire:ignore>
                             @foreach ($issueStore as $key => $item)               
                                 <tr class="input-container">
                                     <td>{{$item->stationID->name}}</td>
                                     <td><p>{{$item->stockCodeID->stock_code}}</p></td>
                                     <td><p>{{$item->total_balance}}</p></td>
                                     <td class="col-sm-2">
-                                        <input type="number" wire:model="issuedQty" class="form-control invoice-item-qty">
+                                        <input type="number" wire:model="issuedQty.{{$key}}" class="form-control invoice-item-qty">
                                         @error("issuedQty") <span class="error">{{ $message }}</span> @enderror 
                                     </td>
                                     <td>
                                         <div class="d-flex justify-content-between">
                                             <label for="issuing_store" class="mb-0"></label>
                                             <label class="switch switch-primary me-0">
-                                            <input type="checkbox" wire:click.prevent="issuingStore('{{ $item->station_id }}', '{{ $item->stock_code_id }}')" class="switch-input">
+                                            <input type="checkbox" wire:click="issuingStore('{{ $key }}', '{{ $item->station_id }}', '{{ $item->stock_code_id }}')" class="switch-input" name="check.{{$key}}">
                                             <span class="switch-toggle-slider">
                                                 <span class="switch-on">
                                                     <i class="bx bx-check"></i>
@@ -100,7 +100,7 @@
                 </div>
                 <div class="col-sm-12 mb-3">
                     <label class="form-label" for="hod_approved_note">HOD Note</label>
-                    <textarea class="form-control" wire:model="hod_approved_note"id="hod_approved_note" cols="10" rows="2"></textarea>
+                    <textarea class="form-control" wire:model="hod_approved_note" id="hod_approved_note" cols="10" rows="2"></textarea>
                     @error("hod_approved_note") <span class="error">{{ $message }}</span> @enderror 
                 </div>
 

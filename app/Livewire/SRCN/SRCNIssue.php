@@ -5,6 +5,7 @@ namespace App\Livewire\SRCN;
 use Livewire\Component;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Rule; 
+
 use App\Models\SRCN;
 use App\Models\SRCNItem;
 use App\Models\HODApproval;
@@ -24,26 +25,30 @@ class SRCNIssue extends Component
     public $hod_approved_note, $hod_approved_action, $reference, $items, $stockCodeIDs,
     $stockCode, $binCard, $stockCodeID, $balance, $available, $issueStore;
 
-    public $issuedQty, $issuedQuantity;
+    public $issuedQty = [], $issuedQuantity;
 
     #[Rule('required')]
     public $issued_qty = [], $itemIDs = [], $stationIDs = [], $issuedItems = [], $storeID;
 
-    public function issuingStore($station_id, $stockCodeID)
+    public function issuingStore($issued_key, $station_id, $stockCodeID)
     {
-        // dd($this->issuedQty);
         if (!empty($station_id)) {
+            
             IssuingStore::Create([
+                //'bin_card_id'
                 'stock_code_id' => $stockCodeID,
                 'reference'     => $this->reference,
                 'station_id'    => $station_id,
-                'quantity'      => $this->issuedQty,
+                'quantity'      => $this->issuedQty[$issued_key],
             ]);
+
         } 
+     
     }
 
     public function update()
     {
+        dd($this->issuedQty);
         // Issue Quantity
         $issuedQuantity = IssuingStore::where('reference', $this->reference)
         ->whereIn('stock_code_id', $this->stockCodeIDs)
@@ -55,7 +60,6 @@ class SRCNIssue extends Component
             ->whereIn('stock_code_id', $this->stockCodeIDs)
             ->get();
 
-        // dd($issuedQuantity);
 
         if (!empty($issuedQuantity)) {
             foreach ($issuedQuantity as $issued_qtys) {
@@ -91,17 +95,17 @@ class SRCNIssue extends Component
         $this->srcnID = $srcnID;
         $this->reference = SRCN::where('srcn_id', $this->srcnID)->pluck('srcn_code')->first();
         $this->stockCodeIDs = SRCNItem::where('srcn_id', $this->srcnID)->pluck('stock_code_id'); 
-        // dd($this->issuedQuantity);
 
         // Get the Issue Store
         $this->issueStore = StoreBinCard::whereIn('stock_code_id', $this->stockCodeIDs)
         ->groupBy('stock_code_id', 'station_id')
         ->select('stock_code_id', 'station_id', DB::raw('sum(balance) as total_balance'))
         ->get();
+
  
         // Get the SRCN Item
         $this->items = SRCNItem::where('srcn_id', $this->srcnID)->get();
-
+       
         if ($this->items->count() > 0) {
             foreach ($this->items as $key => $data) {
                 $this->itemIDs[$key] = $data->id;
