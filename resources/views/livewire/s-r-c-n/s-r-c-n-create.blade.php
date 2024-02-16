@@ -42,7 +42,7 @@
                                                 @error("stock_codes.$key") <span class="error">{{ $message }}</span> @enderror 
                                             </td>
                                             <td class="col-md-3">
-                                                <select class="form-select" wire:model="units.{{ $key }}">
+                                                <select class="form-select select2" id="drps" style="position: fixed; top: auto; left: auto; width: inherit;" wire:model="units.{{ $key }}">
                                                     <option value="">Select ...</option>
                                                     @foreach($unitOfMeasure as $unit)
                                                         <option value="{{$unit->id}}">{{$unit->description}}</option>
