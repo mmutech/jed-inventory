@@ -41,7 +41,8 @@ class SRCNCreate extends Component
         $lastRecord = SRCN::latest()->first();
         $this->srcnID = $lastRecord ? $lastRecord->srcn_id + 1 : 1;
 
-
+        dd($this->stock_codes);
+        
         SRCN::create([
             'srcn_id' => $this->srcnID,
             'srcn_code' => 'SRCN-'.$this->srcnID,
@@ -75,10 +76,7 @@ class SRCNCreate extends Component
     public function render()
     {
         return view('livewire.s-r-c-n.s-r-c-n-create')->with([
-            'stock_code' => StockCode::where(function ($filter){
-                $filter->where('stock_code', 'like', '%'.$this->search.'%')
-                    ->orWhere('name', 'like', '%'.$this->search.'%');
-            })->get(),
+            'stock_code' => StockCode::where('status', 'Active')->latest()->get(),
         ]);
     }
 }
