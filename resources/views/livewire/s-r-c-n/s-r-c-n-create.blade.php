@@ -20,7 +20,7 @@
                             <table class="table" id="itemsTable">
                                 <thead>
                                     <tr>
-                                    <th colspan="2">Stock Code</th>
+                                    <th>Stock Code</th>
                                     <th>Unit</th>
                                     <th>Quantity</th>
                                     <th></th>
@@ -29,11 +29,8 @@
                                 <tbody>
                                     @foreach($inputs as $key => $value)
                                         <tr>
-                                            <td class="col-md-3">
-                                            <input type="text" wire:model.live="search" class="form-control" placeholder="Type to Search...">
-                                            </td>
-                                            <td>
-                                                <select class="form-control" wire:model="stock_codes.{{ $key }}">
+                                            <td class="col-md-6">
+                                                <select class="form-control select2" wire:model.lazy="stock_codes.{{ $key }}" id="drps" style="position: fixed; top: auto; left: auto; width: inherit;">
                                                     <option value="">Select...</option>
                                                     @foreach($stock_code as $stCode)
                                                         <option value="{{$stCode->id}}">{{$stCode->stock_code}} - {{$stCode->name}}</option>
@@ -41,8 +38,8 @@
                                                 </select>
                                                 @error("stock_codes.$key") <span class="error">{{ $message }}</span> @enderror 
                                             </td>
-                                            <td class="col-md-3">
-                                                <select class="form-select select2" id="drps" style="position: fixed; top: auto; left: auto; width: inherit;" wire:model="units.{{ $key }}">
+                                            <td>
+                                                <select class="form-select" id="drps" wire:model="units.{{ $key }}">
                                                     <option value="">Select ...</option>
                                                     @foreach($unitOfMeasure as $unit)
                                                         <option value="{{$unit->id}}">{{$unit->description}}</option>
@@ -51,7 +48,7 @@
                                                 @error("units.$key") <span class="error">{{ $message }}</span> @enderror 
                                             </td>
                                             <td>
-                                                <input type="number" wire:model="quantities.{{ $key }}" class="form-control invoice-item-qty" step="1" min="1" oninput="calculateAmount(this)">
+                                                <input type="number" wire:model="quantities.{{ $key }}" class="form-control invoice-item-qty" step="1" min="1">
                                                 @error("quantities.$key") <span class="error">{{ $message }}</span> @enderror 
                                             </td>
                                             <td>
