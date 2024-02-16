@@ -193,6 +193,10 @@
               "timeOut": 3000,
               "progressBarClass": "custom-toast",
           };
+
+          $('#drps').select2({
+            dropdownParent: $('#dynamicFieldsContainer')
+          });
       });
   
       window.addEventListener('success', (event) => {
