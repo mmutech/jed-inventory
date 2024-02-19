@@ -15,7 +15,6 @@ class SRIN extends Model
         'srin_id',
         'srin_code',
         'stock_code_id',
-        'issuing_store',
         'location',
         'unit',
         'description',
@@ -45,11 +44,6 @@ class SRIN extends Model
     public function locationID(): BelongsTo
     {
         return $this->belongsTo(location::class, 'location');
-    }
-
-    public function issuingStore(): BelongsTo
-    {
-        return $this->belongsTo(Store::class, 'issuing_store');
     }
 
     public function unitID(): BelongsTo
