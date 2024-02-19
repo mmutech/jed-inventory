@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->integer('srin_id');
             $table->string('srin_code');
-            $table->integer('issuing_store')->nullable();
             $table->string('location');
             $table->integer('stock_code_id');
             $table->string('description');
