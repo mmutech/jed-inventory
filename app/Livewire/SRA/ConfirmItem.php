@@ -127,10 +127,7 @@ class ConfirmItem extends Component
     {
         return view('livewire.s-r-a.confirm-item')->with([
             'items' => Item::where('purchase_order_id', $this->poID)->get(),
-            'stock_code' => StockCode::where(function ($filter){
-                $filter->where('stock_code', 'like', '%'.$this->search.'%')
-                    ->orWhere('name', 'like', '%'.$this->search.'%');
-            })->get(),
+            'stock_code' => StockCode::where('status', 'Active')->latest()->get(),
         ]);
     }
 }

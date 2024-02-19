@@ -40,8 +40,6 @@ class SRCNCreate extends Component
         // $this->validate();
         $lastRecord = SRCN::latest()->first();
         $this->srcnID = $lastRecord ? $lastRecord->srcn_id + 1 : 1;
-
-        dd($this->stock_codes);
         
         SRCN::create([
             'srcn_id' => $this->srcnID,

@@ -47,17 +47,41 @@
                                 <span class="fw-bolder">Date:</span>
                                 <span>{{$data->requisition_date}}</span>
                                 <hr class="mb-3 mt-0">
-                            </div>
-
-                            <div class="col-md-8">
-                                <span class="fw-bolder">Issuing Store:</span>
-                                <span>{{$data->issuingStore->name ?? ''}}</span>
-                                <hr class="mb-3 mt-0">
-                            </div>
-                            
+                            </div>    
                         </div>
 
-                        <!-- <hr class="my-1 mx-n4"> -->
+                        <!-- Issuing Store -->
+                        @if(!empty($issuingStores))
+                            <h5 class="text-capitalize mb-0 text-nowrap text-center fw-bolder mt-2">
+                                Issuing Store
+                            </h5>
+                            <hr class="my-1 mx-n4">
+                            <div class="mb-3 mt-0" data-repeater-list="group-a">
+                                <div class="repeater-wrapper pt-0 pt-md-4" data-repeater-item="">
+                                    <div class="table-responsive text-nowrap">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Stock Code</th>
+                                                    <th>Station</th>
+                                                    <th>Quantity Issued</th>
+                                                    <th>Date</th>
+                                                </tr>
+                                            </thead>
+                                                @foreach ($issuingStores as $key => $issued)
+                                                <tr>
+                                                    <td>{{$issued->stockCodeID->stock_code}}</td>
+                                                    <td>{{$issued->stationID->name}}</td>
+                                                    <td>{{ number_format($issued->quantity)}}</td>
+                                                    <td>{{$issued->date ?? ''}}</td>
+                                                </tr>
+                                                @endforeach
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                        
                         <!-- Item Details-->
                         <h5 class="text-capitalize mb-0 text-nowrap text-center fw-bolder mt-2">
                             ITEMS

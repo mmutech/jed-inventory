@@ -30,7 +30,7 @@
                                     @foreach($inputs as $key => $value)
                                         <tr>
                                             <td class="col-md-6">
-                                                <select class="form-control select2" wire:model.lazy="stock_codes.{{ $key }}" id="drps" style="position: fixed; top: auto; left: auto; width: inherit;">
+                                                <select class="form-control select2" wire:model="stock_codes.{{ $key }}" id="drps">
                                                     <option value="">Select...</option>
                                                     @foreach($stock_code as $stCode)
                                                         <option value="{{$stCode->id}}">{{$stCode->stock_code}} - {{$stCode->name}}</option>

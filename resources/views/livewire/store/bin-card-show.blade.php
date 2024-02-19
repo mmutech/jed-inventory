@@ -88,9 +88,9 @@
                                                     <td>{{ $item->reference }}</td>
                                                     <!-- <td>{{ $item->purchaseOrderID->vendor_name ?? '' }}</td> -->
                                                     <td>{{ $item->stationID->name }}</td>
-                                                    <td>{{ $item->in }}</td>
-                                                    <td>{{ $item->out }}</td>
-                                                    <td>{{ $item->balance }}</td>
+                                                    <td>{{ $item->in ?? '-' }}</td>
+                                                    <td>{{ $item->out  ?? '-' }}</td>
+                                                    <td>{{ $item->balance ?? '-' }}</td>
                                                     <td>{{ $item->storeOfficerID->name }}</td>
                                                 </tr>
                                                 @endforeach
