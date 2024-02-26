@@ -15,8 +15,6 @@ use App\Models\Store;
 use App\Models\StoreBinCard;
 use App\Models\Vehicle;
 use Livewire\Attributes\Locked;
-use Livewire\Attributes\Rule; 
-use Illuminate\Support\Facades\DB;
 
 class SRCNShow extends Component
 {
@@ -26,7 +24,7 @@ class SRCNShow extends Component
     public $srcnID;
 
     public $recommend_action, $recommend_note, $approved_action, $approved_note,
-    $despatched_note, $received_note, $lorry_no, $driver_name, $location, $storeID, $requisitionStore;
+    $storeID, $requisitionStore, $received_note;
 
     public $items, $reference, $stockCodeID, $issuingStore, $issuedStore, $issuedStoreID;
 
@@ -70,61 +68,6 @@ class SRCNShow extends Component
         
     }
 
-    //Despatched
-    public function despatched()
-    {
-        $issuedStore = IssuingStore::where('reference', $this->reference)
-            ->where('station_id', $this->storeID)->get();
-        // dd($issuedStore);
-        $binCard = StoreBinCard::where('station_id', $this->issuingStore)
-            ->whereIn('stock_code_id', $this->stockCodeID)
-            ->where('balance', '>', 0)
-            ->orderBy('created_at')
-            ->get();
-
-        if (!empty($binCard)) {
-            foreach ($issuedStore as $issuedStores) {
-                foreach ($binCard as $value) {
-                    if ($value->stock_code_id == $issuedStores->stock_code_id) {
-                        StoreBinCard::where('id', $value->id)->update([
-                            'out'        => $value->out + $issuedStores->quantity,
-                            'balance'    => $value->balance - $issuedStores->quantity,
-                            'updated_by' => auth()->user()->id,
-                        ]);
-                    }
-                }
-
-                IssuingStore::where('id', $issuedStores->id)->update([
-                    'date'      => now(),
-                    'issued_by' => auth()->user()->id,
-                ]);
-            }
-
-            // Despatched
-            Despatched::create([
-                'reference'          => $this->reference,
-                'despatched_note'    => $this->despatched_note,
-                'despatched_by'      => auth()->user()->id,
-                'despatched_date'    => now()
-            ]);
-
-            // Vehicle and Drivers Info
-            Vehicle::create([
-                'reference'         => $this->reference,
-                'lorry_no'          => $this->lorry_no,
-                'driver_name'       => $this->driver_name,
-                'location'          => $this->location,
-                'created_by'        => auth()->user()->id,
-                'vehicle_date'      => now()
-            ]);
-
-        } else {
-            $this->dispatch('danger', message: 'Despatch Fails!');
-        }
-
-        $this->dispatch('success', message: 'Despatch Successfully!');
-    }
-
     //Received
     public function received()
     {
@@ -162,10 +105,6 @@ class SRCNShow extends Component
         $this->storeID = Store::where('store_officer', Auth()->user()->id)->pluck('id')->first();
         $this->reference = SRCN::where('srcn_id', $this->srcnID)->pluck('srcn_code')->first();
         $this->items = SRCNItem::where('srcn_id', $this->srcnID)->get();
-        $this->stockCodeID = IssuingStore::where('reference', $this->reference)
-        ->where('station_id', $this->storeID)->pluck('stock_code_id');
-        $this->issuingStore = IssuingStore::where('reference', $this->reference)
-        ->where('station_id', $this->storeID)->pluck('station_id')->first();
         $this->issuedStoreID = IssuingStore::where('reference', $this->reference)
         ->pluck('station_id')->first();
 
@@ -182,7 +121,6 @@ class SRCNShow extends Component
             'despatch'         => Despatched::where('reference', $this->reference)->first(),
             'received'         => Received::where('reference', $this->reference)->first(),
             'vehicle'          => Vehicle::where('reference', $this->reference)->first(),
-            'issuingStores'      => IssuingStore::where('reference', $this->reference)->get(),
         ]);
     }
 }

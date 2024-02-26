@@ -64,7 +64,7 @@
                     </div>
                 
                     <div class="col-12 d-flex justify-content-between">
-                        <button type="submit" class="btn btn-info btn-next">
+                        <button type="submit" class="btn btn-primary btn-next">
                             <span class="align-middle d-sm-inline-block d-none me-sm-1">Save</span>
                             <i class="bx bx-pencil bx-sm me-sm-n2"></i>
                         </button>

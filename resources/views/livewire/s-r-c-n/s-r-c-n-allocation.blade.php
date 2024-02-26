@@ -1,12 +1,12 @@
 <div>
-    <h6 class="py-1 mb-2">
+<h6 class="py-1 mb-2">
     <span class="text-muted fw-light"><a href="{{url('srcn-index');}}">SRCN</a> /</span> {{$title}}
     </h6>
 
     <div class="card">
         <div class="card-header">
             <h6 class="mb-0">Store Requisition and Consignment Note</h6>
-            <small>Quantity Issue.</small>
+            <small>Allocation.</small>
         </div>
         <hr class="my-1">
         <form wire:submit="update">
@@ -39,7 +39,7 @@
                 </div>
 
                 <h5 class="text-capitalize mb-0 text-nowrap text-center fw-bolder mt-2">
-                    ISSUING STORE
+                    Allocation Store
                 </h5>
                 <hr class="my-1 mx-n4">
                 <div class="table-responsive text-nowrap mb-0">
@@ -50,25 +50,25 @@
                                     <th>Station</th>
                                     <th>Stock Code</th>
                                     <th>Available</th>
-                                    <th>Issue Quantity</th>
+                                    <th>Allocate Quantity</th>
                                     <th class="text-end">Action</th>
                                 </tr>
                             </thead>
                             <tbody wire:ignore>
-                            @foreach ($issueStore as $key => $item)               
+                            @foreach ($allocationStores as $key => $item)               
                                 <tr class="input-container">
                                     <td>{{$item->stationID->name}}</td>
                                     <td><p>{{$item->stockCodeID->stock_code}}</p></td>
                                     <td><p>{{$item->total_balance}}</p></td>
                                     <td class="col-sm-2">
-                                        <input type="number" wire:model="issuedQty.{{$key}}" class="form-control invoice-item-qty">
-                                        @error("issuedQty") <span class="error">{{ $message }}</span> @enderror 
+                                        <input type="number" wire:model="allocationQty.{{$key}}" class="form-control invoice-item-qty">
+                                        @error("allocationQty") <span class="error">{{ $message }}</span> @enderror 
                                     </td>
                                     <td>
                                         <div class="d-flex justify-content-between">
-                                            <label for="issuing_store" class="mb-0"></label>
+                                            <label for="allocation_store" class="mb-0"></label>
                                             <label class="switch switch-primary me-0">
-                                            <input type="checkbox" wire:click="issuingStore('{{ $key }}', '{{ $item->station_id }}', '{{ $item->stock_code_id }}')" class="switch-input" name="check.{{$key}}">
+                                            <input type="checkbox" wire:click="allocationStore('{{ $key }}', '{{ $item->station_id }}', '{{ $item->stock_code_id }}')" class="switch-input" name="check.{{$key}}">
                                             <span class="switch-toggle-slider">
                                                 <span class="switch-on">
                                                     <i class="bx bx-check"></i>
@@ -89,30 +89,19 @@
                 </div>    
             </div>
             <div class="card-footer">
-                <div class="row mb-2">
-                    <div class="col-sm-4 mb-2">
-                        <label class="form-label" for="lorry_no">Lorry Number</label>
-                        <input type="text" wire:model="lorry_no" class="form-control" placeholder="lorry number">
-                        @error('lorry_no') <span class="error">{{ $message }}</span> @enderror 
-                    </div>
-                        
-                    <div class="col-sm-4 mb-2">
-                        <label class="form-label" for="driver_name">Driver Name</label>
-                        <input type="text" wire:model="driver_name" class="form-control" placeholder="Drivers Name">
-                        @error('driver_name') <span class="error">{{ $message }}</span> @enderror 
-                    </div>
-
-                    <div class="col-sm-4 mb-2">
-                        <label class="form-label" for="location">Location</label>
-                        <input type="text" wire:model="location" class="form-control" placeholder="Location">
-                        @error('location') <span class="error">{{ $message }}</span> @enderror 
-                    </div>
+                <div class="col-md-6 mb-1">
+                    <label for="invoice-from" class="form-label">HOD Approval</label>
+                    <select class="form-select mb-4" wire:model="hod_approved_action">
+                        <option value=""></option>
+                        <option value="Approved">Approve</option>
+                        <option value="Rejected">Reject</option>
+                    </select>
+                    @error("hod_approved_action") <span class="error">{{ $message }}</span> @enderror 
                 </div>
-
                 <div class="col-sm-12 mb-3">
-                    <label class="form-label" for="hod_approved_note">Issue Note</label>
-                    <textarea class="form-control" wire:model="despatched_note" id="invoice-message" cols="3" rows="3"></textarea>
-                    @error("despatched_note") <span class="error">{{ $message }}</span> @enderror 
+                    <label class="form-label" for="hod_approved_note">HOD Note</label>
+                    <textarea class="form-control" wire:model="hod_approved_note" id="hod_approved_note" cols="10" rows="2"></textarea>
+                    @error("hod_approved_note") <span class="error">{{ $message }}</span> @enderror 
                 </div>
 
                 <div class="col-12 d-flex justify-content-between">

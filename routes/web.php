@@ -27,6 +27,7 @@ use App\Livewire\SRCN\SRCNCreate;
 use App\Livewire\SRCN\SRCNEdit;
 use App\Livewire\SRCN\SRCNIndex;
 use App\Livewire\SRCN\SRCNIssue;
+use App\Livewire\SRCN\SRCNAllocation;
 use App\Livewire\SRCN\SRCNShow;
 
 //SRIN
@@ -100,6 +101,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/srcn-edit/{srcnID}', SRCNEdit::class);
     Route::get('/srcn-show/{srcnID}', SRCNShow::class);
     Route::get('/srcn-issue/{srcnID}', SRCNIssue::class);
+    Route::get('/srcn-allocation/{srcnID}', SRCNAllocation::class);
 
     //SRIN
     Route::get('/srin-index', SRINIndex::class);

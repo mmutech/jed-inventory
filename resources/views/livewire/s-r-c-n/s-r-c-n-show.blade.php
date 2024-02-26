@@ -53,37 +53,6 @@
                             </div>
                             @endif
                         </div>
-                        <!-- Issuing Store -->
-                        @if(!empty($issuingStores))
-                            <h5 class="text-capitalize mb-0 text-nowrap text-center fw-bolder mt-2">
-                                Issuing Store
-                            </h5>
-                            <hr class="my-1 mx-n4">
-                            <div class="mb-3 mt-0" data-repeater-list="group-a">
-                                <div class="repeater-wrapper pt-0 pt-md-4" data-repeater-item="">
-                                    <div class="table-responsive text-nowrap">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Stock Code</th>
-                                                    <th>Station</th>
-                                                    <th>Quantity Issued</th>
-                                                    <th>Date</th>
-                                                </tr>
-                                            </thead>
-                                                @foreach ($issuingStores as $key => $issued)
-                                                <tr>
-                                                    <td>{{$issued->stockCodeID->stock_code}}</td>
-                                                    <td>{{$issued->stationID->name}}</td>
-                                                    <td>{{ number_format($issued->quantity)}}</td>
-                                                    <td>{{$issued->date ?? ''}}</td>
-                                                </tr>
-                                                @endforeach
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
 
                         <!-- Item Details-->
                         <h5 class="text-capitalize mb-0 text-nowrap text-center fw-bolder mt-2">
@@ -99,7 +68,7 @@
                                                 <th>Stock Code</th>
                                                 <th>Description</th>
                                                 <th>Quantity Required (Unit)</th>
-                                                <th>Quantity Issued</th>
+                                                <th>Allocation</th>
                                             </tr>
                                         </thead>
                                             @if(!empty($items))
@@ -238,15 +207,14 @@
                         @endif
                     @endif
 
-                    <!--Despatched-->
+                    <!--Issue-->
                     @if(!empty($approval->approved_by))
                         @if(empty($despatch->despatched_by))
-                            <button class="btn btn-label-primary d-grid w-100 mt-2" 
-                                data-bs-toggle="offcanvas" 
-                                data-bs-target="#despatch">
-                            <span class="d-flex align-items-center justify-content-center text-nowrap">
-                                <i class="bx bx-paper-plane bx-xs me-1"></i>Despatch</span>
-                            </button>
+                            <a class="btn btn-label-primary d-grid w-100 mt-2" 
+                            href="{{ url('srcn-issue/'.$data->srcn_id) }}">
+                                <span class="d-flex align-items-center justify-content-center text-nowrap">
+                                    <i class="bx bx-paper-plane bx-xs me-1"></i>Issue</span>
+                            </a>
                         @endif
                     @endif
 
@@ -310,7 +278,7 @@
                                     <label for="payment-terms" class="mb-0">{{$data->srcn_code}}</label>
                                     <label class="switch switch-primary me-0">
                                         <span class="switch-label">
-                                            <a href="{{ url('srcn-issue/'.$data->srcn_id) }}">
+                                            <a href="{{ url('srcn-allocation/'.$data->srcn_id) }}">
                                             <i class="bx bx-pencil bx-sm me-sm-n2"></i></a>
                                         </span>
                                     </label>
@@ -405,23 +373,7 @@
                         @error("despatched_note") <span class="error">{{ $message }}</span> @enderror 
                     </div>
                     <hr>
-                    <div class="col-sm-12 mb-2">
-                        <label class="form-label" for="lorry_no">Lorry Number</label>
-                        <input type="text" wire:model="lorry_no" class="form-control" placeholder="lorry number">
-                        @error('lorry_no') <span class="error">{{ $message }}</span> @enderror 
-                    </div>
                     
-                    <div class="col-sm-12 mb-2">
-                        <label class="form-label" for="driver_name">Driver Name</label>
-                        <input type="text" wire:model="driver_name" class="form-control" placeholder="Drivers Name">
-                        @error('driver_name') <span class="error">{{ $message }}</span> @enderror 
-                    </div>
-
-                    <div class="col-sm-12 mb-2">
-                        <label class="form-label" for="location">Location</label>
-                        <input type="text" wire:model="location" class="form-control" placeholder="Location">
-                        @error('location') <span class="error">{{ $message }}</span> @enderror 
-                    </div>
                 
                     <div class="mb-3 d-flex flex-wrap">
                         <button type="submit" class="btn btn-primary me-3" data-bs-dismiss="offcanvas">Save</button>
