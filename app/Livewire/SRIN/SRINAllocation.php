@@ -1,32 +1,29 @@
 <?php
 
-namespace App\Livewire\SRCN;
+namespace App\Livewire\SRIN;
 
 use Livewire\Component;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Rule; 
 
-use App\Models\SRCNItem;
+use App\Models\SRIN;
 use App\Models\HODApproval;
 use App\Models\IssuingStore;
-use App\Models\SRCN;
 use App\Models\StockCode;
 use App\Models\StoreBinCard;
 use Illuminate\Support\Facades\DB;
 
-class SRCNAllocation extends Component
+class SRINAllocation extends Component
 {
-    public $title = 'SRCN Allocation';
+    public $title = 'SRIN Allocation';
 
     #[Locked]
-    public $srcnID;
+    public $srinID;
 
     public $allocationQty = [], $allocationQuantity;
 
     public $hod_approved_note, $hod_approved_action, $reference, $items, $stockCodeIDs, $allocationStores;
 
-    #[Rule('required')]
-    public $allocation_qty = [], $itemIDs = [], $stationIDs = [], $allocationItems = [], $storeID;
 
     public function allocationStore($allocation_key, $station_id, $stockCodeID)
     {
@@ -52,17 +49,17 @@ class SRCNAllocation extends Component
         ->select('stock_code_id', DB::raw('sum(quantity) as total_quantity'))
         ->get();
 
-        $srcnItem = SRCNItem::where('srcn_id', $this->srcnID)
+        $srin = SRIN::where('srin_id', $this->srinID)
             ->whereIn('stock_code_id', $this->stockCodeIDs)
             ->get();
 
 
         if (!empty($allocationQuantity)) {
             foreach ($allocationQuantity as $allocation_qtys) {
-                foreach($srcnItem as $value){
+                foreach($srin as $value){
                     // dd($value->stock_code_id);
                     if ($value->stock_code_id == $allocation_qtys->stock_code_id) {
-                        SRCNItem::where('id', $value->id)->update([
+                        SRIN::where('id', $value->id)->update([
                             'issued_qty' => $allocation_qtys->total_quantity,
                         ]);
                     }
@@ -79,18 +76,18 @@ class SRCNAllocation extends Component
             ]);
 
             $this->dispatch('success', message: 'Item allocation Successfully!');
-            return redirect()->to('srcn-show/' . $this->srcnID);
+            return redirect()->to('srin-show/' . $this->srinID);
 
         }else{
             $this->dispatch('danger', message: 'Item allocation Not Found!');
         }
     }
 
-    public function mount($srcnID)
+    public function mount($srinID)
     {
-        $this->srcnID = $srcnID;
-        $this->reference = SRCN::where('srcn_id', $this->srcnID)->pluck('srcn_code')->first();
-        $this->stockCodeIDs = SRCNItem::where('srcn_id', $this->srcnID)->pluck('stock_code_id'); 
+        $this->srinID = $srinID;
+        $this->reference = SRIN::where('srin_id', $this->srinID)->pluck('srin_code')->first();
+        $this->stockCodeIDs = SRIN::where('srin_id', $this->srinID)->pluck('stock_code_id'); 
 
         // Get the Issue Store
         $this->allocationStores = StoreBinCard::whereIn('stock_code_id', $this->stockCodeIDs)
@@ -99,26 +96,26 @@ class SRCNAllocation extends Component
         ->get();
 
  
-        // Get the SRCN Item
-        $this->items = SRCNItem::where('srcn_id', $this->srcnID)->get();
+        // Get the SRiN Item
+        $this->items = SRIN::where('srin_id', $this->srinID)->get();
 
         // dd($this->allocationStore);
        
-        if ($this->items->count() > 0) {
-            foreach ($this->items as $key => $data) {
-                $this->itemIDs[$key] = $data->id;
-                $this->stationIDs[$key] = $data->station_id;
-                $this->allocation_qty[$key] = $data->allocation_qty;
-            }
-        } else {
-            $this->dispatch('info', message: 'SRCN Items Not Exist!');
-            return redirect()->to('srcn-show/' . $this->srcnID);
-        }
+        // if ($this->items->count() > 0) {
+        //     foreach ($this->items as $key => $data) {
+        //         $this->itemIDs[$key] = $data->id;
+        //         $this->stationIDs[$key] = $data->station_id;
+        //         $this->allocation_qty[$key] = $data->allocation_qty;
+        //     }
+        // } else {
+        //     $this->dispatch('info', message: 'SRiN Items Not Exist!');
+        //     return redirect()->to('srin-show/' . $this->srinID);
+        // }
     }
 
     public function render()
     {
-        return view('livewire.s-r-c-n.s-r-c-n-allocation')->with([
+        return view('livewire.s-r-i-n.s-r-i-n-allocation')->with([
             'stockCode' => StockCode::where('status', 'Active')->latest()->get(),
         ]);
     }

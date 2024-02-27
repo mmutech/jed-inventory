@@ -19,7 +19,7 @@
           placeholder="Search..."
           aria-label="Search..."
         /> -->
-        <span class="mx-3">Central Store</span>
+        <span class="mx-3">{{ showStores() }}</span>
       </div>
     </div>
     <!-- /Search -->

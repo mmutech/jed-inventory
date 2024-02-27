@@ -160,13 +160,12 @@
                                                             <tr class="input-container">
                                                                 <input type="hidden" wire:model="itemIDs.{{ $key }}" class="form-control">
                                                                 <td class="col-sm-2">
-                                                                <input type="text" wire:model.live="search" class="form-control" placeholder="Type to Search...">
-                                                                    <select class="form-control" wire:model="stock_codes.{{ $key }}">
+                                                                    <select class="form-control select2" wire:model="stock_codes.{{ $key }}" id="drps">
                                                                         <option value="">Select...</option>
                                                                         @foreach($stock_code as $stCode)
-                                                                        <option value="{{$stCode->id}}">{{$stCode->stock_code}} - {{$stCode->name}}</option>
+                                                                            <option value="{{$stCode->id}}">{{$stCode->stock_code}} - {{$stCode->name}}</option>
                                                                         @endforeach
-                                                                    </select>     
+                                                                    </select>    
                                                                     @error("stock_codes.$key") <span class="error">{{ $message }}</span> @enderror 
                                                                 </td>
                                                                 <td><p>{{$item->description}}</p></td>

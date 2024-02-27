@@ -15,6 +15,7 @@ use App\Models\Store;
 use App\Models\StoreBinCard;
 use App\Models\Vehicle;
 use Livewire\Attributes\Locked;
+use Illuminate\Support\Facades\DB;
 
 class SRCNShow extends Component
 {
@@ -26,14 +27,11 @@ class SRCNShow extends Component
     public $recommend_action, $recommend_note, $approved_action, $approved_note,
     $storeID, $requisitionStore, $received_note;
 
-    public $items, $reference, $stockCodeID, $issuingStore, $issuedStore, $issuedStoreID;
+    public $items, $reference, $stockCodeIDs, $issuingStore, $issuedStore, $issuedStoreID;
 
     //Recommendation
     public function recommend()
     {
-        // Validation
-        // $this->validate();
-    
         if($this->srcnID){
             Recommendations::create([
                 'reference'         => $this->reference,
@@ -42,18 +40,15 @@ class SRCNShow extends Component
                 'recommend_by'      => auth()->user()->id,
                 'recommend_date'    => now()
             ]);
-        }
 
-        $this->dispatch('success', message: 'Recommend!');
+            $this->dispatch('success', message: 'Recommend!');
+        }
         
     }
 
     //HOD Approval
     public function haopApproval()
     {
-        // Validation
-        // $this->validate();
-    
         if($this->srcnID){
             Approvals::create([
                 'reference'         => $this->reference,
@@ -62,9 +57,9 @@ class SRCNShow extends Component
                 'approved_by'      => auth()->user()->id,
                 'approved_date'    => now()
             ]);
-        }
 
-        $this->dispatch('success', message: 'HAOP Approval!');
+            $this->dispatch('success', message: 'HAOP Approval!');
+        }
         
     }
 
@@ -72,7 +67,10 @@ class SRCNShow extends Component
     public function received()
     {
         $issuedStore = IssuingStore::where('reference', $this->reference)
-        ->where('station_id', $this->issuedStoreID)->get();
+        ->whereIn('stock_code_id', $this->stockCodeIDs)
+        ->groupBy('stock_code_id')
+        ->select('stock_code_id', DB::raw('sum(quantity) as total_quantity'))
+        ->get();
 
         // dd($issuedStore);
         if (!empty($issuedStore)) {
@@ -81,8 +79,8 @@ class SRCNShow extends Component
                     'stock_code_id' => $issuedStores->stock_code_id,
                     'reference'     => $this->reference,
                     'station_id'    => $this->requisitionStore,
-                    'in'            => $issuedStores->quantity,
-                    'balance'       => $issuedStores->quantity,
+                    'in'            => $issuedStores->total_quantity,
+                    'balance'       => $issuedStores->total_quantity,
                     'date_receipt'  => now(),
                 ]);
             }
@@ -105,10 +103,10 @@ class SRCNShow extends Component
         $this->storeID = Store::where('store_officer', Auth()->user()->id)->pluck('id')->first();
         $this->reference = SRCN::where('srcn_id', $this->srcnID)->pluck('srcn_code')->first();
         $this->items = SRCNItem::where('srcn_id', $this->srcnID)->get();
-        $this->issuedStoreID = IssuingStore::where('reference', $this->reference)
-        ->pluck('station_id')->first();
+        $this->issuedStoreID = IssuingStore::where('reference', $this->reference)->pluck('station_id')->first();
+        $this->stockCodeIDs = SRCNItem::where('srcn_id', $this->srcnID)->pluck('stock_code_id'); 
 
-        // dd($this->issuedStoreID);
+        // dd($this->stockCodeIDs);
     }
     
     public function render()

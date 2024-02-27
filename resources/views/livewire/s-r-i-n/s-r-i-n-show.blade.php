@@ -47,40 +47,24 @@
                                 <span class="fw-bolder">Date:</span>
                                 <span>{{$data->requisition_date}}</span>
                                 <hr class="mb-3 mt-0">
-                            </div>    
-                        </div>
+                            </div>   
 
-                        <!-- Issuing Store -->
-                        @if(!empty($issuingStores))
-                            <h5 class="text-capitalize mb-0 text-nowrap text-center fw-bolder mt-2">
-                                Issuing Store
-                            </h5>
-                            <hr class="my-1 mx-n4">
-                            <div class="mb-3 mt-0" data-repeater-list="group-a">
-                                <div class="repeater-wrapper pt-0 pt-md-4" data-repeater-item="">
-                                    <div class="table-responsive text-nowrap">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Stock Code</th>
-                                                    <th>Station</th>
-                                                    <th>Quantity Issued</th>
-                                                    <th>Date</th>
-                                                </tr>
-                                            </thead>
-                                                @foreach ($issuingStores as $key => $issued)
-                                                <tr>
-                                                    <td>{{$issued->stockCodeID->stock_code}}</td>
-                                                    <td>{{$issued->stationID->name}}</td>
-                                                    <td>{{ number_format($issued->quantity)}}</td>
-                                                    <td>{{$issued->date ?? ''}}</td>
-                                                </tr>
-                                                @endforeach
-                                        </table>
-                                    </div>
-                                </div>
+                            <!-- Lorry Details -->
+                            <div class="col-md-12 mb-4"></div>
+                            @if(!empty($vehicle->lorry_no))
+                            <div class="col-md-6">
+                                <span class="fw-bolder">Lorry No:</span>
+                                <span>{{$vehicle->lorry_no}}</span>
+                                <hr class="mb-0 mt-0">
                             </div>
-                        @endif
+
+                            <div class="col-md-6">
+                                <span class="fw-bolder">Driver Name:</span>
+                                <span>{{$vehicle->driver_name}}</span>
+                                <hr class="mb-0 mt-0">
+                            </div>
+                            @endif 
+                        </div>
                         
                         <!-- Item Details-->
                         <h5 class="text-capitalize mb-0 text-nowrap text-center fw-bolder mt-2">
@@ -96,7 +80,7 @@
                                                 <th>Stock Code</th>
                                                 <th>Description</th>
                                                 <th>Quantity (Unit)</th>
-                                                <th>Quantity Issue</th>
+                                                <th>Allocated</th>
                                             </tr>
                                         </thead>
                                             @if(!empty($items))
@@ -198,16 +182,13 @@
                         @endif
                     @endif
                     
-                    <!--Despatch-->
+                    <!--Issue-->
                     @if(!empty($fa_approval->fa_approved_by))
-                        @if(empty($despatched->despatched_by))
-                            <button class="btn btn-label-primary d-grid w-100 mt-2" 
-                                data-bs-toggle="offcanvas" 
-                                data-bs-target="#despatch">
+                        <a class="btn btn-label-primary d-grid w-100 mt-2" 
+                            href="{{ url('srin-issue/'.$data->srin_id) }}">
                             <span class="d-flex align-items-center justify-content-center text-nowrap">
-                                <i class="bx bx-paper-plane bx-xs me-1"></i>Despatch</span>
-                            </button>
-                        @endif
+                                <i class="bx bx-paper-plane bx-xs me-1"></i>Issue</span>
+                        </a>
                     @endif
 
                     <!--Received-->
@@ -263,7 +244,7 @@
                                 <label for="payment-terms" class="mb-0">{{$data->srin_code}}</label>
                                 <label class="switch switch-primary me-0">
                                     <span class="switch-label">
-                                        <a href="{{ url('srin-issue/'.$data->srin_id) }}">
+                                        <a href="{{ url('srin-allocation/'.$data->srin_id) }}">
                                         <i class="bx bx-pencil bx-sm me-sm-n2"></i></a>
                                     </span>
                                 </label>

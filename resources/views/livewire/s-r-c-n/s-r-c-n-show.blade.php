@@ -209,13 +209,11 @@
 
                     <!--Issue-->
                     @if(!empty($approval->approved_by))
-                        @if(empty($despatch->despatched_by))
-                            <a class="btn btn-label-primary d-grid w-100 mt-2" 
+                        <a class="btn btn-label-primary d-grid w-100 mt-2" 
                             href="{{ url('srcn-issue/'.$data->srcn_id) }}">
-                                <span class="d-flex align-items-center justify-content-center text-nowrap">
-                                    <i class="bx bx-paper-plane bx-xs me-1"></i>Issue</span>
-                            </a>
-                        @endif
+                            <span class="d-flex align-items-center justify-content-center text-nowrap">
+                                <i class="bx bx-paper-plane bx-xs me-1"></i>Issue</span>
+                        </a>
                     @endif
 
                     <!--Received-->

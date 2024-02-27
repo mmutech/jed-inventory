@@ -12,7 +12,7 @@
         <form wire:submit="update">
             <div class="card-body">
                 <h5 class="text-capitalize mb-0 text-nowrap text-center fw-bolder mt-2">
-                    Requisition Items
+                    Allocated Items
                 </h5>
                 <hr class="my-1 mx-n4">
                 <div class="table-responsive text-nowrap mb-4">
@@ -22,15 +22,17 @@
                                 <tr>
                                 <th>Stock Code</th>
                                 <th>Description</th>
-                                <th>Required Quantity(Unit)</th>
+                                <th>Quantity(Unit)</th>
+                                <th>Date</th>
                                 </tr>
                             </thead>
                             <tbody>
                             @foreach ($items as $key => $item)               
                                 <tr class="input-container">
                                     <td><p>{{$item->stockCodeID->stock_code}}</p></td>
-                                    <td><p>{{$item->stockCodeID->name}}</p></td>
-                                    <td><p>{{$item->required_qty}} ({{$item->unitID->description}})</p></td>
+                                    <td><p class="text-nowrap">{{$item->stockCodeID->name}}</p></td>
+                                    <td><p>{{$item->quantity}}</p></td>
+                                    <td><p>{{$item->date}}</p></td>
                                 </tr>
                             @endforeach
                             </tbody>
@@ -39,7 +41,7 @@
                 </div>
 
                 <h5 class="text-capitalize mb-0 text-nowrap text-center fw-bolder mt-2">
-                    ISSUING STORE
+                    Issuing Store
                 </h5>
                 <hr class="my-1 mx-n4">
                 <div class="table-responsive text-nowrap mb-0">

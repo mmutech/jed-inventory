@@ -36,6 +36,7 @@ use App\Livewire\SRIN\SRINEdit;
 use App\Livewire\SRIN\SRINIndex;
 use App\Livewire\SRIN\SRINIssue;
 use App\Livewire\SRIN\SRINShow;
+use App\Livewire\SRIN\SRINAllocation;
 
 //Stock Category
 use App\Livewire\Stock\Category\StockCategoryCreate;
@@ -109,6 +110,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/srin-edit/{srinID}', SRINEdit::class);
     Route::get('/srin-show/{srinID}', SRINShow::class);
     Route::get('/srin-issue/{srinID}', SRINIssue::class);
+    Route::get('/srin-allocation/{srinID}', SRINAllocation::class);
 
     //Store
     Route::get('/store-index', StoreIndex::class);
