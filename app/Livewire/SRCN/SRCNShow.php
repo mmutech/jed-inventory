@@ -25,7 +25,7 @@ class SRCNShow extends Component
     public $srcnID;
 
     public $recommend_action, $recommend_note, $approved_action, $approved_note,
-    $storeID, $requisitionStore, $received_note;
+    $storeID, $requisitionStore, $received_note, $createdBy;
 
     public $items, $reference, $stockCodeIDs, $issuingStore, $issuedStore, $issuedStoreID;
 
@@ -105,8 +105,9 @@ class SRCNShow extends Component
         $this->items = SRCNItem::where('srcn_id', $this->srcnID)->get();
         $this->issuedStoreID = IssuingStore::where('reference', $this->reference)->pluck('station_id')->first();
         $this->stockCodeIDs = SRCNItem::where('srcn_id', $this->srcnID)->pluck('stock_code_id'); 
+        $this->createdBy = SRCN::where('srcn_id', $this->srcnID)->pluck('created_by')->first();
 
-        // dd($this->stockCodeIDs);
+        // dd($this->createdBy);
     }
     
     public function render()
@@ -118,7 +119,7 @@ class SRCNShow extends Component
             'recommend'        => Recommendations::where('reference', $this->reference)->first(),
             'despatch'         => Despatched::where('reference', $this->reference)->first(),
             'received'         => Received::where('reference', $this->reference)->first(),
-            'vehicle'          => Vehicle::where('reference', $this->reference)->first(),
+            'vehicle'          => Vehicle::where('reference', $this->reference)->get(),
         ]);
     }
 }

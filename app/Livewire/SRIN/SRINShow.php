@@ -23,9 +23,8 @@ class SRINShow extends Component
     public $srinID;
 
     public $recommend_action, $recommend_note, $fa_approved_action, $fa_approved_note, $issuingStore,
-    $despatched_note, $received_note, $storeID, $location, $stockCodeIDs, $requisitionStore, $issuedStoreID;
-
-    public $items, $reference;
+    $despatched_note, $received_note, $storeID, $location, $stockCodeIDs, $requisitionStore, 
+    $issuedStoreID, $items, $reference, $createdBy;
 
     //FA Approval
     public function faApproval()
@@ -85,6 +84,7 @@ class SRINShow extends Component
         $this->items = SRIN::where('srin_id', $this->srinID)->get();
         $this->issuedStoreID = IssuingStore::where('reference', $this->reference)->pluck('station_id')->first();
         $this->stockCodeIDs = SRIN::where('srin_id', $this->srinID)->pluck('stock_code_id'); 
+        $this->createdBy = SRIN::where('srin_id', $this->srinID)->pluck('created_by')->first();
         // dd($this->srinID);
     }
 
@@ -97,7 +97,7 @@ class SRINShow extends Component
             'despatched'        => Despatched::where('reference', $this->reference)->first(),
             'received'          => Received::where('reference', $this->reference)->first(),
             'issuingStores'     => IssuingStore::where('reference', $this->reference)->get(),
-            'vehicle'           => Vehicle::where('reference', $this->reference)->first(),
+            'vehicle'           => Vehicle::where('reference', $this->reference)->get(),
         ]);
     }
 }

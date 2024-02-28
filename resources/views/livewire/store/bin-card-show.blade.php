@@ -46,7 +46,7 @@
 
                             <div class="col-md-6">
                                 <span class="fw-bolder">Unit of Issue:</span>
-                                <span>{{$data->unitID->description}}</span>
+                                <span>{{$data->unitID->description ?? ''}}</span>
                                 <hr class="mb-0 mt-0">
                             </div>
 

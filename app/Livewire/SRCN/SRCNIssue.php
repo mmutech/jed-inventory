@@ -65,6 +65,7 @@ class SRCNIssue extends Component
         // Despatched
         Despatched::create([
             'reference'          => $this->reference,
+            'store_id'           => $this->storeID,
             'despatched_note'    => $this->despatched_note,
             'despatched_by'      => auth()->user()->id,
             'despatched_date'    => now()
@@ -76,6 +77,7 @@ class SRCNIssue extends Component
             'lorry_no'          => $this->lorry_no,
             'driver_name'       => $this->driver_name,
             'location'          => $this->location,
+            'store_id'          => $this->storeID,
             'created_by'        => auth()->user()->id,
             'vehicle_date'      => now()
         ]);
@@ -102,9 +104,11 @@ class SRCNIssue extends Component
 
         // Get the SRCN Item
         $this->items = IssuingStore::where('reference', $this->reference)
-        ->where('station_id', $this->storeID)->get();
+        ->where('station_id', $this->storeID)
+        ->whereIn('stock_code_id', $this->stockCodeIDs)->get();
 
-        // dd($this->items);
+        // dd($this->storeID);
+    
        
         if ($this->items->count() > 0) {
             foreach ($this->items as $key => $data) {

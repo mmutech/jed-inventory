@@ -11,14 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('vehicles', function (Blueprint $table) {
+        Schema::create('s_c_n_s', function (Blueprint $table) {
             $table->id();
-            $table->string('reference');
-            $table->string('lorry_no');
-            $table->string('driver_name');
-            $table->string('location');
-            $table->integer('store_id');
-            $table->date('vehicle_date');
+            $table->integer('scn_id');
+            $table->string('scn_code');
+            $table->string('job_from');
+            $table->integer('stock_code_id');
+            $table->integer('unit');
+            $table->integer('quantity');
+            $table->integer('station_id')->nullable();
+            $table->date('returned_date')->nullable();
+            $table->integer('received_by')->nullable();
             $table->integer('created_by');
             $table->integer('updated_by')->nullable();
             $table->timestamps();
@@ -30,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('vehicles');
+        Schema::dropIfExists('s_c_n_s');
     }
 };

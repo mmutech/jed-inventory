@@ -13,6 +13,7 @@ class Despatched extends Model
     protected $table = 'despatcheds';
     protected $fillable = [
         'reference',
+        'store_id',
         'despatched_by',
         'despatched_note',
         'despatched_date'
@@ -21,5 +22,10 @@ class Despatched extends Model
     public function despatchedBy(): BelongsTo
     {
         return $this->belongsTo(user::class, 'despatched_by');
+    }
+
+    public function storeID(): BelongsTo
+    {
+        return $this->belongsTo(Store::class, 'store_id');
     }
 }

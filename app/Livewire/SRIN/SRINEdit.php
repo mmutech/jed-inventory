@@ -85,6 +85,7 @@ class SRINEdit extends Component
             foreach ($items as $key => $data) {
                 $this->itemIDs[$key] = $data->id;
                 $this->stock_codes[$key] = $data->stock_code_id;
+                $this->locations = $data->location;
                 $this->units[$key] = $data->unit;
                 $this->quantities[$key] = $data->required_qty;
                 $this->descriptions[$key] = $data->description;

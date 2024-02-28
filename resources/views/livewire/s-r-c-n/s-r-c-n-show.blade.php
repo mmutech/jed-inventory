@@ -39,18 +39,21 @@
                             </div>
 
                             <div class="col-md-12 mb-4"></div>
-                            @if(!empty($vehicle->lorry_no))
-                            <div class="col-md-6">
-                                <span class="fw-bolder">Lorry No:</span>
-                                <span>{{$vehicle->lorry_no}}</span>
-                                <hr class="mb-0 mt-0">
-                            </div>
+                            @if($vehicle->count() > 0)
+                                <h5>Pickup Vehicle</h5><hr>
+                                @foreach($vehicle as $veh)
+                                    <div class="col-md-4">
+                                        <span class="fw-bolder">Lorry No:</span>
+                                        <span>{{$veh->lorry_no}}</span>
+                                        <hr class="mb-0 mt-0">
+                                    </div>
 
-                            <div class="col-md-6">
-                                <span class="fw-bolder">Driver Name:</span>
-                                <span>{{$vehicle->driver_name}}</span>
-                                <hr class="mb-0 mt-0">
-                            </div>
+                                    <div class="col-md-8">
+                                        <span class="fw-bolder">Driver Name:</span>
+                                        <span>{{$veh->driver_name}}</span>
+                                        <hr class="mb-0 mt-0">
+                                    </div>
+                                @endforeach
                             @endif
                         </div>
 
@@ -159,7 +162,7 @@
                             @endif
 
                              <!--Received -->
-                             @if(!empty($received->received_by))
+                             @if(empty($received->received_by))
                                 <hr class="mx-n1">
                                 <div class="col-sm-8">
                                     <span class="fw-bolder">Received By: </span>
@@ -167,7 +170,7 @@
                                 </div>
                                 <div class="col-sm-4">
                                     <span class="fw-bolder">Date: </span>
-                                    <span>{{$received->received_date}}</span>
+                                    <span>{{$received->received_date ?? ''}}</span>
                                 </div>
                             @endif
                         </div>
@@ -208,7 +211,7 @@
                     @endif
 
                     <!--Issue-->
-                    @if(!empty($approval->approved_by))
+                    @if($issuedStoreID == $storeID && !empty($approval->approved_by))
                         <a class="btn btn-label-primary d-grid w-100 mt-2" 
                             href="{{ url('srcn-issue/'.$data->srcn_id) }}">
                             <span class="d-flex align-items-center justify-content-center text-nowrap">
@@ -217,15 +220,13 @@
                     @endif
 
                     <!--Received-->
-                    @if(!empty($despatch->despatched_by))
-                        @if(empty($received->received_by))
-                            <button class="btn btn-label-primary d-grid w-100 mt-2" 
-                                data-bs-toggle="offcanvas" 
-                                data-bs-target="#received">
-                            <span class="d-flex align-items-center justify-content-center text-nowrap">
-                                <i class="bx bx-paper-plane bx-xs me-1"></i>Received</span>
-                            </button>
-                        @endif
+                    @if($createdBy == Auth()->user()->id && empty($received->received_by))
+                        <button class="btn btn-label-primary d-grid w-100 mt-2" 
+                            data-bs-toggle="offcanvas" 
+                            data-bs-target="#received">
+                        <span class="d-flex align-items-center justify-content-center text-nowrap">
+                            <i class="bx bx-paper-plane bx-xs me-1"></i>Received</span>
+                        </button>
                     @endif
                 </div>
 
@@ -234,20 +235,20 @@
                     <div class="card-body">
                     <!-- Recommendation Note -->
                     @if(!empty($recommend->recommend_by))
-                        <h6 class="fw-bolder">{{$recommend->recommend_action}} Note:</h6>
-                        <p>{{$recommend->recommend_note}}</p>
+                        <h6 class="fw-bolder">{{$recommend->recommend_action ?? ''}} Note:</h6>
+                        <p>{{$recommend->recommend_note ?? ''}}</p>
                     @endif
 
                     <!-- HOD Approval Note -->
                     @if(!empty($approval->approved_by))
-                        <h6 class="fw-bolder">HOD {{$hod_approval->hod_approved_action}} Note:</h6>
-                        <p>{{$hod_approval->hod_approved_note}}</p>
+                        <h6 class="fw-bolder">HOD {{$hod_approval->hod_approved_action ?? ''}} Note:</h6>
+                        <p>{{$hod_approval->hod_approved_note ?? ''}}</p>
                     @endif
 
                     <!-- HAOP Approval Note -->
                     @if(!empty($approval->approved_by))
-                        <h6 class="fw-bolder">HAOP {{$approval->approved_action}} Note:</h6>
-                        <p>{{$approval->approved_note}}</p>
+                        <h6 class="fw-bolder">HAOP {{$approval->approved_action ?? ''}} Note:</h6>
+                        <p>{{$approval->approved_note ?? ''}}</p>
                     @endif
 
                     <!-- Despatch Note -->

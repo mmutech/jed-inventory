@@ -1,6 +1,6 @@
 <div>
     <h6 class="py-1 mb-2">
-    <span class="text-muted fw-light"><a href="{{url('dashboard');}}">Dashboard</a> /</span> SRIN Lists
+        <span class="text-muted fw-light"><a href="{{url('dashboard');}}">Dashboard</a> /</span> SCN Lists
     </h6>
 
     <div class="card mb-4">
@@ -11,7 +11,7 @@
                 <div class="d-flex justify-content-between align-items-start card-widget-1 border-end pb-3 pb-sm-0">
                     <div>
                     <h3 class="mb-1">24</h3>
-                    <p class="mb-0">SRIN</p>
+                    <p class="mb-0">SCN</p>
                     </div>
                     <div class="avatar me-sm-4">
                     <span class="avatar-initial rounded bg-label-secondary">
@@ -59,8 +59,8 @@
                 <div class="col-xl-12 col-sm-12 col-md-12 mx-auto d-flex justify-content-between align-items-center">
                     {{-- Search --}}
                     <div class="me-3">
-                        <h6 class="mb-0">SRIN Lists</h6>
-                        <small>Search SRIN Code Here.</small>
+                        <h6 class="mb-0">SCN Lists</h6>
+                        <small>Search SCN Code Here.</small>
                         <div id="DataTables_Table_0_filter" class="dataTables_filter mb-3">
                             <label>
                                 <div class="input-group input-group-merge">
@@ -76,8 +76,8 @@
                             </label>
                         </div>
                     </div>
-                    <!-- Create SRIN -->
-                    <a class="btn btn-primary" href="{{ url('srin-create')}}"> Create SRIN</a>
+                    <!-- Create ScN -->
+                    <a class="btn btn-primary" href="{{ url('scn-create')}}"> Create SCN</a>
                 </div>
 
                 <div class="col-xl-4 col-sm-4 col-md-4 mx-auto"></div>
@@ -89,20 +89,20 @@
             <div class="table-responsive text-nowrap">
                 <table class="table">
                     <tr>
-                        <th>SRIN Code</th>
-                        <th>Location</th>
-                        <th>Requisition By</th>
+                        <th>SCN Code</th>
+                        <th>Job From</th>
+                        <th>Returned By</th>
                         <th>Date</th>
                         <th></th>
                     </tr>
                     @if(!empty($data))
-                        @foreach ($data as $key => $srin)
+                        @foreach ($data as $key => $scn)
                         <tr>
-                            <td><a href="{{ url('srin-show', $srin->srin_id) }}">{{ $srin->srin_code }}</a></td>
-                            <td>{{ $srin->locationID->name }}</td>
-                            <td>{{ $srin->issuingStore->name ?? '' }}</td>
-                            <td>{{ $srin->created_at->format('Y-m-d') }}</td>
-                            <td><a href="{{ url('srin-edit', $srin->srin_id) }}"><i class="bx bx-pencil text-primary"></i></a></td>
+                            <td><a href="{{ url('scn-show', $scn->scn_id) }}">{{ $scn->scn_code }}</a></td>
+                            <td>{{ $scn->jobFrom->name }}</td>
+                            <td>{{ $scn->createdBy->name ?? '' }}</td>
+                            <td>{{ $scn->returned_date }}</td>
+                            <td><a href="{{ url('scn-edit', $scn->scn_id) }}"><i class="bx bx-pencil text-primary"></i></a></td>
                         </tr>
                         @endforeach
                     @else

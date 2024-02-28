@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('despatcheds', function (Blueprint $table) {
             $table->id();
             $table->string('reference');
+            $table->integer('store_id');
             $table->integer('despatched_by');
             $table->string('despatched_note');
             $table->date('despatched_date');

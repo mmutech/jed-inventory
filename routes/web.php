@@ -2,18 +2,17 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\SRAController;
 use App\Http\Controllers\UserController;
 use App\Livewire\DashboardComponent;
+
 //Purchase Order Number
 use App\Livewire\PurchaseOrder\Create;
 use App\Livewire\PurchaseOrder\Edit;
 use App\Livewire\PurchaseOrder\EditItem;
 use App\Livewire\PurchaseOrder\Index;
 use App\Livewire\PurchaseOrder\Show;
+
 //SRA
 use App\Livewire\SRA\ConfirmItem;
 use App\Livewire\SRA\CreateSra;
@@ -38,10 +37,17 @@ use App\Livewire\SRIN\SRINIssue;
 use App\Livewire\SRIN\SRINShow;
 use App\Livewire\SRIN\SRINAllocation;
 
+//SCN
+use App\Livewire\SCN\SCNIndex;
+use App\Livewire\SCN\SCNCreate;
+use App\Livewire\SCN\SCNEdit;
+use App\Livewire\SCN\SCNShow;
+
 //Stock Category
 use App\Livewire\Stock\Category\StockCategoryCreate;
 use App\Livewire\Stock\Category\StockCategoryEdit;
 use App\Livewire\Stock\Category\StockCategoryIndex;
+
 //Stock Class
 use App\Livewire\Stock\Class\StockClassCreate;
 use App\Livewire\Stock\Class\StockClassEdit;
@@ -49,6 +55,7 @@ use App\Livewire\Stock\Class\StockClassIndex;
 use App\Livewire\Stock\Code\StockCodeCreate;
 use App\Livewire\Stock\Code\StockCodeEdit;
 use App\Livewire\Stock\Code\StockCodeIndex;
+
 //Store
 use App\Livewire\Store\BinCardIndex;
 use App\Livewire\Store\BinCardShow;
@@ -111,6 +118,12 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/srin-show/{srinID}', SRINShow::class);
     Route::get('/srin-issue/{srinID}', SRINIssue::class);
     Route::get('/srin-allocation/{srinID}', SRINAllocation::class);
+
+    //SCN
+    Route::get('/scn-index', SCNIndex::class);
+    Route::get('/scn-create', SCNCreate::class);
+    Route::get('/scn-edit/{scnID}', SCNEdit::class);
+    Route::get('/scn-show/{scnID}', SCNShow::class);
 
     //Store
     Route::get('/store-index', StoreIndex::class);

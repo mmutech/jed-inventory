@@ -61,6 +61,7 @@ class SRINIssue extends Component
         // Despatched
         Despatched::create([
             'reference'          => $this->reference,
+            'store_id'           => $this->storeID,
             'despatched_note'    => $this->despatched_note,
             'despatched_by'      => auth()->user()->id,
             'despatched_date'    => now()
@@ -72,6 +73,7 @@ class SRINIssue extends Component
             'lorry_no'          => $this->lorry_no,
             'driver_name'       => $this->driver_name,
             'location'          => $this->location,
+            'store_id'          => $this->storeID,
             'created_by'        => auth()->user()->id,
             'vehicle_date'      => now()
         ]);
@@ -98,20 +100,21 @@ class SRINIssue extends Component
 
         // Get the SRiN Item
         $this->items = IssuingStore::where('reference', $this->reference)
-        ->where('station_id', $this->storeID)->get();
+        ->where('station_id', $this->storeID)
+        ->whereIn('stock_code_id', $this->stockCodeIDs)->get();
 
         // dd($this->items);
        
-        // if ($this->items->count() > 0) {
-        //     foreach ($this->items as $key => $data) {
-        //         $this->itemIDs[$key] = $data->id;
-        //         $this->stationIDs[$key] = $data->station_id;
-        //         $this->issued_qty[$key] = $data->issued_qty;
-        //     }
-        // } else {
-        //     $this->dispatch('info', message: 'SRiN Items Not Exist!');
-        //     return redirect()->to('srin-show/' . $this->srinID);
-        // }
+        if ($this->items->count() > 0) {
+            foreach ($this->items as $key => $data) {
+                $this->itemIDs[$key] = $data->id;
+                $this->stationIDs[$key] = $data->station_id;
+                $this->issued_qty[$key] = $data->issued_qty;
+            }
+        } else {
+            $this->dispatch('info', message: 'SRiN Items Not Exist!');
+            return redirect()->to('srin-show/' . $this->srinID);
+        }
     }
 
     public function render()

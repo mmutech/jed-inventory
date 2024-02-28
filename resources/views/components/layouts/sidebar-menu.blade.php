@@ -69,7 +69,7 @@
 
             <!-- SCN -->
             <li class="menu-item">
-              <a href="cards-basic.html" class="menu-link">
+              <a href="{{url('scn-index');}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-layout"></i>
                 <div data-i18n="Basic">SCN</div>
               </a>

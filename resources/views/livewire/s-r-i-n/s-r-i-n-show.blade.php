@@ -51,19 +51,22 @@
 
                             <!-- Lorry Details -->
                             <div class="col-md-12 mb-4"></div>
-                            @if(!empty($vehicle->lorry_no))
-                            <div class="col-md-6">
-                                <span class="fw-bolder">Lorry No:</span>
-                                <span>{{$vehicle->lorry_no}}</span>
-                                <hr class="mb-0 mt-0">
-                            </div>
+                            @if($vehicle->count() > 0)
+                                <h5>Pickup Vehicle</h5><hr>
+                                @foreach($vehicle as $veh)
+                                    <div class="col-md-4">
+                                        <span class="fw-bolder">Lorry No:</span>
+                                        <span>{{$veh->lorry_no}}</span>
+                                        <hr class="mb-0 mt-0">
+                                    </div>
 
-                            <div class="col-md-6">
-                                <span class="fw-bolder">Driver Name:</span>
-                                <span>{{$vehicle->driver_name}}</span>
-                                <hr class="mb-0 mt-0">
-                            </div>
-                            @endif 
+                                    <div class="col-md-8">
+                                        <span class="fw-bolder">Driver Name:</span>
+                                        <span>{{$veh->driver_name}}</span>
+                                        <hr class="mb-0 mt-0">
+                                    </div>
+                                @endforeach
+                            @endif
                         </div>
                         
                         <!-- Item Details-->
@@ -183,7 +186,7 @@
                     @endif
                     
                     <!--Issue-->
-                    @if(!empty($fa_approval->fa_approved_by))
+                    @if($issuedStoreID == $storeID && !empty($fa_approval->fa_approved_by))
                         <a class="btn btn-label-primary d-grid w-100 mt-2" 
                             href="{{ url('srin-issue/'.$data->srin_id) }}">
                             <span class="d-flex align-items-center justify-content-center text-nowrap">
@@ -192,7 +195,7 @@
                     @endif
 
                     <!--Received-->
-                    @if(!empty($despatched->despatched_by))
+                    @if($createdBy == Auth()->user()->id)
                         @if(empty($received->received_by))
                             <button class="btn btn-label-primary d-grid w-100 mt-2" 
                                 data-bs-toggle="offcanvas" 

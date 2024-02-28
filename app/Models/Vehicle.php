@@ -16,6 +16,7 @@ class Vehicle extends Model
         'lorry_no',
         'driver_name',
         'location',
+        'store_id',
         'vehicle_date',
         'created_by',
         'updated_by'
@@ -34,5 +35,10 @@ class Vehicle extends Model
     public function createdBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function storeID(): BelongsTo
+    {
+        return $this->belongsTo(Store::class, 'store_id');
     }
 }
