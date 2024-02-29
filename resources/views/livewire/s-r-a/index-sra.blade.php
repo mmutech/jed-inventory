@@ -83,7 +83,7 @@
             <div class="table-responsive text-nowrap">
                 <table class="table">
                     <tr>
-                        <th>Purchase Order No.</th>
+                        <th>SRA Code.</th>
                         <th>Consignment Note No.</th>
                         <th>Invoice No.</th>
                         <th>Received Date</th>
@@ -91,7 +91,7 @@
                     @if(!empty($data))
                         @foreach ($data as $key => $sra)
                         <tr>
-                            <td><a href="{{ url('show-sra', $sra->purchase_order_id) }}">{{ $sra->purchaseOrderID->purchase_order_no }}</a></td>
+                            <td><a href="{{ url('show-sra', $sra->purchase_order_id) }}">{{ $sra->sra_code }}</a></td>
                             <td>{{ $sra->consignment_note_no }}</td>
                             <td>{{ $sra->invoice_no }}</td>
                             <td>{{ $sra->received_date }}</td>
