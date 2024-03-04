@@ -1,15 +1,15 @@
 <div>
     <h6 class="py-1 mb-2">
-    <span class="text-muted fw-light"><a href="{{url('bin-card-index');}}">Store Bin Card</a> /</span> {{$title}}
+    <span class="text-muted fw-light"><a href="{{url('store-ledger-index');}}">Store Ledger</a> /</span> {{$title}}
     </h6>
 
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row invoice-add">
-            <!-- Bin Card / Item Details-->
+            <!-- Ledger / Item Details-->
             <div class="col-lg-12 col-12 mb-lg-0 mb-4">
                 <div class="card invoice-preview-card">
                     <div class="card-body">
-                        <!-- Bin Card -->
+                        <!-- Ledger Details -->
                         <div class="row p-sm-3 p-0">
                             <div class="col-12 mb-md-0 mb-4">
                                 <div class="d-flex svg-illustration mb-2 gap-2 justify-content-center">
@@ -23,75 +23,67 @@
                             </div>
 
                             <div class="col-md-12 mb-2 text-center">
-                                <h5 class="fw-bolder text-decoration-underline">STORES BIN CARD</h5>
+                                <h5 class="fw-bolder text-decoration-underline">STORES LEDGER</h5>
                             </div>
-                            
-                            <div class="col-md-6">
-                                <span class="fw-bolder">Maximum:</span>
-                                <span>{{number_format($max)}}</span>
+
+                            <div class="col-8">
+                                <span class="fw-bolder">Stock Description:</span>
+                                <span>{{ $data->stockCodeID->name }}</span>
                                 <hr class="mb-0 mt-0">
                             </div>
 
-                            <div class="col-md-6">
-                                <span class="fw-bolder">Vocab No:</span>
+                            <div class="col-4">
+                                <span class="fw-bolder">Stock Code:</span>
                                 <span>{{ $data->stockCodeID->stock_code }}</span>
                                 <hr class="mb-0 mt-0">
                             </div>
-                            
-                            <div class="col-md-6">
-                                <span class="fw-bolder">Minimum:</span>
-                                <span>{{number_format($min)}}</span>
-                                <hr class="mb-0 mt-0">
-                            </div>
 
-                            <div class="col-md-6">
-                                <span class="fw-bolder">Unit of Issue:</span>
+                            <div class="col-md-8">
+                                <span class="fw-bolder">Unit:</span>
                                 <span>{{$data->unitID->description ?? ''}}</span>
                                 <hr class="mb-0 mt-0">
                             </div>
 
-                            <!--Re-Order-->
-                            <div class="col-md-6">
-                                @if($max < 10)
-                                <span class="fw-bolder badge bg-label-danger">Re-order</span>
+                            <div class="col-md-4">
+                                <span class="fw-bolder">Basic Price:</span>
+                                <span>{{number_format($data->basic_price) ?? ''}}</span>
                                 <hr class="mb-0 mt-0">
-                                @endif
                             </div>
                         </div>
-
-                        <div class="col-md-12">
-                            <span class="fw-bolder">DESCRIPTION:</span>
-                            <span>{{ $data->stockCodeID->name }} </span>
-                            <hr class="mb-0 mt-0">
-                        </div>
                        
+                        <!-- Ledger Items -->
                         <div class="mb-3 mt-0" data-repeater-list="group-a">
                             <div class="repeater-wrapper pt-0 pt-md-4" data-repeater-item="">
                                 <div class="table-responsive text-nowrap">
-                                    <table class="table">
+                                    <table class="table table-bordered">
                                         <thead>
                                             <tr>
-                                                <th class="text-nowrap">Date Receipt/Issue</th>
+                                                <th colspan="2"></th>
+                                                <th colspan="3" class="text-center fw-bolder">QUANTITY</th>
+                                                <th colspan="3" class="text-center fw-bolder">VALUE</th>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-nowrap">Date</th>
                                                 <th>Reference</th>
-                                                <!-- <th>Vendor Name</th> -->
-                                                <th>station</th>
-                                                <th>In</th>
-                                                <th>Out</th>
+                                                <th>Receipt</th>
+                                                <th>Issue</th>
                                                 <th>Balance</th>
-                                                <th>Initial</th>
+                                                <th>Current(IN)</th>
+                                                <th>Current(OUT)</th>
+                                                <th>Current Balance</th>
                                             </tr>
                                         </thead>
                                             @if(!empty($items))
                                                 @foreach ($items as $key => $item)
                                                 <tr>
-                                                    <td>{{ $item->date_receipt }} {{ $item->date_issue }}</td>
+                                                    <td>{{ $item->date }}</td>
                                                     <td>{{ $item->reference }}</td>
-                                                    <!-- <td>{{ $item->purchaseOrderID->vendor_name ?? '' }}</td> -->
-                                                    <td>{{ $item->stationID->name }}</td>
-                                                    <td>{{ $item->in ?? '-' }}</td>
-                                                    <td>{{ $item->out  ?? '-' }}</td>
-                                                    <td>{{ $item->balance ?? '-' }}</td>
-                                                    <td>{{ $item->storeOfficerID->name }}</td>
+                                                    <td>{{ number_format(round($item->qty_receipt, 2)) ?? '-' }}</td>
+                                                    <td>{{ number_format(round($item->qty_issue, 2)) ?? '-' }}</td>
+                                                    <td>{{ number_format(round($item->qty_balance, 2)) ?? '-' }}</td>
+                                                    <td>{{ number_format(round($item->value_in, 2)) ?? '-' }}</td>
+                                                    <td>{{ number_format(round($item->value_out, 2)) ?? '-' }}</td>
+                                                    <td>{{ number_format(round($item->value_balance, 2)) ?? '-' }}</td>
                                                 </tr>
                                                 @endforeach
                                             @else
@@ -114,7 +106,7 @@
                     </div>
                 </div>
             </div>
-            <!-- /Bin Card / Item Details-->
+            <!-- /Ledger / Item Details-->
 
              <!-- Print Actions -->
              <div class="col-lg-2 col-12 invoice-actions">

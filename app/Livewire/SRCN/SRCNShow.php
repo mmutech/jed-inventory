@@ -13,9 +13,11 @@ use App\Models\SRCN;
 use App\Models\SRCNItem;
 use App\Models\Store;
 use App\Models\StoreBinCard;
+use App\Models\StoreLedger;
 use App\Models\Vehicle;
 use Livewire\Attributes\Locked;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class SRCNShow extends Component
 {
@@ -75,14 +77,52 @@ class SRCNShow extends Component
         // dd($issuedStore);
         if (!empty($issuedStore)) {
             foreach ($issuedStore as $issuedStores) {
+                $latestBinCard = StoreBinCard::where('station_id', $this->storeID)
+                    ->where('stock_code_id', $issuedStores->stock_code_id)
+                    ->orderBy('created_at', 'desc')
+                    ->first();
+        
+                $balance = ($latestBinCard) ? $latestBinCard->balance : 0;
+                
                 StoreBinCard::create([
                     'stock_code_id' => $issuedStores->stock_code_id,
                     'reference'     => $this->reference,
                     'station_id'    => $this->requisitionStore,
                     'in'            => $issuedStores->total_quantity,
-                    'balance'       => $issuedStores->total_quantity,
+                    'balance'       => $issuedStores->total_quantity + $balance,
                     'date_receipt'  => now(),
                 ]);
+            }
+
+             // Create Store Ledger
+             $items = StoreLedger::where('reference', $this->reference)->get();
+
+            //  dd($items);
+             foreach ($items as $item) {
+                if (isset($item->stock_code_id, $item->basic_price)) {
+                    $latestStoreLedger = StoreLedger::where('station_id', $this->storeID)
+                        ->where('stock_code_id', $item->stock_code)
+                        ->orderBy('created_at', 'desc')
+                        ->first();
+            
+                    $qty_balance = ($latestStoreLedger) ? $latestStoreLedger->qty_balance : 0;
+
+                    StoreLedger::create([
+                        'stock_code_id'         => $item->stock_code_id,
+                        'reference'             => $this->reference,
+                        'basic_price'           => $item->basic_price,
+                        'station_id'            => $this->storeID,
+                        'qty_receipt'           => $item->qty_issue,
+                        'qty_balance'           => $item->qty_issue + $qty_balance,
+                        'value_in'              => $item->basic_price * $item->qty_issue,
+                        'value_balance'         => $item->basic_price * $item->qty_issue,
+                        'unit'                  => $item->unit,
+                        'date'                  => now(),
+                        'created_by'            => Auth::user()->id,
+                    ]);
+                } else {
+
+                }
             }
 
             Received::create([

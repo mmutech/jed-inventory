@@ -38,16 +38,16 @@ class PermissionTableSeeder extends Seeder
 
         // create demo users
         $user = \App\Models\User::factory()->create([
-            'name' => 'Store Officer One',
-            'email' => 'store.officer1@jedplc.com',
-        ]);
-        $user->assignRole($role1);
-
-        $user = \App\Models\User::factory()->create([
             'name' => 'Administrator',
             'email' => 'admin@jedplc.com',
         ]);
         $user->assignRole($role2);
+        
+        $user = \App\Models\User::factory()->create([
+            'name' => 'Store Officer One',
+            'email' => 'store.officer1@jedplc.com',
+        ]);
+        $user->assignRole($role1);
 
         $user = \App\Models\User::factory()->create([
             'name' => 'Store Officer Two',

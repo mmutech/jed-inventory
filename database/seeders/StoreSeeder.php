@@ -17,7 +17,7 @@ class StoreSeeder extends Seeder
             [
                 'store_id' => 1,
                 'name' => 'Central Store',
-                'store_officer' => 3,
+                'store_officer' => 1,
                 'location' => 2,
                 'status' => 'Active',
                 'created_by' => 1
@@ -33,7 +33,7 @@ class StoreSeeder extends Seeder
             [
                 'store_id' => 3,
                 'name' => 'Test Store 2',
-                'store_officer' => 1,
+                'store_officer' => 3,
                 'location' => 3,
                 'status' => 'Active',
                 'created_by' => 1

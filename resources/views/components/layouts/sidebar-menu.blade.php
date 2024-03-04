@@ -91,6 +91,14 @@
               </a>
             </li> 
 
+            <!-- Store Ledger-->
+            <li class="menu-item">
+              <a href="{{url('store-ledger-index');}}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-layout"></i>
+                <div data-i18n="Basic">Stores Ledger</div>
+              </a>
+            </li> 
+
              <!-- STock -->
              <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">

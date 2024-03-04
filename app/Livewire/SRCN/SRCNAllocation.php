@@ -23,7 +23,8 @@ class SRCNAllocation extends Component
 
     public $allocationQty = [], $allocationQuantity;
 
-    public $hod_approved_note, $hod_approved_action, $reference, $items, $stockCodeIDs, $allocationStores;
+    public $hod_approved_note, $hod_approved_action, $reference, $items, $stockCodeIDs, 
+    $allocationStores, $balance;
 
     #[Rule('required')]
     public $allocation_qty = [], $itemIDs = [], $stationIDs = [], $allocationItems = [], $storeID;
@@ -93,12 +94,23 @@ class SRCNAllocation extends Component
         $this->stockCodeIDs = SRCNItem::where('srcn_id', $this->srcnID)->pluck('stock_code_id'); 
 
         // Get the Issue Store
-        $this->allocationStores = StoreBinCard::whereIn('stock_code_id', $this->stockCodeIDs)
-        ->groupBy('stock_code_id', 'station_id')
-        ->select('stock_code_id', 'station_id', DB::raw('sum(balance) as total_balance'))
-        ->get();
+        $this->balance =StoreBinCard::select(DB::raw('DISTINCT(station_id)'))->pluck('station_id');
+        // dd($this->balance);
 
- 
+        $this->allocationStores = StoreBinCard::latest('created_at')
+            ->whereIn('stock_code_id', $this->stockCodeIDs)
+            ->groupBy('stock_code_id', 'station_id', 'balance')
+            ->select('stock_code_id', 'station_id', 'balance as total_balance')
+            ->get();
+
+        // foreach ($this->balance as $value) {
+        //     $this->allocationStores = StoreBinCard::latest('created_at')
+        //             ->whereIn('stock_code_id', $this->stockCodeIDs)
+        //             ->groupBy('stock_code_id', 'station_id', 'balance')
+        //             ->select('stock_code_id', 'station_id', 'balance as total_balance')
+        //             ->get();
+        // }
+
         // Get the SRCN Item
         $this->items = SRCNItem::where('srcn_id', $this->srcnID)->get();
 

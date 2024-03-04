@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('reference');
             $table->string('lorry_no');
             $table->string('driver_name');
-            $table->string('location');
+            $table->integer('location');
             $table->integer('store_id');
             $table->date('vehicle_date');
             $table->integer('created_by');

@@ -15,6 +15,11 @@ class LocationSeeder extends Seeder
     {
         $region = [
             [
+                'name' => 'HQ Jedplc',
+                'status' => 'Active',
+                'created_by' => 1
+            ],
+            [
                 'name' => 'Azare',
                 'status' => 'Active',
                 'created_by' => 1

@@ -62,6 +62,8 @@ use App\Livewire\Store\BinCardShow;
 use App\Livewire\Store\StoreCreate;
 use App\Livewire\Store\StoreEdit;
 use App\Livewire\Store\StoreIndex;
+use App\Livewire\Store\StoreLedgerIndex;
+use App\Livewire\Store\StoreLedgerShow;
 
 /*
 |--------------------------------------------------------------------------
@@ -133,6 +135,10 @@ Route::group(['middleware' => ['auth']], function() {
     //Stores Bin Card
     Route::get('/bin-card-index', BinCardIndex::class);
     Route::get('/bin-card-show/{binID}', BinCardShow::class);
+
+    //Stores Ledger
+    Route::get('/store-ledger-index', StoreLedgerIndex::class);
+    Route::get('/store-ledger-show/{ledgerID}', StoreLedgerShow::class);
 
     //Stock Category
     Route::get('/stock-category-index', StockCategoryIndex::class);

@@ -5,21 +5,24 @@ namespace App\Livewire\SRIN;
 use App\Models\Despatched;
 use App\Models\HODApproval;
 use App\Models\IssuingStore;
+use App\Models\location;
 use Livewire\Component;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Rule; 
 use App\Models\SRIN;
 use App\Models\Store;
 use App\Models\StoreBinCard;
+use App\Models\StoreLedger;
 use App\Models\Vehicle;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class SRINIssue extends Component
 {
     public $title = 'Quantity Issue';
 
     #[Locked]
-    public $srinID;
+    public $srinID, $locations;
 
     public $reference, $items, $stockCodeIDs,
     $stockCode, $binCard, $stockCodeID, $balance, $available, $issueStore, $lorry_no, 
@@ -33,21 +36,68 @@ class SRINIssue extends Component
     public function issuingStore($issued_key, $station_id, $stockCodeID)
     {
         $binCard = StoreBinCard::where('station_id', $station_id)
-        ->where('stock_code_id', $stockCodeID)
-        ->where('balance', '>', 0)
-        ->orderBy('created_at')
-        ->get();
-        
-        // dd($binCard);
+            ->where('stock_code_id', $stockCodeID)
+            ->where('balance', '>', 0)
+            ->orderBy('created_at', 'desc')
+            ->first();
 
-        if (!empty($binCard)) {
-            foreach ($binCard as $value) {
-                StoreBinCard::where('id', $value->id)->update([
-                    'out'        => $value->out + $this->issuedQty[$issued_key],
-                    'balance'    => $value->balance - $this->issuedQty[$issued_key],
-                    'updated_by' => auth()->user()->id,
-                ]);
-            }
+        while ($binCard !== null && $binCard->out == $binCard->in) {
+            // Skip the current record and fetch the next one
+            $binCard = StoreBinCard::where('station_id', $station_id)
+                ->where('stock_code_id', $stockCodeID)
+                ->where('balance', '>', 0)
+                ->where('created_at', '>', $binCard->created_at)
+                ->orderBy('created_at', 'desc')
+                ->first();
+        }
+
+        if ($binCard !== null) {
+            StoreBinCard::create([
+                'stock_code_id' => $binCard->stock_code_id,
+                'reference'     => $this->reference,
+                'station_id'    => $station_id,
+                'out'           => $this->issuedQty[$issued_key],
+                'balance'       => $binCard->balance - $this->issuedQty[$issued_key],
+                'date_receipt'  => now(),
+                'updated_by'    => auth()->user()->id,
+            ]);
+
+             //Store Ledger
+             $storeLedger = StoreLedger::where('station_id', $station_id)
+             ->where('stock_code_id', $stockCodeID)
+             ->where('qty_balance', '>', 0)
+             ->orderBy('created_at', 'desc')
+             ->first();
+
+         while ($storeLedger !== null && $storeLedger->qty_issue == $storeLedger->qty_receipt) {
+             // Skip the current record and fetch the next one
+             $storeLedger = StoreLedger::where('station_id', $station_id)
+                 ->where('stock_code_id', $stockCodeID)
+                 ->where('qty_balance', '>', 0)
+                 ->where('created_at', '>=', $storeLedger->created_at)
+                 ->orderBy('created_at', 'desc')
+                 ->first();
+         }
+
+         $current_out = $storeLedger->basic_price * $this->issuedQty[$issued_key];
+         // dd($current_out);
+         
+         if ($storeLedger !== null){
+
+             StoreLedger::create([
+                 'stock_code_id'         => $stockCodeID,
+                 'reference'             => $this->reference,
+                 'basic_price'           => $storeLedger->basic_price,
+                 'station_id'            => $station_id,
+                 'qty_issue'             => $this->issuedQty[$issued_key],
+                 'qty_balance'           => $storeLedger->qty_balance - $this->issuedQty[$issued_key],
+                 'value_out'             => $current_out,
+                 'value_balance'         => $storeLedger->value_balance - $current_out,
+                 'unit'                  => $storeLedger->unit,
+                 'date'                  => now(),
+                 'created_by'            => Auth::user()->id,
+             ]);
+         }
 
             $this->dispatch('success', message: 'Issued Successfully!');
         } else {
@@ -85,6 +135,7 @@ class SRINIssue extends Component
     public function mount($srinID)
     {
         $this->srinID = $srinID;
+        $this->locations  = location::where('status', 'Active')->latest()->get();
         $this->storeID = Store::where('store_officer', Auth()->user()->id)->pluck('id')->first();
         $this->reference = SRIN::where('srin_id', $this->srinID)->pluck('srin_code')->first();
         $this->stockCodeIDs = SRIN::where('srin_id', $this->srinID)->pluck('stock_code_id'); 

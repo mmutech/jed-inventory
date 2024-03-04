@@ -104,7 +104,12 @@
 
                     <div class="col-sm-4 mb-2">
                         <label class="form-label" for="location">Location</label>
-                        <input type="text" wire:model="location" class="form-control" placeholder="Location">
+                        <select class="form-control" wire:model="location">
+                            <option value="">Select...</option>
+                            @foreach($locations as $loc)
+                                <option value="{{$loc->id}}">{{$loc->name}}</option>
+                            @endforeach
+                        </select>
                         @error('location') <span class="error">{{ $message }}</span> @enderror 
                     </div>
                 </div>

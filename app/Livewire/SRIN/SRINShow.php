@@ -54,15 +54,23 @@ class SRINShow extends Component
 
         // dd($issuedStore);
         if (!empty($issuedStore)) {
-            foreach ($issuedStore as $issuedStores) {
-                StoreBinCard::create([
-                    'stock_code_id' => $issuedStores->stock_code_id,
-                    'reference'     => $this->reference,
-                    'station_id'    => $issuedStores->station_id,
-                    'out'           => $issuedStores->total_quantity,
-                    'date_receipt'  => now(),
-                ]);
-            }
+            // foreach ($issuedStore as $issuedStores) {
+            //     $latestBinCard = StoreBinCard::where('station_id', $this->storeID)
+            //         ->where('stock_code_id', $issuedStores->stock_code_id)
+            //         ->orderBy('created_at', 'desc')
+            //         ->first();
+        
+            //     $balance = ($latestBinCard) ? $latestBinCard->balance : 0;
+                
+            //     StoreBinCard::create([
+            //         'stock_code_id' => $issuedStores->stock_code_id,
+            //         'reference'     => $this->reference,
+            //         'station_id'    => $issuedStores->station_id,
+            //         'out'           => $issuedStores->total_quantity,
+            //         'balance'       => $issuedStores->total_quantity + $balance,
+            //         'date_receipt'  => now(),
+            //     ]);
+            // }
 
             Received::create([
                 'reference'        => $this->reference,

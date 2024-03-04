@@ -2,16 +2,16 @@
 
 namespace App\Livewire\SRA;
 
-use App\Models\Approvals;
 use Livewire\Component;
 use Livewire\Attributes\Rule; 
 use Livewire\Attributes\Locked;
 use App\Models\StoreBinCard;
-use App\Models\SRARemark;
 use App\Models\SRA;
 use App\Models\PurchaseOrders;
 use App\Models\Item;
 use App\Models\QualityChecks;
+use App\Models\StoreLedger;
+use App\Models\Approvals;
 use Illuminate\Support\Facades\Auth;
 
 class ShowSra extends Component
@@ -46,18 +46,54 @@ class ShowSra extends Component
                 'status' => 'Completed',
             ]);
 
-             // Create Store Bin Card
-             foreach ($this->items as $item) {
+            // Create Store Bin Card
+            foreach ($this->items as $item) {
                 if (isset($item->stock_code, $item->purchase_order_id, $item->confirm_qty)) {
+            
+                    $latestBinCard = StoreBinCard::where('station_id', $this->stationID)
+                        ->where('stock_code_id', $item->stock_code)
+                        ->orderBy('created_at', 'desc')
+                        ->first();
+            
+                    $balance = ($latestBinCard) ? $latestBinCard->balance : 0;
+                    
                     StoreBinCard::create([
+                        'stock_code_id'     => $item->stock_code,
+                        'reference'         => $this->reference,
+                        'purchase_order_id' => $item->purchase_order_id,
+                        'station_id'        => $this->stationID,
+                        'in'                => $item->confirm_qty,
+                        'balance'           => $item->confirm_qty + $balance,
+                        'unit'              => $item->unit,
+                        'date_receipt'      => now(),
+                        'created_by'        => auth()->user()->id,
+                    ]);
+                } else {
+
+                }
+            }
+
+            // Create Store Ledger
+            foreach ($this->items as $item) {
+                if (isset($item->stock_code, $item->purchase_order_id, $item->confirm_qty)) {
+                    $latestStoreLedger = StoreLedger::where('station_id', $this->stationID)
+                        ->where('stock_code_id', $item->stock_code)
+                        ->orderBy('created_at', 'desc')
+                        ->first();
+            
+                    $qty_balance = ($latestStoreLedger) ? $latestStoreLedger->qty_balance : 0;
+
+                    StoreLedger::create([
                         'stock_code_id'         => $item->stock_code,
                         'reference'             => $this->reference,
-                        'purchase_order_id'     => $item->purchase_order_id,
+                        'basic_price'           => $item->confirm_rate,
                         'station_id'            => $this->stationID,
-                        'in'                    => $item->confirm_qty,
-                        'balance'               => $item->confirm_qty,
+                        'qty_receipt'           => $item->confirm_qty,
+                        'qty_balance'           => $item->confirm_qty + $qty_balance,
+                        'value_in'              => $item->confirm_rate * $item->confirm_qty,
+                        'value_balance'         => $item->confirm_rate * $item->confirm_qty,
                         'unit'                  => $item->unit,
-                        'date_receipt'          => now(),
+                        'date'                  => now(),
                         'created_by'            => Auth::user()->id,
                     ]);
                 } else {

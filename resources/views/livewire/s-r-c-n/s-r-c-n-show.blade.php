@@ -183,7 +183,7 @@
             <div class="col-lg-3 col-12 invoice-actions">
                 <div class="card-header mb-2"> 
                     <!--Print-->
-                    @if(!empty($despatch->despatched_by))
+                    @if(!empty($hod_approval->hod_approved_by))
                     <button class="btn btn-label-primary d-grid w-100">
                         <span class="d-flex align-items-center justify-content-center text-nowrap">
                         <i class="bx bx-file bx-xs me-1"></i>Print</span>
