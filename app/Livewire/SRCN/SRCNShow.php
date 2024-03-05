@@ -102,6 +102,7 @@ class SRCNShow extends Component
                 if (isset($item->stock_code_id, $item->basic_price)) {
                     $latestStoreLedger = StoreLedger::where('station_id', $this->storeID)
                         ->where('stock_code_id', $item->stock_code)
+                        ->where('qty_balance', '>', 0)
                         ->orderBy('created_at', 'desc')
                         ->first();
             

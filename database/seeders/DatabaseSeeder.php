@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
             pollinate_StockClasses::class,
             pollinate_StockCodes::class,
             pollinate_Units::class,
+            pollinate_Items::class,
+            pollinate_PurchaseOrders::class,
             StoreSeeder::class,
         ]);
         

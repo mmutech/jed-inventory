@@ -55,27 +55,26 @@ class SCNShow extends Component
             }
 
             // Create Store Ledger
-            $items = StoreLedger::where('reference', $this->reference)->get();
-
-            //  dd($items);
-             foreach ($items as $item) {
-                if (isset($item->stock_code_id, $item->basic_price)) {
+             foreach ($this->items as $item) {
+                if (isset($item->stock_code_id)) {
                     $latestStoreLedger = StoreLedger::where('station_id', $this->storeID)
-                        ->where('stock_code_id', $item->stock_code)
+                        ->where('stock_code_id', $item->stock_code_id)
                         ->orderBy('created_at', 'desc')
                         ->first();
             
                     $qty_balance = ($latestStoreLedger) ? $latestStoreLedger->qty_balance : 0;
+                    $basic_price = $latestStoreLedger->basic_price;
+                    $value_in = $basic_price * $item->quantity;
 
                     StoreLedger::create([
                         'stock_code_id'         => $item->stock_code_id,
                         'reference'             => $this->reference,
-                        'basic_price'           => $item->basic_price,
+                        'basic_price'           => $basic_price,
                         'station_id'            => $this->storeID,
-                        'qty_receipt'           => $item->qty_issue,
-                        'qty_balance'           => $item->qty_issue + $qty_balance,
-                        'value_in'              => $item->basic_price * $item->qty_issue,
-                        'value_balance'         => $item->basic_price * $item->qty_issue,
+                        'qty_receipt'           => $item->quantity,
+                        'qty_balance'           => $item->quantity + $qty_balance,
+                        'value_in'              => $basic_price * $item->quantity,
+                        'value_balance'         => $value_in + $latestStoreLedger->value_balance,
                         'unit'                  => $item->unit,
                         'date'                  => now(),
                         'created_by'            => Auth::user()->id,

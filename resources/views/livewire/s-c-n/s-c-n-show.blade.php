@@ -115,7 +115,7 @@
                     </button>
                  
                     <!--Received-->
-                    @if(empty($data->received_by))
+                    @if(empty($received->received_by))
                         <button class="btn btn-label-primary d-grid w-100 mt-2" 
                             data-bs-toggle="offcanvas" 
                             data-bs-target="#received">
