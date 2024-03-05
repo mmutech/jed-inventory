@@ -162,7 +162,7 @@
                             @endif
 
                              <!--Received -->
-                             @if(empty($received->received_by))
+                             @if(!empty($received->received_by))
                                 <hr class="mx-n1">
                                 <div class="col-sm-8">
                                     <span class="fw-bolder">Received By: </span>

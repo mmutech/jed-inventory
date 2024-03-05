@@ -82,7 +82,7 @@
                                             <tr>
                                                 <th>Stock Code</th>
                                                 <th>Description</th>
-                                                <th>Quantity (Unit)</th>
+                                                <th>Quantity Required(Unit)</th>
                                                 <th>Allocated</th>
                                             </tr>
                                         </thead>
@@ -195,15 +195,13 @@
                     @endif
 
                     <!--Received-->
-                    @if($createdBy == Auth()->user()->id)
-                        @if(empty($received->received_by))
-                            <button class="btn btn-label-primary d-grid w-100 mt-2" 
-                                data-bs-toggle="offcanvas" 
-                                data-bs-target="#received">
-                            <span class="d-flex align-items-center justify-content-center text-nowrap">
-                                <i class="bx bx-paper-plane bx-xs me-1"></i>Received</span>
-                            </button>
-                        @endif
+                    @if($createdBy == Auth()->user()->id && empty($received->received_by))
+                        <button class="btn btn-label-primary d-grid w-100 mt-2" 
+                            data-bs-toggle="offcanvas" 
+                            data-bs-target="#received">
+                        <span class="d-flex align-items-center justify-content-center text-nowrap">
+                            <i class="bx bx-paper-plane bx-xs me-1"></i>Received</span>
+                        </button>
                     @endif
                 </div>
 

@@ -145,11 +145,17 @@ class SRCNIssue extends Component
         $this->stockCodeIDs = SRCNItem::where('srcn_id', $this->srcnID)->pluck('stock_code_id'); 
 
         // Get the Issue Store
-        $this->issueStore = StoreBinCard::whereIn('stock_code_id', $this->stockCodeIDs)
-        ->where('station_id', $this->storeID)
-        ->groupBy('stock_code_id', 'station_id')
-        ->select('stock_code_id', 'station_id', DB::raw('sum(balance) as total_balance'))
-        ->get();
+        $subquery = StoreBinCard::select('stock_code_id', DB::raw('MAX(created_at) as max_created_at'))
+            ->whereIn('stock_code_id', $this->stockCodeIDs)
+            ->where('station_id', $this->storeID)
+            ->groupBy('station_id', 'stock_code_id');
+    
+        $this->issueStore = StoreBinCard::joinSub($subquery, 'latest_records', function ($join) {
+                $join->on('store_bin_cards.stock_code_id', '=', 'latest_records.stock_code_id');
+                $join->on('store_bin_cards.created_at', '=', 'latest_records.max_created_at');
+            })
+            ->select('store_bin_cards.stock_code_id', 'store_bin_cards.station_id', 'store_bin_cards.balance as total_balance', 'store_bin_cards.created_at')
+            ->get();
 
         // dd($this->issueStore);
 
@@ -160,7 +166,7 @@ class SRCNIssue extends Component
 
         // dd($this->storeID);
     
-       
+
         if ($this->items->count() > 0) {
             foreach ($this->items as $key => $data) {
                 $this->itemIDs[$key] = $data->id;

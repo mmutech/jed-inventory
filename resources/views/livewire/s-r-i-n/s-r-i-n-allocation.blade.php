@@ -49,6 +49,7 @@
                                 <tr>
                                     <th>Station</th>
                                     <th>Stock Code</th>
+                                    <th>Description</th>
                                     <th>Available</th>
                                     <th>Allocate Quantity</th>
                                     <th class="text-end">Action</th>
@@ -57,8 +58,9 @@
                             <tbody wire:ignore>
                             @foreach ($allocationStores as $key => $item)               
                                 <tr class="input-container">
-                                    <td>{{$item->stationID->name}}</td>
+                                    <td><p>{{$item->stationID->name}}</p></td>
                                     <td><p>{{$item->stockCodeID->stock_code}}</p></td>
+                                    <td><p>{{$item->stockCodeID->name}}</p></td>
                                     <td><p>{{$item->total_balance}}</p></td>
                                     <td class="col-sm-2">
                                         <input type="number" wire:model="allocationQty.{{$key}}" class="form-control invoice-item-qty">

@@ -39,7 +39,7 @@
                 </div>
 
                 <h5 class="text-capitalize mb-0 text-nowrap text-center fw-bolder mt-2">
-                    ISSUING STORE
+                    ISSUE
                 </h5>
                 <hr class="my-1 mx-n4">
                 <div class="table-responsive text-nowrap mb-0">
@@ -47,8 +47,8 @@
                         <table class="table" id="itemsTable">
                             <thead>
                                 <tr>
-                                    <th>Station</th>
                                     <th>Stock Code</th>
+                                    <th>Description</th>
                                     <th>Available</th>
                                     <th>Issue Quantity</th>
                                     <th class="text-end">Action</th>
@@ -57,8 +57,8 @@
                             <tbody wire:ignore>
                             @foreach ($issueStore as $key => $item)               
                                 <tr class="input-container">
-                                    <td>{{$item->stationID->name}}</td>
                                     <td><p>{{$item->stockCodeID->stock_code}}</p></td>
+                                    <td><p>{{$item->stockCodeID->name}}</p></td>
                                     <td><p>{{$item->total_balance}}</p></td>
                                     <td class="col-sm-2">
                                         <input type="number" wire:model="issuedQty.{{$key}}" class="form-control invoice-item-qty">

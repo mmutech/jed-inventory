@@ -94,22 +94,18 @@ class SRCNAllocation extends Component
         $this->stockCodeIDs = SRCNItem::where('srcn_id', $this->srcnID)->pluck('stock_code_id'); 
 
         // Get the Issue Store
-        $this->balance =StoreBinCard::select(DB::raw('DISTINCT(station_id)'))->pluck('station_id');
-        // dd($this->balance);
-
-        $this->allocationStores = StoreBinCard::latest('created_at')
+        $subquery = StoreBinCard::select('stock_code_id', DB::raw('MAX(created_at) as max_created_at'))
             ->whereIn('stock_code_id', $this->stockCodeIDs)
-            ->groupBy('stock_code_id', 'station_id', 'balance')
-            ->select('stock_code_id', 'station_id', 'balance as total_balance')
+            ->groupBy('station_id', 'stock_code_id');
+    
+        $this->allocationStores = StoreBinCard::joinSub($subquery, 'latest_records', function ($join) {
+                $join->on('store_bin_cards.stock_code_id', '=', 'latest_records.stock_code_id');
+                $join->on('store_bin_cards.created_at', '=', 'latest_records.max_created_at');
+            })
+            ->select('store_bin_cards.stock_code_id', 'store_bin_cards.station_id', 'store_bin_cards.balance as total_balance', 'store_bin_cards.created_at')
             ->get();
 
-        // foreach ($this->balance as $value) {
-        //     $this->allocationStores = StoreBinCard::latest('created_at')
-        //             ->whereIn('stock_code_id', $this->stockCodeIDs)
-        //             ->groupBy('stock_code_id', 'station_id', 'balance')
-        //             ->select('stock_code_id', 'station_id', 'balance as total_balance')
-        //             ->get();
-        // }
+        // dd($this->allocationStores);
 
         // Get the SRCN Item
         $this->items = SRCNItem::where('srcn_id', $this->srcnID)->get();
