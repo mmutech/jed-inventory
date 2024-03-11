@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('store_ledgers', function (Blueprint $table) {
             $table->id();
+            $table->integer('purchase_order_id')->nullable();
             $table->integer('station_id');
             $table->integer('stock_code_id');
             $table->integer('unit')->nullable();

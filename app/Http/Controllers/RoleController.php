@@ -19,7 +19,7 @@ class RoleController extends Controller
      */
     function __construct()
     {
-         //$this->middleware('Permission:role-list|role-create|role-edit|role-delete', ['only' => ['index','store']]);
+        //$this->middleware('Permission:role-list|role-create|role-edit|role-delete', ['only' => ['index','store']]);
         //  $this->middleware('permission:role-create', ['only' => ['create','store']]);
         //  $this->middleware('permission:role-edit', ['only' => ['edit','update']]);
         //  $this->middleware('permission:role-delete', ['only' => ['destroy']]);
@@ -46,8 +46,8 @@ class RoleController extends Controller
      */
     public function create(): View
     {
-        $permission = Permission::get();
-        return view('auth.roles.create',compact('permission'));
+        $permissions = Permission::get();
+        return view('auth.roles.create',compact('permissions'));
     }
     
     /**
@@ -94,12 +94,12 @@ class RoleController extends Controller
     public function edit($id): View
     {
         $role = Role::find($id);
-        $permission = Permission::get();
+        $permissions = Permission::get();
         $rolePermissions = DB::table("role_has_permissions")->where("role_has_permissions.role_id",$id)
             ->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')
             ->all();
     
-        return view('auth.roles.edit',compact('role','permission','rolePermissions'));
+        return view('auth.roles.edit',compact('role','permissions','rolePermissions'));
     }
     
     /**

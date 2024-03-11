@@ -1,9 +1,9 @@
-@extends('components.layouts.app')
+@extends('components.layouts.guest')
 
 @section('content')
+     <h3 class="card-header mb-3">User Lists</h3>
      <!-- Responsive Table -->
         <div class="card">
-            <h5 class="card-header">User Lists</h5>
             <div class="card-header">
                 <div class="row">
                     <div class="col-xl-12 col-sm-12 col-md-12 mx-auto d-flex justify-content-between align-items-center">

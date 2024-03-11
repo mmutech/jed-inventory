@@ -1,4 +1,4 @@
-@extends('components.layouts.guest')
+@extends('components.layouts.login-temp')
 
 @section('content')
     <div class="container-xxl">

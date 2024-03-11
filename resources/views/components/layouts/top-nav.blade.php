@@ -57,7 +57,13 @@
                 </div>
                 <div class="flex-grow-1">
                   <span class="fw-semibold d-block">{{ Auth::user()->name }}</span>
-                  <small class="text-muted">Admin</small>
+                  @php
+                    if(Auth::User())
+                    {
+                        $role = Auth::User()->roles()->first();
+                    }
+                @endphp
+                  <small class="text-muted">{{  ucfirst($role->name ?? 'None') }}</small>
                 </div>
               </div>
             </a>

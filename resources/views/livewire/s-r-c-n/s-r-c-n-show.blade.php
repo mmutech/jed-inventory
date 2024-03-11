@@ -211,7 +211,7 @@
                     @endif
 
                     <!--Issue-->
-                    @if($issuedStoreID == $storeID && !empty($approval->approved_by))
+                    @if($issuedStoreID == $storeID && !empty($issued_store))
                         <a class="btn btn-label-primary d-grid w-100 mt-2" 
                             href="{{ url('srcn-issue/'.$data->srcn_id) }}">
                             <span class="d-flex align-items-center justify-content-center text-nowrap">
@@ -220,7 +220,7 @@
                     @endif
 
                     <!--Received-->
-                    @if($createdBy == Auth()->user()->id && empty($received->received_by))
+                    @if($createdBy == Auth()->user()->id && !empty($issued_store))
                         <button class="btn btn-label-primary d-grid w-100 mt-2" 
                             data-bs-toggle="offcanvas" 
                             data-bs-target="#received">

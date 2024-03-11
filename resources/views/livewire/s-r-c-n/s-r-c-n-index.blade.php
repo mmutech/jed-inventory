@@ -59,8 +59,8 @@
                 <div class="col-xl-12 col-sm-12 col-md-12 mx-auto d-flex justify-content-between align-items-center">
                     {{-- Search --}}
                     <div class="me-3">
-                        <h6 class="mb-0">SRIN Lists</h6>
-                        <small>Search SRIN Code Here.</small>
+                        <h6 class="mb-0">SRCN Lists</h6>
+                        <small>Search SRCN Code Here.</small>
                         <div id="DataTables_Table_0_filter" class="dataTables_filter mb-3">
                             <label>
                                 <div class="input-group input-group-merge">

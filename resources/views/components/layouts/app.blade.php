@@ -119,35 +119,33 @@
       <div class="layout-container">
         <!-- Menu -->
 
-      @include('components.layouts.sidebar-menu')
+        @include('components.layouts.sidebar-menu')
 
-      <!-- Layout container -->
-      <div class="layout-page">
-      <!-- Navbar -->
-        @include('components.layouts.top-nav')
-        
-        <!-- Content wrapper -->
-        <div class="content-wrapper">
-          <!-- Content -->
-          <div class="container-xxl flex-grow-1 container-p-y">
-            <div class="row">
+        <!-- Layout container -->
+        <div class="layout-page">
+          <!-- Navbar -->
+          @include('components.layouts.top-nav')
+          
+          <!-- Content wrapper -->
+          <div class="content-wrapper">
+            <!-- Content -->
+            <div class="container-xxl flex-grow-1 container-p-y">
+              <div class="row">
 
-            <!-- @yield('content') -->
-            {{$slot}}
+              {{$slot}}
 
+              </div>
             </div>
-          </div>
             @include('components.layouts.footer')
             <div class="content-backdrop fade"></div>
+          </div>
+            <!-- Content wrapper -->
         </div>
-          <!-- Content wrapper -->
-      </div>
         <!-- / Layout page -->
       </div>
 
       <!-- Overlay -->
       <div class="layout-overlay layout-menu-toggle"></div>
-</div>
     </div>
     <!-- / Layout wrapper -->
 

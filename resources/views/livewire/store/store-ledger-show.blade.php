@@ -60,7 +60,7 @@
                                             <tr>
                                                 <th colspan="2"></th>
                                                 <th colspan="3" class="text-center fw-bolder">QUANTITY</th>
-                                                <th colspan="3" class="text-center fw-bolder">VALUE</th>
+                                                <th colspan="4" class="text-center fw-bolder">VALUE</th>
                                             </tr>
                                             <tr>
                                                 <th class="text-nowrap">Date</th>
@@ -68,6 +68,7 @@
                                                 <th>Receipt</th>
                                                 <th>Issue</th>
                                                 <th>Balance</th>
+                                                <th>Basic Price</th>
                                                 <th>Current(IN)</th>
                                                 <th>Current(OUT)</th>
                                                 <th>Current Balance</th>
@@ -81,6 +82,7 @@
                                                     <td>{{ number_format(round($item->qty_receipt, 2)) ?? '-' }}</td>
                                                     <td>{{ number_format(round($item->qty_issue, 2)) ?? '-' }}</td>
                                                     <td>{{ number_format(round($item->qty_balance, 2)) ?? '-' }}</td>
+                                                    <td>{{ number_format(round($item->basic_price, 2)) ?? '-' }}</td>
                                                     <td>{{ number_format(round($item->value_in, 2)) ?? '-' }}</td>
                                                     <td>{{ number_format(round($item->value_out, 2)) ?? '-' }}</td>
                                                     <td>{{ number_format(round($item->value_balance, 2)) ?? '-' }}</td>

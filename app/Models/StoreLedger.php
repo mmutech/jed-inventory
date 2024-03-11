@@ -12,6 +12,7 @@ class StoreLedger extends Model
 
     protected $table = 'store_ledgers';
     protected $fillable = [
+        'purchase_order_id',
         'station_id',
         'stock_code_id',
         'unit',
@@ -36,6 +37,11 @@ class StoreLedger extends Model
     public function stockCodeID(): BelongsTo
     {
         return $this->belongsTo(StockCode::class, 'stock_code_id');
+    }
+
+    public function jobOrderId(): BelongsTo
+    {
+        return $this->belongsTo(PurchaseOrders::class, 'purchase_order_id');
     }
 
     public function unitID(): BelongsTo

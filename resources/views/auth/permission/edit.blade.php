@@ -1,11 +1,11 @@
 @extends('components.layouts.guest')
 
 @section('content')
+<h3>Update Permission</h3>
 <div class="row">
       <div class="col-sm-12">
         <div class="authentication-inner">
-        <h3>Create Role</h3>
-          <!-- Create Role -->
+          <!-- Update Permission -->
           <div class="card">
             <div class="card-body">
             <div class="row mb-3">
@@ -13,7 +13,7 @@
                     <div class="col-xl-4 col-sm-4 col-md-4">
                         
                     </div>
-                    <a class="" href="{{ route('roles.index') }}"> <i class="bx bx-left-arrow-alt bx-sm align-middle"></i>Back</a>
+                    <a class="" href="{{ route('permissions.index') }}"> <i class="bx bx-left-arrow-alt bx-sm align-middle"></i>Back</a>
                 </div>
 
                 <div class="col-xl-4 col-sm-4 col-md-4 mx-auto"></div>
@@ -31,35 +31,24 @@
                 </div>
             @endif
 
-            {!! Form::open(array('route' => 'roles.store','method'=>'POST')) !!}
+            <form action="{{ url('permissions/'.$permission->id) }}" method="POST">
+                @csrf
+                @method('PUT')
                 <div class="row">
                     <div class="col-xs-6 col-sm-12 col-md-6">
                         <div class="form-group">
-                            <strong>Name:</strong>
-                            {!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control mt-3')) !!}
+                            <strong>Permission Name:</strong>
+                            <input type="text" name="name" class="form-control" value="{{$permission->name}}" id="">
                         </div>
                     </div>
-                    <div class="col-xs-12 col-sm-12 col-md-12 mt-3">
-                        <strong class="mb-3">Permissions:</strong>
-                        <div class="row">
-                            @foreach($permissions as $permission)
-                                <div class="col-md-3">
-                                    <label>
-                                        <input type="checkbox" name="permission[]" value="{{$permission->name}}">
-                                        {{$permission->name}}
-                                    </label>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-sm-12 col-md-12 text-end">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                    <div class="col-xs-12 col-sm-12 col-md-12 text-end mt-4">
+                        <button type="submit" class="btn btn-info">Update</button>
                     </div>
                 </div>
-            {!! Form::close() !!}
+            </form>
             </div>
           </div>
-          <!-- Create Role -->
+          <!-- Update Permission -->
         </div>
       </div>
     </div>

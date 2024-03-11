@@ -1,7 +1,7 @@
 @extends('components.layouts.guest')
 
 @section('content')
-    <h3 class="card-header mb-3">Role Management</h3>
+    <h3 class="card-header mb-3">Permission Management</h3>
     <div class="card">
         <div class="card-header">
             <div class="row">
@@ -20,10 +20,10 @@
                             />
                         </div>
                     </div>
-                    <!-- Create Role -->
+                    <!-- Create permission -->
+                    
+                        <a class="btn btn-primary" href="{{ route('permissions.create') }}"> Create Permission</a>
                    
-                        <a class="btn btn-primary" href="{{ route('roles.create') }}"> Create New Role</a>
-                  
                 </div>
 
                 <div class="col-xl-4 col-sm-4 col-md-4 mx-auto"></div>
@@ -42,16 +42,15 @@
                     <th>Name</th>
                     <th width="280px">Action</th>
                 </tr>
-                @foreach ($roles as $key => $role)
+                @foreach ($permissions as $key => $permission)
                 <tr>
                     <td>{{ ++$i }}</td>
-                    <td>{{ $role->name }}</td>
+                    <td>{{ $permission->name }}</td>
                     <td>
-                        <a class="mx-4" href="{{ route('roles.show',$role->id) }}"><i class="bx bx-show-alt me-1 text-secondary"> Show</i></a>
+                        <a href="{{ route('permissions.edit',$permission->id) }}"><i class="bx bx-edit-alt me-1 text-info"> Edit</i></a>
                         
-                        <a  href="{{ route('roles.edit',$role->id) }}"><i class="bx bx-edit-alt me-1 text-info"> Edit</i></a>
-                        @can('role-delete')
-                            {!! Form::open(['method' => 'DELETE','route' => ['roles.destroy', $role->id],'style'=>'display:inline']) !!}
+                        @can('permission-delete')
+                            {!! Form::open(['method' => 'DELETE','route' => ['permissions.destroy', $permission->id],'style'=>'display:inline']) !!}
                                 {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
                             {!! Form::close() !!}
                         @endcan
@@ -59,8 +58,6 @@
                 </tr>
                 @endforeach
             </table>
-
-            {!! $roles->render() !!}
         </div>
     </div>
 @endsection

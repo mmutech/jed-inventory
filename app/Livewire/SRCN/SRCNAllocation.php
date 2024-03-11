@@ -40,7 +40,10 @@ class SRCNAllocation extends Component
                 'date'          => now()
             ]);
 
-        } 
+            $this->dispatch('success', message: 'Item Allocated Successfully!');
+        } else{
+            $this->dispatch('danger', message: 'Items Allocation Fails!');
+        }
      
     }
 
@@ -79,11 +82,11 @@ class SRCNAllocation extends Component
                 'hod_approved_date'    => now()
             ]);
 
-            $this->dispatch('success', message: 'Item allocation Successfully!');
+            $this->dispatch('success', message: 'Items Allocated Successfully!');
             return redirect()->to('srcn-show/' . $this->srcnID);
 
         }else{
-            $this->dispatch('danger', message: 'Item allocation Not Found!');
+            $this->dispatch('danger', message: 'Items Allocation Fails!');
         }
     }
 

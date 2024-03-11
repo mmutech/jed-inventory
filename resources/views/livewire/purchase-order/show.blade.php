@@ -202,7 +202,7 @@
                     @endif
 
                     @if(!empty($approval->approved_by))
-                        <h6 class="fw-bolder">Approved Note:</h6>
+                        <h6 class="fw-bolder">MDs Approved Note:</h6>
                         <p>{{$approval->approved_note}}</p>
                     @endif
 
@@ -220,7 +220,7 @@
                             data-bs-toggle="offcanvas" 
                             data-bs-target="#approval">
                         <span class="d-flex align-items-center justify-content-center text-nowrap">
-                            <i class="bx bx-paper-plane bx-xs me-1"></i>Approval</span>
+                            <i class="bx bx-paper-plane bx-xs me-1"></i>MDs Approval</span>
                         </button>
                     @endif
                     </div>

@@ -130,7 +130,7 @@
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-folder-open"></i>
-                <div data-i18n="Account Settings">Account Settings</div>
+                <div data-i18n="Account Settings">User Management</div>
               </a>
               <ul class="menu-sub">
               <li class="menu-item">
@@ -144,7 +144,7 @@
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="pages-account-settings-notifications.html" class="menu-link">
+                  <a href="{{url('permissions');}}" class="menu-link">
                     <div data-i18n="Notifications">Permission</div>
                   </a>
                 </li>
