@@ -11,16 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('issuing_stores', function (Blueprint $table) {
+        Schema::create('allocations', function (Blueprint $table) {
             $table->id();
             $table->string('reference');
-            $table->integer('from_station');
-            $table->integer('to_station');
+            $table->integer('station_id');
             $table->integer('stock_code_id');
             $table->integer('quantity');
-            $table->integer('purchase_order_id');
             $table->date('date')->nullable();
-            $table->integer('issued_by')->nullable();
+            $table->integer('allocated_by')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('issuing_stores');
+        Schema::dropIfExists('allocations');
     }
 };

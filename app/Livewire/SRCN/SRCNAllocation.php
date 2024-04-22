@@ -8,7 +8,7 @@ use Livewire\Attributes\Rule;
 
 use App\Models\SRCNItem;
 use App\Models\HODApproval;
-use App\Models\IssuingStore;
+use App\Models\Allocation;
 use App\Models\SRCN;
 use App\Models\StockCode;
 use App\Models\StoreBinCard;
@@ -32,12 +32,13 @@ class SRCNAllocation extends Component
     public function allocationStore($allocation_key, $station_id, $stockCodeID)
     {
         if (!empty($station_id)) {
-            IssuingStore::Create([
+            Allocation::Create([
                 'stock_code_id' => $stockCodeID,
                 'reference'     => $this->reference,
                 'station_id'    => $station_id,
                 'quantity'      => $this->allocationQty[$allocation_key],
-                'date'          => now()
+                'date'          => now(),
+                'allocated_by'  => auth()->user()->id,
             ]);
 
             $this->dispatch('success', message: 'Item Allocated Successfully!');
@@ -50,7 +51,7 @@ class SRCNAllocation extends Component
     public function update()
     {
         // Issue Quantity
-        $allocationQuantity = IssuingStore::where('reference', $this->reference)
+        $allocationQuantity = Allocation::where('reference', $this->reference)
         ->whereIn('stock_code_id', $this->stockCodeIDs)
         ->groupBy('stock_code_id')
         ->select('stock_code_id', DB::raw('sum(quantity) as total_quantity'))
@@ -67,7 +68,7 @@ class SRCNAllocation extends Component
                     // dd($value->stock_code_id);
                     if ($value->stock_code_id == $allocation_qtys->stock_code_id) {
                         SRCNItem::where('id', $value->id)->update([
-                            'issued_qty' => $allocation_qtys->total_quantity,
+                            'allocated_qty' => $allocation_qtys->total_quantity,
                         ]);
                     }
                 }

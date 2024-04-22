@@ -16,7 +16,7 @@ class SRCNItem extends Model
         'stock_code_id',
         'unit',
         'required_qty',
-        'issued_qty'
+        'allocated_qty'
     ];
 
     public function stockCodeID(): BelongsTo

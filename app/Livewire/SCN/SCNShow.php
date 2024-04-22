@@ -23,10 +23,18 @@ class SCNShow extends Component
      //Received
      public function received()
      {
-        //  dd($this->items);
          if (!empty($this->items)) {
-
             foreach ($this->items as $item) {
+
+                // Update SCN
+                SCN::where('scn_id', $item->scn_id)->update([
+                    'scn_id'             => $item->scn_id,
+                    'station_id'         => $this->storeID,
+                    'returned_date'      => now(),
+                    'received_by'        => auth()->user()->id
+                ]);
+
+                // Store Bin Card
                 $latestBinCard = StoreBinCard::where('station_id', $this->storeID)
                     ->where('stock_code_id', $item->stock_code_id)
                     ->orderBy('created_at', 'desc')
@@ -35,53 +43,42 @@ class SCNShow extends Component
                 $balance = ($latestBinCard) ? $latestBinCard->balance : 0;
 
                 StoreBinCard::create([
-                    'stock_code_id' => $item->stock_code_id,
-                    'unit'          => $item->unit,
-                    'reference'     => $this->reference,
-                    'station_id'    => $this->storeID,
-                    'in'            => $item->quantity,
-                    'balance'       => $item->quantity + $balance,
-                    'date_receipt'  => now(),
+                    'purchase_order_id'     => $latestBinCard->purchase_order_id,
+                    'stock_code_id'         => $item->stock_code_id,
+                    'unit'                  => $item->unit,
+                    'reference'             => $this->reference,
+                    'station_id'            => $this->storeID,
+                    'in'                    => $item->quantity,
+                    'balance'               => $item->quantity + $balance,
+                    'date_receipt'          => now(),
                 ]);
-            }
 
-            foreach ($this->items as $item) {
-                SCN::where('scn_id', $item->scn_id)->update([
-                    'scn_id'             => $item->scn_id,
-                    'station_id'         => $this->storeID,
-                    'returned_date'      => now(),
-                    'received_by'        => auth()->user()->id
+
+                // Store Ledger
+                $latestStoreLedger = StoreLedger::where('station_id', $this->storeID)
+                ->where('stock_code_id', $item->stock_code_id)
+                ->orderBy('created_at', 'desc')
+                ->first();
+    
+                $qty_balance = ($latestStoreLedger) ? $latestStoreLedger->qty_balance : 0;
+                $basic_price = $latestStoreLedger->basic_price;
+                $value_in = $basic_price * $item->quantity;
+
+                StoreLedger::create([
+                    'purchase_order_id'     => $latestStoreLedger->purchase_order_id,
+                    'stock_code_id'         => $item->stock_code_id,
+                    'reference'             => $this->reference,
+                    'basic_price'           => $basic_price,
+                    'station_id'            => $this->storeID,
+                    'qty_receipt'           => $item->quantity,
+                    'qty_balance'           => $item->quantity + $qty_balance,
+                    'value_in'              => $basic_price * $item->quantity,
+                    'value_balance'         => $value_in + $latestStoreLedger->value_balance,
+                    'unit'                  => $item->unit,
+                    'date'                  => now(),
+                    'created_by'            => Auth::user()->id,
                 ]);
-            }
 
-            // Create Store Ledger
-             foreach ($this->items as $item) {
-                if (isset($item->stock_code_id)) {
-                    $latestStoreLedger = StoreLedger::where('station_id', $this->storeID)
-                        ->where('stock_code_id', $item->stock_code_id)
-                        ->orderBy('created_at', 'desc')
-                        ->first();
-            
-                    $qty_balance = ($latestStoreLedger) ? $latestStoreLedger->qty_balance : 0;
-                    $basic_price = $latestStoreLedger->basic_price;
-                    $value_in = $basic_price * $item->quantity;
-
-                    StoreLedger::create([
-                        'stock_code_id'         => $item->stock_code_id,
-                        'reference'             => $this->reference,
-                        'basic_price'           => $basic_price,
-                        'station_id'            => $this->storeID,
-                        'qty_receipt'           => $item->quantity,
-                        'qty_balance'           => $item->quantity + $qty_balance,
-                        'value_in'              => $basic_price * $item->quantity,
-                        'value_balance'         => $value_in + $latestStoreLedger->value_balance,
-                        'unit'                  => $item->unit,
-                        'date'                  => now(),
-                        'created_by'            => Auth::user()->id,
-                    ]);
-                } else {
-
-                }
             }
  
             Received::create([

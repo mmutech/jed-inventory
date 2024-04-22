@@ -2,6 +2,7 @@
 
 namespace App\Livewire\SRIN;
 
+use App\Models\Allocation;
 use App\Models\Despatched;
 use App\Models\HODApproval;
 use App\Models\IssuingStore;
@@ -26,7 +27,7 @@ class SRINIssue extends Component
 
     public $reference, $items, $stockCodeIDs,
     $stockCode, $binCard, $stockCodeID, $balance, $available, $issueStore, $lorry_no, 
-    $despatched_note, $driver_name, $location;
+    $despatched_note, $driver_name, $location, $requisitionStore;
 
     public $issuedQty = [], $issuedQuantity;
 
@@ -37,7 +38,6 @@ class SRINIssue extends Component
     {
         $binCard = StoreBinCard::where('station_id', $station_id)
             ->where('stock_code_id', $stockCodeID)
-            ->where('balance', '>', 0)
             ->orderBy('created_at', 'desc')
             ->first();
 
@@ -45,65 +45,202 @@ class SRINIssue extends Component
             // Skip the current record and fetch the next one
             $binCard = StoreBinCard::where('station_id', $station_id)
                 ->where('stock_code_id', $stockCodeID)
-                ->where('balance', '>', 0)
                 ->where('created_at', '>', $binCard->created_at)
                 ->orderBy('created_at', 'desc')
                 ->first();
         }
 
         if ($binCard !== null) {
+            //Create Store Bin Card
             StoreBinCard::create([
-                'stock_code_id' => $binCard->stock_code_id,
-                'reference'     => $this->reference,
-                'station_id'    => $station_id,
-                'out'           => $this->issuedQty[$issued_key],
-                'balance'       => $binCard->balance - $this->issuedQty[$issued_key],
-                'date_receipt'  => now(),
-                'updated_by'    => auth()->user()->id,
+                'purchase_order_id'     => $binCard->purchase_order_id,
+                'stock_code_id'         => $binCard->stock_code_id,
+                'unit'                  => $binCard->unit,
+                'reference'             => $this->reference,
+                'station_id'            => $station_id,
+                'out'                   => $this->issuedQty[$issued_key],
+                'balance'               => $binCard->balance - $this->issuedQty[$issued_key],
+                'date_receipt'          => now(),
+                'updated_by'            => auth()->user()->id,
             ]);
 
-             //Store Ledger
-             $storeLedger = StoreLedger::where('station_id', $station_id)
-             ->where('stock_code_id', $stockCodeID)
-             ->where('qty_balance', '>', 0)
-             ->orderBy('created_at', 'desc')
-             ->first();
+            $latestOrder = StoreLedger::where('station_id', $station_id)
+                ->where('stock_code_id', $stockCodeID)
+                ->orderBy('created_at', 'desc')
+                ->first();
 
-         while ($storeLedger !== null && $storeLedger->qty_issue == $storeLedger->qty_receipt) {
-             // Skip the current record and fetch the next one
-             $storeLedger = StoreLedger::where('station_id', $station_id)
-                 ->where('stock_code_id', $stockCodeID)
-                 ->where('qty_balance', '>', 0)
-                 ->where('created_at', '>=', $storeLedger->created_at)
-                 ->orderBy('created_at', 'desc')
-                 ->first();
-         }
+                // dd($latestOrder);
 
-         $current_out = $storeLedger->basic_price * $this->issuedQty[$issued_key];
-         // dd($current_out);
-         
-         if ($storeLedger !== null){
+            $ledger = StoreLedger::where('station_id', $station_id)
+                ->where('stock_code_id', $stockCodeID)
+                ->where('purchase_order_id', '!=', $latestOrder->purchase_order_id)
+                ->orderBy('created_at', 'desc')
+                ->first();
+// dd($ledger->purchase_order_id);
+            $previous_order = $latestOrder->qty_balance - $latestOrder->qty_receipt;
+            $remaining_qty = $this->issuedQty[$issued_key] - $previous_order;
 
-             StoreLedger::create([
-                 'stock_code_id'         => $stockCodeID,
-                 'reference'             => $this->reference,
-                 'basic_price'           => $storeLedger->basic_price,
-                 'station_id'            => $station_id,
-                 'qty_issue'             => $this->issuedQty[$issued_key],
-                 'qty_balance'           => $storeLedger->qty_balance - $this->issuedQty[$issued_key],
-                 'value_out'             => $current_out,
-                 'value_balance'         => $storeLedger->value_balance - $current_out,
-                 'unit'                  => $storeLedger->unit,
-                 'date'                  => now(),
-                 'created_by'            => Auth::user()->id,
-             ]);
-         }
+            // dd($remaining_qty);
+            if ($this->issuedQty[$issued_key] !== null && $previous_order == 0){
+                // Aggregation
+                $value_out = $latestOrder->basic_price * $this->issuedQty[$issued_key];
+                $qty_balance = $latestOrder->qty_balance - $this->issuedQty[$issued_key];
+                $value_balance = $latestOrder->value_balance - $value_out;
 
-            $this->dispatch('success', message: 'Issued Successfully!');
+                // New Store Ledger
+                storeLedger::create([
+                    'purchase_order_id'     => $latestOrder->purchase_order_id,
+                    'stock_code_id'         => $stockCodeID,
+                    'reference'             => $this->reference,
+                    'basic_price'           => $latestOrder->basic_price,
+                    'station_id'            => $station_id,
+                    'qty_issue'             => $this->issuedQty[$issued_key],
+                    'qty_balance'           => $qty_balance,
+                    'value_out'             => $value_out,
+                    'value_balance'         => $value_balance,
+                    'unit'                  => $latestOrder->unit,
+                    'date'                  => now(),
+                    'created_by'            => Auth::user()->id,
+                ]);
+
+                IssuingStore::Create([
+                    'stock_code_id'         => $stockCodeID,
+                    'reference'             => $this->reference,
+                    'from_station'          => $station_id,
+                    'to_station'            => $this->requisitionStore,
+                    'quantity'              => $this->issuedQty[$issued_key],
+                    'purchase_order_id'     => $latestOrder->purchase_order_id,
+                    'issued_by'             => Auth::user()->id,
+                    'date'                  => now()
+                ]);
+
+                IssuingStore::Create([
+                    'stock_code_id'         => $stockCodeID,
+                    'reference'             => $this->reference,
+                    'from_station'          => $station_id,
+                    'to_station'            => $this->requisitionStore,
+                    'quantity'              => $this->issuedQty[$issued_key],
+                    'purchase_order_id'     => $ledger->purchase_order_id,
+                    'issued_by'             => Auth::user()->id,
+                    'date'                  => now()
+                ]);
+
+                $this->dispatch('success', message: 'Issued Successfully!');
+
+            } else if ($this->issuedQty[$issued_key] <= $previous_order) { 
+                // Aggregation
+                $value_out = $ledger->basic_price * $this->issuedQty[$issued_key];
+                $qty_balance = $ledger->qty_balance - $this->issuedQty[$issued_key];
+                $value_balance = $ledger->value_balance - $value_out;
+
+                // dd('Hell0, Available');
+
+                // New Store Ledger
+                storeLedger::create([
+                    'purchase_order_id'     => $ledger->purchase_order_id,
+                    'stock_code_id'         => $stockCodeID,
+                    'reference'             => $this->reference,
+                    'basic_price'           => $ledger->basic_price,
+                    'station_id'            => $station_id,
+                    'qty_issue'             => $this->issuedQty[$issued_key],
+                    'qty_balance'           => $qty_balance,
+                    'value_out'             => $value_out,
+                    'value_balance'         => $value_balance,
+                    'unit'                  => $ledger->unit,
+                    'date'                  => now(),
+                    'created_by'            => Auth::user()->id,
+                ]);
+
+                IssuingStore::Create([
+                    'stock_code_id'         => $stockCodeID,
+                    'reference'             => $this->reference,
+                    'from_station'          => $station_id,
+                    'to_station'            => $this->requisitionStore,
+                    'quantity'              => $this->issuedQty[$issued_key],
+                    'purchase_order_id'     => $ledger->purchase_order_id,
+                    'issued_by'             => Auth::user()->id,
+                    'date'                  => now()
+                ]);
+
+                $this->dispatch('success', message: 'Issued Successfully!');
+                
+            } else if ($this->issuedQty[$issued_key] > $previous_order) {
+
+                // Aggregation
+                $value_out = $ledger->basic_price * $previous_order;
+                $qty_balance = $latestOrder->qty_balance - $previous_order;
+                $value_balance = $latestOrder->value_balance - $value_out;
+
+                $latest_value_out = $latestOrder->basic_price * $remaining_qty;
+                $latest_qty_balance = $qty_balance - $remaining_qty;
+                $latest_value_balance = $value_balance - $latest_value_out;
+
+                // dd($latest_value_balance);
+
+                // If Available Previous order quantity is greater than Issued quantity then do this
+                StoreLedger::create([
+                    'purchase_order_id'     => $ledger->purchase_order_id,
+                    'stock_code_id'         => $stockCodeID,
+                    'reference'             => $this->reference,
+                    'basic_price'           => $ledger->basic_price,
+                    'station_id'            => $station_id,
+                    'qty_issue'             => $previous_order,
+                    'qty_balance'           => $qty_balance,
+                    'value_out'             => $value_out,
+                    'value_balance'         => $value_balance,
+                    'unit'                  => $ledger->unit,
+                    'date'                  => now(),
+                    'created_by'            => Auth::user()->id,
+                ]);
+
+                IssuingStore::Create([
+                    'stock_code_id'         => $stockCodeID,
+                    'reference'             => $this->reference,
+                    'from_station'          => $station_id,
+                    'to_station'            => $this->requisitionStore,
+                    'quantity'              => $previous_order,
+                    'purchase_order_id'     => $ledger->purchase_order_id,
+                    'issued_by'             => Auth::user()->id,
+                    'date'                  => now()
+                ]);
+
+                if ($remaining_qty > 0) {
+                    StoreLedger::create([
+                        'purchase_order_id'     => $latestOrder->purchase_order_id,
+                        'stock_code_id'         => $stockCodeID,
+                        'reference'             => $this->reference,
+                        'basic_price'           => $latestOrder->basic_price,
+                        'station_id'            => $station_id,
+                        'qty_issue'             => $remaining_qty,
+                        'qty_balance'           => $latest_qty_balance,
+                        'value_out'             => $latest_value_out,
+                        'value_balance'         => $latest_value_balance,
+                        'unit'                  => $latestOrder->unit,
+                        'date'                  => now(),
+                        'created_by'            => Auth::user()->id,
+                    ]);
+
+                    IssuingStore::Create([
+                        'stock_code_id'         => $stockCodeID,
+                        'reference'             => $this->reference,
+                        'from_station'          => $station_id,
+                        'to_station'            => $this->requisitionStore,
+                        'quantity'              => $remaining_qty,
+                        'purchase_order_id'     => $latestOrder->purchase_order_id,
+                        'issued_by'             => Auth::user()->id,
+                        'date'                  => now()
+                    ]);
+                }
+
+                $this->dispatch('success', message: 'Issued Successfully!');
+
+            } else {
+                $this->dispatch('danger', message: 'Something Not Right!');
+            }
         } else {
-            $this->dispatch('danger', message: 'Issue Fails!');
+                $this->dispatch('danger', message: 'Items Not Found!');
         }
-     
+
     }
 
     public function update()
@@ -137,6 +274,7 @@ class SRINIssue extends Component
         $this->srinID = $srinID;
         $this->locations  = location::where('status', 'Active')->latest()->get();
         $this->storeID = Store::where('store_officer', Auth()->user()->id)->pluck('id')->first();
+        $this->requisitionStore = SRIN::where('srin_id', $this->srinID)->pluck('location')->first();
         $this->reference = SRIN::where('srin_id', $this->srinID)->pluck('srin_code')->first();
         $this->stockCodeIDs = SRIN::where('srin_id', $this->srinID)->pluck('stock_code_id'); 
 
@@ -156,7 +294,7 @@ class SRINIssue extends Component
         // dd($this->reference);
 
         // Get the SRiN Item
-        $this->items = IssuingStore::where('reference', $this->reference)
+        $this->items = Allocation::where('reference', $this->reference)
         ->where('station_id', $this->storeID)
         ->whereIn('stock_code_id', $this->stockCodeIDs)->get();
        

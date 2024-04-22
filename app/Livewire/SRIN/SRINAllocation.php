@@ -2,6 +2,7 @@
 
 namespace App\Livewire\SRIN;
 
+use App\Models\Allocation;
 use Livewire\Component;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Rule; 
@@ -23,27 +24,32 @@ class SRINAllocation extends Component
     public $allocationQty = [], $allocationQuantity;
 
     public $hod_approved_note, $hod_approved_action, $reference, $items, $stockCodeIDs, $allocationStores;
+    public $allocation_qty = [], $itemIDs = [], $stationIDs = [], $allocationItems = [], $storeID;
 
 
     public function allocationStore($allocation_key, $station_id, $stockCodeID)
     {
         if (!empty($station_id)) {
-            IssuingStore::Create([
+            Allocation::Create([
                 'stock_code_id' => $stockCodeID,
                 'reference'     => $this->reference,
                 'station_id'    => $station_id,
                 'quantity'      => $this->allocationQty[$allocation_key],
-                'date'          => now()
+                'date'          => now(),
+                'allocated_by'  => auth()->user()->id,
             ]);
 
-        } 
+            $this->dispatch('success', message: 'Item Allocated Successfully!');
+        } else{
+            $this->dispatch('danger', message: 'Items Allocation Fails!');
+        }
      
     }
 
     public function update()
     {
         // Issue Quantity
-        $allocationQuantity = IssuingStore::where('reference', $this->reference)
+        $allocationQuantity = Allocation::where('reference', $this->reference)
         ->whereIn('stock_code_id', $this->stockCodeIDs)
         ->groupBy('stock_code_id')
         ->select('stock_code_id', DB::raw('sum(quantity) as total_quantity'))
@@ -107,16 +113,16 @@ class SRINAllocation extends Component
 
         // dd($this->allocationStore);
        
-        // if ($this->items->count() > 0) {
-        //     foreach ($this->items as $key => $data) {
-        //         $this->itemIDs[$key] = $data->id;
-        //         $this->stationIDs[$key] = $data->station_id;
-        //         $this->allocation_qty[$key] = $data->allocation_qty;
-        //     }
-        // } else {
-        //     $this->dispatch('info', message: 'SRiN Items Not Exist!');
-        //     return redirect()->to('srin-show/' . $this->srinID);
-        // }
+        if ($this->items->count() > 0) {
+            foreach ($this->items as $key => $data) {
+                $this->itemIDs[$key] = $data->id;
+                $this->stationIDs[$key] = $data->station_id;
+                $this->allocation_qty[$key] = $data->allocation_qty;
+            }
+        } else {
+            $this->dispatch('info', message: 'SRIN Items Not Exist!');
+            return redirect()->to('srin-show/' . $this->srinID);
+        }
     }
 
     public function render()

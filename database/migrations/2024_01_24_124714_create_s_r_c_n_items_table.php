@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('stock_code_id');
             $table->integer('unit');
             $table->integer('required_qty');
-            $table->integer('issued_qty')->nullable();
+            $table->integer('allocated_qty')->nullable();
             $table->integer('updated_by')->nullable();
             $table->timestamps();
         });

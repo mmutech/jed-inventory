@@ -80,7 +80,7 @@
                                                     <td>{{$item->stockCodeID->stock_code}}</td>
                                                     <td>{{$item->stockCodeID->name}}</td>
                                                     <td>{{ number_format($item->required_qty)}}({{$item->unitID->description}})</td>
-                                                    <td>{{ number_format($item->issued_qty)}}</td>
+                                                    <td>{{ number_format($item->allocated_qty)}}</td>
                                                 </tr>
                                                 @endforeach
                                             @else
@@ -211,7 +211,7 @@
                     @endif
 
                     <!--Issue-->
-                    @if($issuedStoreID == $storeID && !empty($issued_store))
+                    @if($issuedStoreID == $storeID)
                         <a class="btn btn-label-primary d-grid w-100 mt-2" 
                             href="{{ url('srcn-issue/'.$data->srcn_id) }}">
                             <span class="d-flex align-items-center justify-content-center text-nowrap">

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer('stock_code_id');
             $table->string('reference');
             $table->integer('station_id');
-            $table->integer('purchase_order_id')->nullable();
+            $table->integer('purchase_order_id');
             $table->double('in')->nullable();
             $table->double('out')->nullable();
             $table->double('balance')->nullable();

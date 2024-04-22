@@ -35,34 +35,34 @@ class SRCNCreate extends Component
         }
     }
 
-    public function store()
-    {
-        // $this->validate();
-        $lastRecord = SRCN::latest()->first();
-        $this->srcnID = $lastRecord ? $lastRecord->srcn_id + 1 : 1;
-        
-        SRCN::create([
-            'srcn_id' => $this->srcnID,
-            'srcn_code' => 'SRCN-'.$this->srcnID,
-            'requisitioning_store' => $this->storeID,
-            'requisition_date' => now(),
-            'created_by' => auth()->user()->id,
-        ]); 
-
-        // Items
-        foreach ($this->stock_codes as $key => $stock_code) {
-            SRCNItem::create([
+        public function store()
+        {
+            // $this->validate();
+            $lastRecord = SRCN::latest()->first();
+            $this->srcnID = $lastRecord ? $lastRecord->srcn_id + 1 : 1;
+            
+            SRCN::create([
                 'srcn_id' => $this->srcnID,
-                'stock_code_id' => $stock_code,
-                'unit' => $this->units[$key],
-                'required_qty' => $this->quantities[$key],
-            ]);
+                'srcn_code' => 'SRCN-'.$this->srcnID,
+                'requisitioning_store' => $this->storeID,
+                'requisition_date' => now(),
+                'created_by' => auth()->user()->id,
+            ]); 
+
+            // Items
+            foreach ($this->stock_codes as $key => $stock_code) {
+                SRCNItem::create([
+                    'srcn_id' => $this->srcnID,
+                    'stock_code_id' => $stock_code,
+                    'unit' => $this->units[$key],
+                    'required_qty' => $this->quantities[$key],
+                ]);
+            }
+
+            $this->dispatch('success', message: 'SRCN Initiated!');
+
+            return redirect()->to('/srcn-index');
         }
-
-        $this->dispatch('success', message: 'SRCN Initiated!');
-
-        return redirect()->to('/srcn-index');
-    }
 
     public function mount()
     {
