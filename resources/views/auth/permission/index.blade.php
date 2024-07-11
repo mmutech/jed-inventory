@@ -21,9 +21,9 @@
                         </div>
                     </div>
                     <!-- Create permission -->
-                    
+                    @can('create-permission')
                         <a class="btn btn-primary" href="{{ route('permissions.create') }}"> Create Permission</a>
-                   
+                    @endcan
                 </div>
 
                 <div class="col-xl-4 col-sm-4 col-md-4 mx-auto"></div>
@@ -47,12 +47,8 @@
                     <td>{{ ++$i }}</td>
                     <td>{{ $permission->name }}</td>
                     <td>
-                        <a href="{{ route('permissions.edit',$permission->id) }}"><i class="bx bx-edit-alt me-1 text-info"> Edit</i></a>
-                        
-                        @can('permission-delete')
-                            {!! Form::open(['method' => 'DELETE','route' => ['permissions.destroy', $permission->id],'style'=>'display:inline']) !!}
-                                {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
-                            {!! Form::close() !!}
+                        @can('modify-permission')
+                        <a href="{{ route('permissions.edit',$permission->id) }}"><i class="bx bx-edit-alt me-1 text-info"></i></a>
                         @endcan
                     </td>
                 </tr>

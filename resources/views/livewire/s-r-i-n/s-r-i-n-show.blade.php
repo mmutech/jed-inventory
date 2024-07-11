@@ -176,12 +176,14 @@
 
                     @if(!empty($hod_approval->hod_approved_by))
                         @if(empty($fa_approval->fa_approved_by))
-                            <button class="btn btn-label-primary d-grid w-100 mt-2" 
-                                data-bs-toggle="offcanvas" 
-                                data-bs-target="#fa_approval">
-                            <span class="d-flex align-items-center justify-content-center text-nowrap">
-                                <i class="bx bx-paper-plane bx-xs me-1"></i>FA Approval</span>
-                            </button>
+                            @can('fa-approved')
+                                <button class="btn btn-label-primary d-grid w-100 mt-2" 
+                                    data-bs-toggle="offcanvas" 
+                                    data-bs-target="#fa_approval">
+                                <span class="d-flex align-items-center justify-content-center text-nowrap">
+                                    <i class="bx bx-paper-plane bx-xs me-1"></i>FA Approval</span>
+                                </button>
+                            @endcan
                         @endif
                     @endif
                     
@@ -236,22 +238,24 @@
 
                 <!-- HOD Approval Action -->
                 @if(empty($hod_approval->hod_approved_by))
-                    <div class="card">
-                        <div class="card-header">
-                            <p class="mb-2 fw-bolder">HOD Approval</p>
-                        </div>
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between mb-2">
-                                <label for="payment-terms" class="mb-0">{{$data->srin_code}}</label>
-                                <label class="switch switch-primary me-0">
-                                    <span class="switch-label">
-                                        <a href="{{ url('srin-allocation/'.$data->srin_id) }}">
-                                        <i class="bx bx-pencil bx-sm me-sm-n2"></i></a>
-                                    </span>
-                                </label>
+                    @can('hod-approval')
+                        <div class="card">
+                            <div class="card-header">
+                                <p class="mb-2 fw-bolder">HOD Approval</p>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <label for="payment-terms" class="mb-0">{{$data->srin_code}}</label>
+                                    <label class="switch switch-primary me-0">
+                                        <span class="switch-label">
+                                            <a href="{{ url('srin-allocation/'.$data->srin_id) }}">
+                                            <i class="bx bx-pencil bx-sm me-sm-n2"></i></a>
+                                        </span>
+                                    </label>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @endcan
                 @endif
             </div>
             <!-- /Actions --> 

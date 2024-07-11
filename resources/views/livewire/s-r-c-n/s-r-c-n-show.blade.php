@@ -191,22 +191,26 @@
                     @endif
 
                     @if(empty($recommend->recommend_by))
+                    @can('recommend')
                     <button class="btn btn-label-primary d-grid w-100 mt-2" 
                         data-bs-toggle="offcanvas" 
                         data-bs-target="#recommendation">
                     <span class="d-flex align-items-center justify-content-center text-nowrap">
                         <i class="bx bx-paper-plane bx-xs me-1"></i>Recommendation</span>
                     </button>
+                    @endcan
                     @endif
 
                     @if(!empty($hod_approval->hod_approved_by))
                         @if(empty($approval->approved_by))
-                            <button class="btn btn-label-primary d-grid w-100 mt-2" 
-                                data-bs-toggle="offcanvas" 
-                                data-bs-target="#approval">
-                            <span class="d-flex align-items-center justify-content-center text-nowrap">
-                                <i class="bx bx-paper-plane bx-xs me-1"></i>HAOP Approval</span>
-                            </button>
+                            @can('haop-approval')
+                                <button class="btn btn-label-primary d-grid w-100 mt-2" 
+                                    data-bs-toggle="offcanvas" 
+                                    data-bs-target="#approval">
+                                <span class="d-flex align-items-center justify-content-center text-nowrap">
+                                    <i class="bx bx-paper-plane bx-xs me-1"></i>HAOP Approval</span>
+                                </button>
+                            @endcan
                         @endif
                     @endif
 
@@ -268,22 +272,24 @@
                 <!-- HOD Approval Action -->
                 @if(!empty($recommend->recommend_by))
                     @if(empty($hod_approval->hod_approved_by))
-                        <div class="card">
-                            <div class="card-header">
-                                <p class="mb-2 fw-bolder">HOD Approval</p>
-                            </div>
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between mb-2">
-                                    <label for="payment-terms" class="mb-0">{{$data->srcn_code}}</label>
-                                    <label class="switch switch-primary me-0">
-                                        <span class="switch-label">
-                                            <a href="{{ url('srcn-allocation/'.$data->srcn_id) }}">
-                                            <i class="bx bx-pencil bx-sm me-sm-n2"></i></a>
-                                        </span>
-                                    </label>
+                        @can('hod-approval')
+                            <div class="card">
+                                <div class="card-header">
+                                    <p class="mb-2 fw-bolder">HOD Approval</p>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <label for="payment-terms" class="mb-0">{{$data->srcn_code}}</label>
+                                        <label class="switch switch-primary me-0">
+                                            <span class="switch-label">
+                                                <a href="{{ url('srcn-allocation/'.$data->srcn_id) }}">
+                                                <i class="bx bx-pencil bx-sm me-sm-n2"></i></a>
+                                            </span>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        @endcan
                     @endif
                 @endif
             </div>

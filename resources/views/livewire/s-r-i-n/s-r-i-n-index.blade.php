@@ -77,7 +77,9 @@
                         </div>
                     </div>
                     <!-- Create SRIN -->
+                    @can('create-srin')
                     <a class="btn btn-primary" href="{{ url('srin-create')}}"> Create SRIN</a>
+                    @endcan
                 </div>
 
                 <div class="col-xl-4 col-sm-4 col-md-4 mx-auto"></div>
@@ -102,7 +104,11 @@
                             <td>{{ $srin->locationID->name }}</td>
                             <td>{{ $srin->issuingStore->name ?? '' }}</td>
                             <td>{{ $srin->created_at->format('Y-m-d') }}</td>
-                            <td><a href="{{ url('srin-edit', $srin->srin_id) }}"><i class="bx bx-pencil text-primary"></i></a></td>
+                            <td>
+                                @can('modify-srin')
+                                <a href="{{ url('srin-edit', $srin->srin_id) }}"><i class="bx bx-pencil text-primary"></i></a>
+                                @endcan
+                            </td>
                         </tr>
                         @endforeach
                     @else

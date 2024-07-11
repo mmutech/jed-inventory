@@ -98,8 +98,7 @@
                                     <span>{{$data->returned_date}}</span>
                                 </div>
                             @endif
-                        </div>
-                        
+                        </div>   
                     </div>
                 </div>
             </div>

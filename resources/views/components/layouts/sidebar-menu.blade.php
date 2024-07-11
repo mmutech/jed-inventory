@@ -24,14 +24,17 @@
             </li>
 
             <!-- Purchase Order -->
+            @can('index-po')
             <li class="menu-item">
               <a href="{{url('purchase-order');}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-collection"></i>
                 <div data-i18n="Basic">Purchased Order</div>
               </a>
             </li> 
+            @endcan
 
             <!-- SRA -->
+            @can('index-sra')
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-folder-open"></i>
@@ -50,57 +53,71 @@
                 </li>
               </ul>
             </li>
+            @endcan
             
             <!-- SRCN -->
+            @can('index-srcn')
             <li class="menu-item">
               <a href="{{url('srcn-index');}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-layout"></i>
                 <div data-i18n="Basic">SRCN</div>
               </a>
             </li> 
+            @endcan
 
              <!-- SRIN -->
+             @can('index-srin')
              <li class="menu-item">
               <a href="{{url('srin-index');}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-layout"></i>
                 <div data-i18n="Basic">SRIN</div>
               </a>
             </li> 
+            @endcan
 
             <!-- SCN -->
+            @can('index-scn')
             <li class="menu-item">
               <a href="{{url('scn-index');}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-layout"></i>
                 <div data-i18n="Basic">SCN</div>
               </a>
             </li> 
+            @endcan
 
             <!-- Store -->
+            @can('index-store')
             <li class="menu-item">
               <a href="{{url('store-index');}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-layout"></i>
                 <div data-i18n="Basic">Store</div>
               </a>
             </li> 
+            @endcan
 
             <!-- Store Bin Card-->
+            @can('index-bin-card')
             <li class="menu-item">
               <a href="{{url('bin-card-index');}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-layout"></i>
                 <div data-i18n="Basic">Stores Bin Card</div>
               </a>
             </li> 
+            @endcan
 
             <!-- Store Ledger-->
+            @can('index-ledger')
             <li class="menu-item">
               <a href="{{url('store-ledger-index');}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-layout"></i>
                 <div data-i18n="Basic">Stores Ledger</div>
               </a>
             </li> 
+            @endcan
 
-             <!-- STock -->
-             <li class="menu-item">
+            <!-- STock -->
+            @can('index-stock')
+            <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-folder-open"></i>
                 <div data-i18n="sra Settings">Stock</div>
@@ -123,7 +140,9 @@
                 </li>
               </ul>
             </li>
+            @endcan
 
+            @can('index-user')
             <li class="menu-header small text-uppercase">
               <span class="menu-header-text">Users</span>
             </li>
@@ -150,5 +169,6 @@
                 </li>
               </ul>
             </li>
+            @endcan
           </ul>
         </aside>

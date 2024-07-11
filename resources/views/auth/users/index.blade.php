@@ -23,7 +23,9 @@
                             </div>
                         </div>
                         <!-- Create user -->
+                        @can('create-user')
                         <a class="btn btn-primary" href="{{ route('users.create') }}"> Create New User</a>
+                        @endcan
                     </div>
 
                     <div class="col-xl-4 col-sm-4 col-md-4 mx-auto"></div>
@@ -52,23 +54,24 @@
                           @endforeach
                         @endif
                       </td>
-                      <td>
-                      <div class="dropdown">
-                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                              <i class="bx bx-dots-vertical-rounded"></i>
-                            </button>
-                            <div class="dropdown-menu">
-                            <a class="dropdown-item" href="{{ route('users.edit',$user->id) }}">
-                            <i class="bx bx-edit-alt me-1"></i> Edit</a>
-                            {!! Form::open(['method' => 'DELETE','route' => ['users.destroy', $user->id],'style'=>'display:inline']) !!}
-                              {!! Form::submit('Delete', ['class' => 'dropdown-item']) !!}
-                            {!! Form::close() !!}
+                        <td>
+                        @can('modify-user')
+                          <div class="dropdown">
+                              <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                <i class="bx bx-dots-vertical-rounded"></i>
+                              </button>
+                              <div class="dropdown-menu">
+                              <a class="dropdown-item" href="{{ route('users.edit',$user->id) }}">
+                              <i class="bx bx-edit-alt me-1"></i> Edit</a>
+                              {!! Form::open(['method' => 'DELETE','route' => ['users.destroy', $user->id],'style'=>'display:inline']) !!}
+                                {!! Form::submit('Delete', ['class' => 'dropdown-item']) !!}
+                              {!! Form::close() !!}
+                              </div>
                             </div>
-                          </div>
-                        <!-- <a class="btn btn-info" href="{{ route('users.show',$user->id) }}">Show</a>
-                        <a class="btn btn-primary" href="{{ route('users.edit',$user->id) }}">Edit</a> -->
-                          
-                      </td>
+                          <!-- <a class="btn btn-info" href="{{ route('users.show',$user->id) }}">Show</a>
+                          <a class="btn btn-primary" href="{{ route('users.edit',$user->id) }}">Edit</a> -->
+                        @endcan 
+                        </td>
                     </tr>
                   @endforeach
                 </table>

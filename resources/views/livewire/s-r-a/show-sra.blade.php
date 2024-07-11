@@ -207,12 +207,14 @@
 
                     @if(!empty($qualityCheck->quality_check_by))
                         @if(empty($approval->approved_by))
+                        @can('haop-approval')
                         <button class="btn btn-label-primary d-grid w-100 mt-2" 
                             data-bs-toggle="offcanvas" 
                             data-bs-target="#account-operation">
                         <span class="d-flex align-items-center justify-content-center text-nowrap">
                             <i class="bx bx-paper-plane bx-xs me-1"></i>Account Operations</span>
                         </button>
+                        @endcan
                         
                         @endif
                     @endif
@@ -240,24 +242,29 @@
                             <p class="mb-2 fw-bolder">Modify SRA / Item</p>
                         </div>
                         <div class="card-body">
+                            @can('modify-sra')
                             <div class="d-flex justify-content-between mb-2">
-                            <label for="payment-terms" class="mb-0">SRA</label>
-                            <label class="switch switch-primary me-0">
-                                <span class="switch-label">
-                                    <a href="{{ url('edit-sra/'.$data->id) }}">
-                                    <i class="bx bx-pencil bx-sm me-sm-n2"></i></a>
-                                </span>
-                            </label>
+                                <label for="payment-terms" class="mb-0">SRA</label>
+                                <label class="switch switch-primary me-0">
+                                    <span class="switch-label">
+                                        <a href="{{ url('edit-sra/'.$data->id) }}">
+                                        <i class="bx bx-pencil bx-sm me-sm-n2"></i></a>
+                                    </span>
+                                </label>
                             </div>
+                            @endcan
+
+                            @can('quality-check')
                             <div class="d-flex justify-content-between mb-2">
-                            <label for="client-notes" class="mb-0">Quality Check</label>
-                            <label class="switch switch-primary me-0">
-                                <span class="switch-label">
-                                <a href="{{ url('quality-check/'.$item->purchase_order_id) }}">
-                                    <i class="bx bx-pencil bx-sm me-sm-n2"></i></a>
-                                </span>
-                            </label>
+                                <label for="client-notes" class="mb-0">Quality Check</label>
+                                <label class="switch switch-primary me-0">
+                                    <span class="switch-label">
+                                    <a href="{{ url('quality-check/'.$item->purchase_order_id) }}">
+                                        <i class="bx bx-pencil bx-sm me-sm-n2"></i></a>
+                                    </span>
+                                </label>
                             </div>
+                            @endcan
                         </div>
                     </div>
                     @endif

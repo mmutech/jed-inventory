@@ -89,7 +89,9 @@
                         </div>
                     </div>
                     <!-- Create user -->
+                    @can('create-po')
                     <a class="btn btn-primary" href="{{ url('purchase-order-create')}}"> New Purchase Order</a>
+                    @endcan
                 </div>
 
                 <div class="col-xl-4 col-sm-4 col-md-4 mx-auto"></div>

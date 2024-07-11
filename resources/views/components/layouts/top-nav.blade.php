@@ -43,7 +43,22 @@
       <li class="nav-item navbar-dropdown dropdown-user dropdown">
         <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
           <div class="avatar avatar-online">
-            <img src="../assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+            <!-- <img src="../assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" /> -->
+            <svg class="position-relative avatar" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="50" fill="#696CFF" />
+                <text x="50%" y="50%" text-anchor="middle" alignment-baseline="central" font-family="Arial, sans-serif" font-size="30" fill="#fff">
+                  @php
+                      $nameParts = explode(' ', Auth::user()->name);
+                      $initials = '';
+
+                      foreach ($nameParts as $part) {
+                          $initials .= strtoupper(substr($part, 0, 1));
+                      }
+                  @endphp
+
+                  {{ $initials }}  
+                </text>
+            </svg>
           </div>
         </a>
         <ul class="dropdown-menu dropdown-menu-end">
@@ -52,7 +67,22 @@
               <div class="d-flex">
                 <div class="flex-shrink-0 me-3">
                   <div class="avatar avatar-online">
-                    <img src="../assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                    <!-- <img src="../assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" /> -->
+                    <svg class="position-relative avatar" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                      <circle cx="50" cy="50" r="50" fill="#696CFF" />
+                      <text x="50%" y="50%" text-anchor="middle" alignment-baseline="central" font-family="Arial, sans-serif" font-size="30" fill="#fff">
+                        @php
+                            $nameParts = explode(' ', Auth::user()->name);
+                            $initials = '';
+
+                            foreach ($nameParts as $part) {
+                                $initials .= strtoupper(substr($part, 0, 1));
+                            }
+                        @endphp
+
+                        {{ $initials }}  
+                      </text>
+                    </svg>
                   </div>
                 </div>
                 <div class="flex-grow-1">
@@ -62,7 +92,7 @@
                     {
                         $role = Auth::User()->roles()->first();
                     }
-                @endphp
+                  @endphp
                   <small class="text-muted">{{  ucfirst($role->name ?? 'None') }}</small>
                 </div>
               </div>

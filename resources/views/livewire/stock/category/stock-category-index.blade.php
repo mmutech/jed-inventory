@@ -75,7 +75,9 @@
                         </div>
                     </div>
                     <!-- Create user -->
+                    @can('create-category')
                     <a class="btn btn-primary" href="{{ url('stock-category-create')}}"><i class="bx bx-plus"></i>  Create Stock Category</a>
+                    @endcan
                 </div>
 
                 <div class="col-xl-4 col-sm-4 col-md-4 mx-auto"></div>
@@ -102,7 +104,11 @@
                             @else
                                 <label class="badge bg-label-danger">{{ $stockCat->status }}</label>
                             @endif
-                        <td><a href="{{ url('stock-category-edit', $stockCat->id) }}"><i class="bx bx-pencil text-info"></i></a></td>
+                        <td>
+                            @can('modify-category')
+                                <a href="{{ url('stock-category-edit', $stockCat->id) }}"><i class="bx bx-pencil text-info"></i></a>
+                            @endcan
+                        </td>
                         </tr>
                         @endforeach
                     @else

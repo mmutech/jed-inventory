@@ -77,7 +77,9 @@
                         </div>
                     </div>
                     <!-- Create ScN -->
+                    @can('create-scn')
                     <a class="btn btn-primary" href="{{ url('scn-create')}}"> Create SCN</a>
+                    @endcan
                 </div>
 
                 <div class="col-xl-4 col-sm-4 col-md-4 mx-auto"></div>
@@ -102,7 +104,9 @@
                             <td>{{ $scn->jobFrom->name }}</td>
                             <td>{{ $scn->createdBy->name ?? '' }}</td>
                             <td>{{ $scn->returned_date }}</td>
+                            @can('modify-scn')
                             <td><a href="{{ url('scn-edit', $scn->scn_id) }}"><i class="bx bx-pencil text-primary"></i></a></td>
+                            @endcan
                         </tr>
                         @endforeach
                     @else

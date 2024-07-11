@@ -75,7 +75,9 @@
                         </div>
                     </div>
                     <!-- Create user -->
+                    @can('create-class')
                     <a class="btn btn-primary" href="{{ url('stock-class-create')}}"><i class="bx bx-plus"></i>  Create Stock Class</a>
+                    @endcan
                 </div>
 
                 <div class="col-xl-4 col-sm-4 col-md-4 mx-auto"></div>
@@ -103,7 +105,11 @@
                             @else
                                 <label class="badge bg-label-danger">{{ $stockClass->status }}</label>
                             @endif
-                        <td><a href="{{ url('stock-class-edit', $stockClass->id) }}"><i class="bx bx-pencil text-info"></i></a></td>
+                        <td>
+                            @can('modify-class')
+                                <a href="{{ url('stock-class-edit', $stockClass->id) }}"><i class="bx bx-pencil text-info"></i></a>
+                            @endcan
+                        </td>
                         </tr>
                         @endforeach
                     @else

@@ -77,7 +77,9 @@
                         </div>
                     </div>
                     <!-- Create SRCN -->
+                    @can('create-srcn')
                     <a class="btn btn-primary" href="{{ url('srcn-create')}}"> Create SRCN</a>
+                    @endcan
                 </div>
 
                 <div class="col-xl-4 col-sm-4 col-md-4 mx-auto"></div>
@@ -100,7 +102,9 @@
                             <td><a href="{{ url('srcn-show', $srcn->srcn_id) }}">{{ $srcn->srcn_code }}</a></td>
                             <td>{{ $srcn->requisitionStationID->name }}</td>
                             <td>{{ $srcn->requisition_date }}</td>
+                            @can('modify-srcn')
                             <td><a href="{{ url('srcn-edit', $srcn->srcn_id) }}"><i class="bx bx-pencil text-primary"></i></a></td>
+                            @endcan
                         </tr>
                         @endforeach
                     @else

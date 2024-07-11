@@ -178,10 +178,12 @@
                 @if(!empty($approval->approved_action))
                     <div class="card-header mb-2">
                         <!--Raised SRA-->
+                        @can('index-sra')
                         <a href="{{ url('confirm-item/'.$data->purchase_order_id) }}" class="btn btn-label-primary d-grid w-100 mb-2">
                         <span class="d-flex align-items-center justify-content-center text-nowrap">
                             <i class="bx bx-dock-top bx-xs me-1"></i>Raised SRA</span>
                         </a>
+                        @endcan
 
                         <!--Print-->
                         <button class="btn btn-label-primary d-grid w-100">
@@ -207,27 +209,32 @@
                     @endif
 
                     @if(empty($recommend->recommend_by))
-                        <button 
-                            class="btn btn-primary d-grid w-100 mb-3" 
-                            data-bs-toggle="offcanvas" 
-                            data-bs-target="#recommendation">
-                        <span class="d-flex align-items-center justify-content-center text-nowrap">
-                            <i class="bx bx-paper-plane bx-xs me-1"></i>Recommendation</span>
-                        </button>
+                        @can('recommend')
+                            <button 
+                                class="btn btn-primary d-grid w-100 mb-3" 
+                                data-bs-toggle="offcanvas" 
+                                data-bs-target="#recommendation">
+                            <span class="d-flex align-items-center justify-content-center text-nowrap">
+                                <i class="bx bx-paper-plane bx-xs me-1"></i>Recommendation</span>
+                            </button>
+                        @endcan
                     @elseif(empty($approval->approved_by))
-                        <button 
-                            class="btn btn-label-primary d-grid w-100" 
-                            data-bs-toggle="offcanvas" 
-                            data-bs-target="#approval">
-                        <span class="d-flex align-items-center justify-content-center text-nowrap">
-                            <i class="bx bx-paper-plane bx-xs me-1"></i>MDs Approval</span>
-                        </button>
+                        @can('mds-approval')
+                            <button 
+                                class="btn btn-label-primary d-grid w-100" 
+                                data-bs-toggle="offcanvas" 
+                                data-bs-target="#approval">
+                            <span class="d-flex align-items-center justify-content-center text-nowrap">
+                                <i class="bx bx-paper-plane bx-xs me-1"></i>MDs Approval</span>
+                            </button>
+                        @endcan
                     @endif
                     </div>
                 </div>
 
                 <!-- Modify Purchase Order / Item -->
                 @if(empty($approval->approved_action))
+                @can('modify-po')
                 <div class="card">
                     <div class="card-header">
                         <p class="mb-2 fw-bolder">Purchase Order / Item</p>
@@ -255,6 +262,7 @@
                         </div>
                     </div>
                 </div>
+                @endcan
                 @endif
             </div>
             <!-- /Approval Actions -->

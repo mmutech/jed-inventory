@@ -23,6 +23,9 @@ class DatabaseSeeder extends Seeder
             pollinate_Items::class,
             pollinate_PurchaseOrders::class,
             StoreSeeder::class,
+            pollinate_Feeder33s::class,
+            pollinate_Feeder11s::class,
+            pollinate_Dts::class,
         ]);
         
         // \App\Models\User::factory(10)->create();

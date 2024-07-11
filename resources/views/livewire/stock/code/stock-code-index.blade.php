@@ -75,7 +75,9 @@
                         </div>
                     </div>
                     <!-- Create user -->
+                    @can('create-codes')
                     <a class="btn btn-primary" href="{{ url('stock-code-create')}}"><i class="bx bx-plus"></i>  Create Stock Class</a>
+                    @endcan
                 </div>
 
                 <div class="col-xl-4 col-sm-4 col-md-4 mx-auto"></div>
@@ -107,7 +109,11 @@
                             @else
                                 <label class="badge bg-label-danger">{{ $stockCode->status }}</label>
                             @endif
-                        <td><a href="{{ url('stock-code-edit', $stockCode->id) }}"><i class="bx bx-pencil text-info"></i></a></td>
+                        <td>
+                            @can('modify-codes')
+                                <a href="{{ url('stock-code-edit', $stockCode->id) }}"><i class="bx bx-pencil text-info"></i></a>
+                            @endcan
+                        </td>
                         </tr>
                         @endforeach
                     @else
