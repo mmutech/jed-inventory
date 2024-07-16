@@ -152,6 +152,12 @@ class PermissionTableSeeder extends Seeder
         $role2->givePermissionTo('view-srin');
         $role2->givePermissionTo('index-srin');
 
+        
+        $role2->givePermissionTo('view-ledger');
+        $role2->givePermissionTo('index-ledger');
+        $role2->givePermissionTo('view-bin-card');
+        $role2->givePermissionTo('index-bin-card');
+
         $role3 = Role::create(['name' => 'Manager']);
         $role3->givePermissionTo('create-store');
         $role3->givePermissionTo('modify-store');

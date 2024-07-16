@@ -186,7 +186,7 @@
                         @endcan
 
                         <!--Print-->
-                        <button class="btn btn-label-primary d-grid w-100">
+                        <button class="btn btn-label-primary d-grid w-100" onclick="window.print()">
                             <span class="d-flex align-items-center justify-content-center text-nowrap">
                             <i class="bx bx-file bx-xs me-1"></i>Print</span>
                         </button>

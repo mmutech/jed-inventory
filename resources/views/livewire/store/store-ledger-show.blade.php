@@ -101,7 +101,7 @@
                     
                     <!--Print-->
                     <div class="card-footer col-2 align-items-right mb-2"> 
-                        <button class="btn btn-label-primary align-items-right d-grid w-100">
+                        <button class="btn btn-label-primary align-items-right d-grid w-100" onclick="window.print()">
                             <span class="d-flex align-items-center justify-content-center text-nowrap">
                             <i class="bx bx-file bx-xs me-1"></i>Print</span>
                         </button>
