@@ -24,13 +24,16 @@ class StoreLedgerIndex extends Component
     public function render()
     {
         return view('livewire.store.store-ledger-index')->with([
-            'data' => StoreLedger::select('stock_code_id', DB::raw('COUNT(*) as count'))->latest()
+            'data' => StoreLedger::select('stock_code_id', DB::raw('COUNT(*) as count'), DB::raw('MAX(created_at) as latest_created_at'))
                 ->where('station_id', $this->storeID)
-                ->groupBy('stock_code_id')->where(function ($filter){
-                        $filter->where('station_id', 'like', '%'.$this->search.'%')
-                        ->orWhere('reference', 'like', '%'.$this->search.'%')
-                        ->orWhere('stock_code_id', 'like', '%'.$this->search.'%');
-            })->paginate(10),
+                ->groupBy('stock_code_id')
+                ->where(function ($filter) {
+                    $filter->where('station_id', 'like', '%' . $this->search . '%')
+                        ->orWhere('reference', 'like', '%' . $this->search . '%')
+                        ->orWhere('stock_code_id', 'like', '%' . $this->search . '%');
+                })
+                ->orderBy('latest_created_at', 'desc')
+                ->paginate(10),
         ]);
     }
 }
