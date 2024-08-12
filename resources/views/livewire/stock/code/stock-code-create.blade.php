@@ -13,10 +13,20 @@
           <!-- Create Stock Code -->
             <form wire:submit="store">
                 <div class="row g-3">
-                    <div class="col-sm-6">
+                    <div class="col-sm-3">
                         <label class="form-label" for="stock_code">Stock Code:</label>
                         <input type="text" wire:model="stock_code" class="form-control">
                         @error('stock_code') <span class="error">{{ $message }}</span> @enderror 
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="form-label" for="unit">Unit:</label>
+                        <select class="form-select" wire:model="unit">
+                            <option value="">Select ...</option>
+                            @foreach($unitOfMeasure as $unit)
+                                <option value="{{$unit->id}}">{{$unit->description}}</option>
+                            @endforeach
+                        </select>
+                        @error('unit') <span class="error">{{ $message }}</span> @enderror 
                     </div>
 
                     <div class="col-sm-6">
@@ -26,28 +36,29 @@
                     </div>
 
                     <div class="col-sm-6">
-                        <label class="form-label" for="SelectedStockCategory">Stock Category</label>
-                        <select class="form-select mb-4" id="SelectedStockCategory" wire:model.live="SelectedStockCategory">
+                        <label class="form-label" for="selectedStockCategory">Stock Category</label>
+                        <select class="form-select mb-4" id="selectedStockCategory" wire:model.live="selectedStockCategory">
                             <option value="">Select ...</option>
                             @foreach($stock_category as $stockCat)
                              <option value="{{$stockCat->id}}">{{$stockCat->name}}</option>
                             @endforeach
                         </select>
-                        @error('SelectedStockCategory') <span class="error">{{ $message }}</span> @enderror 
+                        @error('selectedStockCategory') <span class="error">{{ $message }}</span> @enderror 
                     </div>
 
                     <div class="col-sm-6">
-                        <label class="form-label" for="stock_class_id">Stock Class</label>
-                        @if(!is_null($SelectedStockCategory))
-                            <select class="form-control" id="stock_class_id" wire:model="stock_class_id">
+                        <label class="form-label" for="selectedStockClass">Stock Class</label>
+                        @if(!is_null($selectedStockCategory))
+                            <select class="form-control" wire:model="selectedStockClass">
                                 <option value="">Choose..</option>
-                                @foreach($stockClass as $item)
+                                @foreach($stock_class as $item)
                                     <option value="{{$item->id}}">{{$item->name}}</option>
                                 @endforeach
+                                <option value="0">N/A</option>
                             </select>
-                            @error('stock_class_id') <span class="error">{{ $message }}</span> @enderror 
-                        @elseif(is_null($SelectedStockCategory))
-                            <input type="text" class="form-control border rounded" placeholder="Select State" readonly />
+                            @error('selectedStockClass') <span class="error">{{ $message }}</span> @enderror 
+                        @elseif(is_null($selectedStockCategory))
+                            <input type="text" class="form-control border rounded" placeholder="Select Stock Category" readonly />
                         @endif
                     </div>
                     

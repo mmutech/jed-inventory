@@ -12,6 +12,7 @@ use App\Models\Item;
 use App\Models\QualityChecks;
 use App\Models\StoreLedger;
 use App\Models\Approvals;
+use App\Models\StoreBook;
 use Illuminate\Support\Facades\Auth;
 
 class ShowSra extends Component
@@ -33,33 +34,33 @@ class ShowSra extends Component
                 if (isset($item->stock_code, $item->purchase_order_id, $item->confirm_qty)) {
 
                     // Create Store Bin Card
-                    $latestBinCard = StoreBinCard::where('station_id', $this->stationID)
-                        ->where('stock_code_id', $item->stock_code)
-                        ->orderBy('created_at', 'desc')
-                        ->first();
+                    // $latestBinCard = StoreBinCard::where('station_id', $this->stationID)
+                    //     ->where('stock_code_id', $item->stock_code)
+                    //     ->orderBy('created_at', 'desc')
+                    //     ->first();
             
-                    $balance = ($latestBinCard) ? $latestBinCard->balance : 0;
+                    // $balance = ($latestBinCard) ? $latestBinCard->balance : 0;
                     
-                    StoreBinCard::create([
-                        'stock_code_id'     => $item->stock_code,
-                        'reference'         => $this->reference,
-                        'purchase_order_id' => $item->purchase_order_id,
-                        'station_id'        => $this->stationID,
-                        'in'                => $item->confirm_qty,
-                        'balance'           => $item->confirm_qty + $balance,
-                        'unit'              => $item->unit,
-                        'date_receipt'      => now(),
-                        'created_by'        => auth()->user()->id,
-                    ]);
+                    // StoreBinCard::create([
+                    //     'stock_code_id'     => $item->stock_code,
+                    //     'reference'         => $this->reference,
+                    //     'purchase_order_id' => $item->purchase_order_id,
+                    //     'station_id'        => $this->stationID,
+                    //     'in'                => $item->confirm_qty,
+                    //     'balance'           => $item->confirm_qty + $balance,
+                    //     'unit'              => $item->unit,
+                    //     'date_receipt'      => now(),
+                    //     'created_by'        => auth()->user()->id,
+                    // ]);
 
-                    // Create Store Ledger
-                    $latestStoreLedger = StoreLedger::where('station_id', $this->stationID)
+                    // Create Store Book
+                    $latestStoreBook = StoreBook::where('station_id', $this->stationID)
                         ->where('stock_code_id', $item->stock_code)
                         ->orderBy('created_at', 'desc')
                         ->first();
             
-                    $qty_balance = ($latestStoreLedger) ? $latestStoreLedger->qty_balance : 0;
-                    $val_balance = ($latestStoreLedger) ? $latestStoreLedger->value_balance : 0;
+                    $qty_balance = ($latestStoreBook) ? $latestStoreBook->qty_balance : 0;
+                    $val_balance = ($latestStoreBook) ? $latestStoreBook->value_balance : 0;
                     $sub_total = $item->confirm_rate;
                     $vat = 7.5;
                     $vat_amount = $sub_total * $vat / 100;
@@ -67,13 +68,13 @@ class ShowSra extends Component
 
                     $val_in = $basic_price * $item->confirm_qty;
                     // dd($val_in);
-                    StoreLedger::create([
+                    StoreBook::create([
                         'purchase_order_id'     => $item->purchase_order_id,
                         'stock_code_id'         => $item->stock_code,
                         'reference'             => $this->reference,
                         'basic_price'           => $basic_price,
                         'station_id'            => $this->stationID,
-                        'qty_receipt'           => $item->confirm_qty,
+                        'qty_in'                => $item->confirm_qty,
                         'qty_balance'           => $item->confirm_qty + $qty_balance,
                         'value_in'              => $val_in,
                         'value_balance'         => $val_balance + $val_in,

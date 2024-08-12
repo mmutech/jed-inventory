@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('stock_code');
             $table->string('name');
+            $table->string('unit')->nullable();
             $table->integer('stock_category_id');
             $table->integer('stock_class_id');
             $table->integer('gl_code_id')->nullable();

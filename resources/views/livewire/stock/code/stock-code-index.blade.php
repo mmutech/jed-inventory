@@ -89,7 +89,8 @@
             <div class="table-responsive text-nowrap">
                 <table class="table">
                     <tr>
-                        <th>Stock Code</th>
+                        <th>Barcode</th>
+                        <th>Stock Code(Unit)</th>
                         <th>Description</th>
                         <th>Stock Category</th>
                         <th>Stock Class</th>
@@ -99,10 +100,11 @@
                     @if(!empty($data))
                         @foreach ($data as $key => $stockCode)
                         <tr>
-                            <td>{{ $stockCode->stock_code }}</td>
+                            <td> <a href="#" data-bs-toggle="modal" data-bs-target="#barcode" class="btn btn-label-primary d-grid w-100" wire:click="generateBarcode('{{ $stockCode->stock_code }}')">Generate</a></td>
+                            <td>{{ $stockCode->stock_code }}({{ $stockCode->unitID->name ?? '-' }})</td>
                             <td>{{ $stockCode->name }}</td>
-                            <td>{{ $stockCode->stockCategoryID->name }}</td>
-                            <td>{{ $stockCode->stockClassID->name }}</td>
+                            <td>{{ $stockCode->stockCategoryID->name ?? '-' }}</td>
+                            <td>{{ $stockCode->stockClassID->name ?? '' }}</td>
                             <td>
                             @if($stockCode->status == 'Active')
                                 <label class="badge bg-label-success">{{ $stockCode->status }}</label>
@@ -125,4 +127,55 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal -->
+    <div wire:ignore.self class="modal fade" id="barcode" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header d-flex justify-content-center align-items-center">
+                    <h5 class="modal-title">Generated Barcode</strong></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> 
+                </div><hr>
+                <div class="modal-body d-flex justify-content-center align-items-center" id="printSection">
+                    <div class="text-center">
+                        <p>{{$stockCodeName}}</p>
+                        <h1>{!! $barcodeHtml !!}</h1>
+                        <p>Stock Code: {{$stockCodeId}}</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                        <i class="bx bx-x bx-xs me-1"></i>Close</button>
+                    <button class="btn btn-label-primary" onclick="printSection()">
+                        <i class="bx bx-printer bx-xs me-1"></i>Print</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script>
+    function printSection() {
+        var printContents = document.getElementById('printSection').innerHTML;
+        var originalContents = document.body.innerHTML;
+
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+    }
+</script>
+
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    #printSection, #printSection * {
+        visibility: visible;
+    }
+    #printSection {
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+}
+

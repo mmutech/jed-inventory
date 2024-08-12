@@ -4,6 +4,15 @@
     </h6>
 
     <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="row mb-3">
+            <div class="col-sm-4">
+                <div class="input-group input-group-merge">
+                    <input type="text" class="form-control" wire:model="search" wire:keydown.enter="stockCode" placeholder="Search Stock Code..." />
+                    <button class="input-group-text btn btn-outline-primary" wire:click="stockCode" id="basic-addon-search31"><i class="bx bx-search"></i></button>
+                </div>
+            </div>
+        </div>
+        @if ($data && $items)
         <div class="row invoice-add">
             <!-- Bin Card / Item Details-->
             <div class="col-lg-12 col-12 mb-lg-0 mb-4">
@@ -59,47 +68,49 @@
                             </div>
                         </div>
 
-                        <div class="col-md-12">
-                            <span class="fw-bolder">DESCRIPTION:</span>
-                            <span>{{ $data->stockCodeID->name }} </span>
-                            <hr class="mb-0 mt-0">
-                        </div>
-                       
-                        <div class="mb-3 mt-0" data-repeater-list="group-a">
-                            <div class="repeater-wrapper pt-0 pt-md-4" data-repeater-item="">
-                                <div class="table-responsive text-nowrap">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-nowrap">Date Receipt/Issue</th>
-                                                <th>Reference</th>
-                                                <!-- <th>Vendor Name</th> -->
-                                                <th>station</th>
-                                                <th>In</th>
-                                                <th>Out</th>
-                                                <th>Balance</th>
-                                                <th>Initial</th>
-                                            </tr>
-                                        </thead>
-                                            @if(!empty($items))
-                                                @foreach ($items as $key => $item)
+                        <div class="row p-sm-3 p-0">
+                            <div class="col-md-12">
+                                <span class="fw-bolder">DESCRIPTION:</span>
+                                <span>{{ $data->stockCodeID->name }} </span>
+                                <hr class="mb-0 mt-0">
+                            </div>
+                        
+                            <div class="mb-3 mt-0" data-repeater-list="group-a">
+                                <div class="repeater-wrapper pt-0 pt-md-4" data-repeater-item="">
+                                    <div class="table-responsive text-nowrap">
+                                        <table class="table">
+                                            <thead>
                                                 <tr>
-                                                    <td>{{ $item->date_receipt }} {{ $item->date_issue }}</td>
-                                                    <td>{{ $item->reference }}</td>
-                                                    <!-- <td>{{ $item->purchaseOrderID->vendor_name ?? '' }}</td> -->
-                                                    <td>{{ $item->stationID->name }}</td>
-                                                    <td>{{ $item->in ?? '-' }}</td>
-                                                    <td>{{ $item->out  ?? '-' }}</td>
-                                                    <td>{{ $item->balance ?? '-' }}</td>
-                                                    <td>{{ $item->storeOfficerID->name }}</td>
+                                                    <th class="text-nowrap">Date Receipt/Issue</th>
+                                                    <th>Reference</th>
+                                                    <!-- <th>Vendor Name</th> -->
+                                                    <th>station</th>
+                                                    <th>In</th>
+                                                    <th>Out</th>
+                                                    <th>Balance</th>
+                                                    <th>Initiated by</th>
                                                 </tr>
-                                                @endforeach
-                                            @else
-                                                <tr>
-                                                    <td colspan="5" class="text-center">No Record Available</td>
-                                                </tr>
-                                            @endif
-                                    </table>
+                                            </thead>
+                                                @if(!empty($items))
+                                                    @foreach ($items as $key => $item)
+                                                    <tr>
+                                                        <td>{{ $item->date }}</td>
+                                                        <td>{{ $item->reference }}</td>
+                                                        <!-- <td>{{ $item->jobOrderId->vendor_name ?? '' }}</td> -->
+                                                        <td>{{ $item->issueStationID->name ?? $item->stationID->name }}</td>
+                                                        <td>{{ $item->qty_in ?? '-' }}</td>
+                                                        <td>{{ $item->qty_out  ?? '-' }}</td>
+                                                        <td>{{ $item->qty_balance ?? '-' }}</td>
+                                                        <td>{{ $item->createdBy->name }}</td>
+                                                    </tr>
+                                                    @endforeach
+                                                @else
+                                                    <tr>
+                                                        <td colspan="5" class="text-center">No Record Available</td>
+                                                    </tr>
+                                                @endif
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -121,6 +132,7 @@
                 
             </div>
             <!-- /Print Actions --> 
-        </div>      
+        </div> 
+        @endif     
     </div>
 </div>

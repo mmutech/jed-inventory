@@ -7,6 +7,7 @@ use Livewire\Attributes\Rule;
 use App\Models\StockCode;
 use App\Models\StockCategory;
 use App\Models\StockClass;
+use App\Models\Unit;
 use Illuminate\Support\Facades\Auth;
 
 class StockCodeCreate extends Component
@@ -14,24 +15,37 @@ class StockCodeCreate extends Component
     public $title = 'Create Stock Code';
     
     #[Rule('required')]
-    public $name, $SelectedStockCategory, $stockClass, $stock_class_id = null, $stock_code;
+    public $name, $unit, $selectedStockCategory, $selectedStockClass, $stock_category, $stock_class = null, $stock_code;
 
     public function store()
     {
         $this->validate();
 
         // Create Stock Code
-
         if (!StockCode::where('stock_code', $this->stock_code)->exists()) {
-            StockCode::create([
-                'stock_code' => $this->stock_code,
-                'name' => $this->name,
-                'stock_category_id' => $this->SelectedStockCategory,
-                'stock_class_id' => $this->stock_class_id,
-                'status' => 'Active',
-                'created_by' => Auth::user()->id
-
-            ]); 
+            if ($this->stock_code) {            
+            
+                // Save the data, to the database
+                $stockCode = new StockCode();
+                $stockCode->stock_code = $this->stock_code;
+                $stockCode->name = $this->name;
+                $stockCode->stock_category_id = $this->selectedStockCategory;
+                $stockCode->stock_class_id = $this->selectedStockClass;
+                $stockCode->unit = $this->unit;
+                $stockCode->status = 'Active';
+                $stockCode->created_by = Auth::user()->id;
+                $stockCode->save();
+            }
+            
+            // StockCode::create([
+            //     'stock_code' => $this->stock_code,
+            //     'name' => $this->name,
+            //     'stock_category_id' => $this->selectedStockCategory,
+            //     'stock_class_id' => $this->selectedClass,
+            //     'barcode' => $barcodeHtml,
+            //     'status' => 'Active',
+            //     'created_by' => Auth::user()->id
+            // ]); 
 
             $this->dispatch('success', message: 'Stock Code Created!');
 
@@ -42,22 +56,22 @@ class StockCodeCreate extends Component
         }
     }
 
-    public function render()
+    public function mount()
     {
-        // $this->stockClass = StockClass::where('stock_category_id', $stockCategoryID)->get();
+        $this->stock_category   = StockCategory::get();
+        $this->stock_class       = collect();
 
-        // $this->stockClass = StockClass::where('status', 'Active')->latest()->get();
+    }
 
-        // dd($this->stockClass);
-        
+    public function render()
+    {        
         return view('livewire.stock.code.stock-code-create')->with([
-            'stock_category' => StockCategory::where('status', 'Active')->latest()->get(),
+            'unitOfMeasure' => Unit::latest()->get()
         ]);
     }
 
-    public function updatedSelectedCategory($stock_category_id)
+    public function updatedSelectedStockCategory($stock_category)
     {
-        $this->stockClass = StockClass::where('stock_category_id', $stock_category_id)->get();
-        // dd($this->stockClass);
+        $this->stock_class = StockClass::where('stock_category_id', $stock_category)->get();
     }
 }

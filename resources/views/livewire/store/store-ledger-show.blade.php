@@ -4,6 +4,15 @@
     </h6>
 
     <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="row mb-3">
+            <div class="col-sm-4">
+                <div class="input-group input-group-merge">
+                    <input type="text" class="form-control" wire:model="search" wire:keydown.enter="stockCode" placeholder="Search Stock Code..." />
+                    <button class="input-group-text btn btn-outline-primary" wire:click="stockCode" id="basic-addon-search31"><i class="bx bx-search"></i></button>
+                </div>
+            </div>
+        </div>
+        @if ($data && $items)
         <div class="row invoice-add">
             <!-- Ledger / Item Details-->
             <div class="col-lg-12 col-12 mb-lg-0 mb-4">
@@ -79,8 +88,8 @@
                                                 <tr>
                                                     <td>{{ $item->date }}</td>
                                                     <td>{{ $item->reference }}</td>
-                                                    <td>{{ number_format(round($item->qty_receipt, 2)) ?? '-' }}</td>
-                                                    <td>{{ number_format(round($item->qty_issue, 2)) ?? '-' }}</td>
+                                                    <td>{{ number_format(round($item->qty_in, 2)) ?? '-' }}</td>
+                                                    <td>{{ number_format(round($item->qty_out, 2)) ?? '-' }}</td>
                                                     <td>{{ number_format(round($item->qty_balance, 2)) ?? '-' }}</td>
                                                     <td>{{ number_format(round($item->basic_price, 2)) ?? '-' }}</td>
                                                     <td>{{ number_format(round($item->value_in, 2)) ?? '-' }}</td>
@@ -115,6 +124,7 @@
                 
             </div>
             <!-- /Print Actions --> 
-        </div>      
+        </div>  
+        @endif    
     </div>
 </div>

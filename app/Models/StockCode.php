@@ -17,6 +17,7 @@ class StockCode extends Model
     protected $fillable = [
         'stock_code',
         'name',
+        'unit',
         'stock_category_id',
         'stock_class_id',
         'gl_code_id',
@@ -33,6 +34,11 @@ class StockCode extends Model
     public function stockClassID(): BelongsTo
     {
         return $this->belongsTo(StockClass::class, 'stock_class_id');
+    }
+
+    public function unitID(): BelongsTo
+    {
+        return $this->belongsTo(Unit::class, 'unit');
     }
 
 }

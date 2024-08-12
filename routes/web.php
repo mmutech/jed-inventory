@@ -13,7 +13,13 @@ use App\Livewire\PurchaseOrder\Edit;
 use App\Livewire\PurchaseOrder\EditItem;
 use App\Livewire\PurchaseOrder\Index;
 use App\Livewire\PurchaseOrder\Show;
-
+use App\Livewire\Request\Allocation as RequestAllocation;
+use App\Livewire\Request\CheckIn;
+use App\Livewire\Request\CheckOut;
+use App\Livewire\Request\RequestIndex;
+use App\Livewire\Request\RequestItem;
+use App\Livewire\Request\RequestView;
+use App\Livewire\Request\SCNRequest;
 //SRA
 use App\Livewire\SRA\ConfirmItem;
 use App\Livewire\SRA\CreateSra;
@@ -53,6 +59,7 @@ use App\Livewire\Stock\Category\StockCategoryIndex;
 use App\Livewire\Stock\Class\StockClassCreate;
 use App\Livewire\Stock\Class\StockClassEdit;
 use App\Livewire\Stock\Class\StockClassIndex;
+use App\Livewire\Stock\Code\Barcode;
 use App\Livewire\Stock\Code\StockCodeCreate;
 use App\Livewire\Stock\Code\StockCodeEdit;
 use App\Livewire\Stock\Code\StockCodeIndex;
@@ -65,6 +72,7 @@ use App\Livewire\Store\StoreEdit;
 use App\Livewire\Store\StoreIndex;
 use App\Livewire\Store\StoreLedgerIndex;
 use App\Livewire\Store\StoreLedgerShow;
+use App\Models\Allocation;
 
 /*
 |--------------------------------------------------------------------------
@@ -108,27 +116,14 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/edit-sra/{sraID}', EditSra::class);
     Route::get('/quality-check/{poID}', QualityCheck::class);
 
-    //SRCN
-    Route::get('/srcn-index', SRCNIndex::class);
-    Route::get('/srcn-create', SRCNCreate::class);
-    Route::get('/srcn-edit/{srcnID}', SRCNEdit::class);
-    Route::get('/srcn-show/{srcnID}', SRCNShow::class);
-    Route::get('/srcn-issue/{srcnID}', SRCNIssue::class);
-    Route::get('/srcn-allocation/{srcnID}', SRCNAllocation::class);
-
-    //SRIN
-    Route::get('/srin-index', SRINIndex::class);
-    Route::get('/srin-create', SRINCreate::class);
-    Route::get('/srin-edit/{srinID}', SRINEdit::class);
-    Route::get('/srin-show/{srinID}', SRINShow::class);
-    Route::get('/srin-issue/{srinID}', SRINIssue::class);
-    Route::get('/srin-allocation/{srinID}', SRINAllocation::class);
-
-    //SCN
-    Route::get('/scn-index', SCNIndex::class);
-    Route::get('/scn-create', SCNCreate::class);
-    Route::get('/scn-edit/{scnID}', SCNEdit::class);
-    Route::get('/scn-show/{scnID}', SCNShow::class);
+    // Request
+    Route::get('/request-index', RequestIndex::class);
+    Route::get('/request-item', RequestItem::class);
+    Route::get('/request-scn/{srinId}', SCNRequest::class);
+    Route::get('/request-view/{referenceId}', RequestView::class);
+    Route::get('/allocation/{referenceId}', RequestAllocation::class);
+    Route::get('/check-in/{referenceId}', CheckIn::class);
+    Route::get('/check-out/{referenceId}', CheckOut::class);
 
     //Store
     Route::get('/store-index', StoreIndex::class);
@@ -137,11 +132,11 @@ Route::group(['middleware' => ['auth']], function() {
 
     //Stores Bin Card
     Route::get('/bin-card-index', BinCardIndex::class);
-    Route::get('/bin-card-show/{binID}', BinCardShow::class);
+    Route::get('/bin-card-show', BinCardShow::class);
 
     //Stores Ledger
     Route::get('/store-ledger-index', StoreLedgerIndex::class);
-    Route::get('/store-ledger-show/{ledgerID}', StoreLedgerShow::class);
+    Route::get('/store-ledger-show', StoreLedgerShow::class);
 
     //Stock Category
     Route::get('/stock-category-index', StockCategoryIndex::class);
@@ -157,5 +152,6 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/stock-code-index', StockCodeIndex::class);
     Route::get('/stock-code-create', StockCodeCreate::class);
     Route::get('/stock-code-edit/{stCodeID}', StockCodeEdit::class);
+    Route::get('/barcode', Barcode::class);
 });
 
