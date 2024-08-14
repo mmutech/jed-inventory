@@ -139,8 +139,10 @@
                 <div class="modal-body d-flex justify-content-center align-items-center" id="printSection">
                     <div class="text-center">
                         <p>{{$stockCodeName}}</p>
-                        <h1>{!! $barcodeHtml !!}</h1>
+                        {{-- <h1>{!! $barcodeHtml !!}</h1> --}}
+                        <h1>{!! DNS1D::getBarcodeSVG($stockCodeId, "C39", 2, 55, '#2A3239') !!}</h1>
                         <p>Stock Code: {{$stockCodeId}}</p>
+
                     </div>
                 </div>
                 <div class="modal-footer">
