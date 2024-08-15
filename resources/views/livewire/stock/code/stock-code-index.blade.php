@@ -139,10 +139,7 @@
                 <div class="modal-body d-flex justify-content-center align-items-center" id="printSection">
                     <div class="text-center">
                         <p>{{$stockCodeName}}</p>
-                        {{-- <h1>{!! $barcodeHtml !!}</h1> --}}
                         <h1>{!! DNS1D::getBarcodeSVG($stockCodeId, "C39", 2, 55, '#2A3239') !!}</h1>
-                        <p>Stock Code: {{$stockCodeId}}</p>
-
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -164,20 +161,8 @@
         document.body.innerHTML = printContents;
         window.print();
         document.body.innerHTML = originalContents;
+
+        location.reload();
     }
 </script>
-
-@media print {
-    body * {
-        visibility: hidden;
-    }
-    #printSection, #printSection * {
-        visibility: visible;
-    }
-    #printSection {
-        position: absolute;
-        left: 0;
-        top: 0;
-    }
-}
 
