@@ -13,6 +13,7 @@ class StockCodeIndex extends Component
 
     public $search = '';
     public $barcodeType = 'C39', $barcodeHtml, $stockCodeId, $stockCodeName;
+   
 
     public function generateBarcode($stock_code)
     {
@@ -23,6 +24,7 @@ class StockCodeIndex extends Component
             $this->barcodeHtml = $barcode->getBarcodeHTML($stock_code, 'C39');
             $this->stockCodeId = $stock_code;
             $this->stockCodeName = $stockCodeDetails->name;
+
             // $this->emit('barcodeGenerated');
         }
     }
