@@ -16,9 +16,11 @@ return new class extends Migration
             $table->string('reference');
             $table->string('lorry_no');
             $table->string('driver_name');
-            $table->integer('location');
-            $table->integer('store_id');
-            $table->date('vehicle_date');
+            $table->integer('pickup_station');
+            $table->integer('delivery_station');
+            $table->date('pickup_date');
+            $table->date('delivery_date')->nullable();
+            $table->enum('status', ['Picked Up', 'Delivered'])->default('Picked Up');
             $table->integer('created_by');
             $table->integer('updated_by')->nullable();
             $table->timestamps();

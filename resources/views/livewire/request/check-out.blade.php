@@ -68,5 +68,34 @@
                 </div>
             </div>
         </div>
+        <div class="col-sm-12 col-md-5 mt-3">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Lorry Details</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <form wire:submit="addLorryDetails">
+                                <div class="row">
+                                    <div class="col-sm-12 mb-3">
+                                        <label class="form-label">Lorry Number:</label>
+                                        <input type="text" class="form-control" wire:model="lorry_no" placeholder="XXX-XXX">
+                                    </div>
+                                    <div class="col-sm-12 mb-3">
+                                        <label class="form-label">Driver Name:</label>
+                                        <input type="text" class="form-control" wire:model="driver_name" placeholder="Mr. John Doe">
+                                    </div>
+                                    <div class="col-sm-12 col-md-4 mb-3">
+                                        <button type="submit" class="btn btn-outline-primary">Save</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

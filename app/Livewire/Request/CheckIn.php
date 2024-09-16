@@ -8,6 +8,7 @@ use App\Models\RequestItemTable;
 use App\Models\StockCode;
 use App\Models\Store;
 use App\Models\StoreBook;
+use App\Models\Vehicle;
 use Livewire\Component;
 
 class CheckIn extends Component
@@ -81,6 +82,12 @@ class CheckIn extends Component
                 'status' => 'Received',
             ]);
 
+            // Update Delivery Status
+            Vehicle::where('reference', $this->referenceId)->update([
+                'status' => 'Delivered',
+                'delivery_date' => now(),
+            ]);
+
             $this->dispatch('success', message: 'Item Received');
 
         } else {
@@ -111,6 +118,12 @@ class CheckIn extends Component
             // Update Request Status
             RequestItemTable::where('reference', $this->referenceId)->update([
                 'status' => 'Received',
+            ]);
+
+            // Update Delivery Status
+            Vehicle::where('reference', $this->referenceId)->update([
+                'status' => 'Delivered',
+                'delivery_date' => now(),
             ]);
 
             $this->dispatch('success', message: 'Item Received');

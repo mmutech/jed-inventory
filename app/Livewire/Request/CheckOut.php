@@ -7,12 +7,14 @@ use App\Models\RequestItemTable;
 use App\Models\StockCode;
 use App\Models\Store;
 use App\Models\StoreBook;
+use App\Models\Vehicle;
 use Livewire\Component;
 
 class CheckOut extends Component
 {
-    public $barcode, $referenceId, $storeID;
+    public $barcode, $referenceId, $storeID, $station;
     public $stock_code, $item, $stocks, $quantity_allocated;
+    public $lorry_no, $driver_name;
 
     public function searchStockCode()
     {
@@ -99,6 +101,20 @@ class CheckOut extends Component
         ]);
 
         $this->dispatch('success', message: 'Item Issued');
+    }
+
+    public function addLorryDetails()
+    {
+        Vehicle::create([
+            'lorry_no' => $this->lorry_no,
+            'driver_name' => $this->driver_name,
+            'reference' => $this->referenceId,
+            'pickup_station' => $this->item->allocation_store,
+            'delivery_station' => $this->item->requisition_store,
+            'status' => 'Picked Up',
+            'pickup_date' => now(),
+            'created_by' => Auth()->user()->id,
+        ]);
     }
 
     public function mount($referenceId)

@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+use function Livewire\store;
+
 class Vehicle extends Model
 {
     use HasFactory;
@@ -15,30 +17,27 @@ class Vehicle extends Model
         'reference',
         'lorry_no',
         'driver_name',
-        'location',
-        'store_id',
-        'vehicle_date',
+        'delivery_station',
+        'pickup_station',
+        'pickup_date',
+        'delivery_date',
+        'status',
         'created_by',
         'updated_by'
     ];
 
-    public function srcnID(): BelongsTo
+    public function deliveryStation(): BelongsTo
     {
-        return $this->belongsTo(SRCN::class, 'reference');
+        return $this->belongsTo(Store::class, 'delivery_station');
     }
 
-    public function locationID(): BelongsTo
+    public function pickUpStation(): BelongsTo
     {
-        return $this->belongsTo(location::class, 'location');
+        return $this->belongsTo(Store::class, 'pickup_station');
     }
 
     public function createdBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
-    }
-
-    public function storeID(): BelongsTo
-    {
-        return $this->belongsTo(Store::class, 'store_id');
     }
 }
