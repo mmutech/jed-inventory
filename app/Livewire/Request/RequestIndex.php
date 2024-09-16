@@ -19,10 +19,10 @@ class RequestIndex extends Component
 
     public function srcnId()
     {
-        $query = RequestItemTable::select('reference', DB::raw('COUNT(stock_code_id) AS count'))
+        $query = RequestItemTable::select('reference', DB::raw('COUNT(stock_code_id) AS count'), 'status')
             // ->where('requisition_store', $this->storeID)
             ->where('reference', 'like', 'SRCN-%')
-            ->groupBy('reference')
+            ->groupBy('reference', 'status')
             ->where(function ($filter) {
                 if ($this->search) {
                     $filter->where('reference', 'like', '%' . $this->search . '%');
@@ -39,10 +39,10 @@ class RequestIndex extends Component
 
     public function srinId()
     {
-        $query = RequestItemTable::select('reference', DB::raw('COUNT(stock_code_id) AS count'))
+        $query = RequestItemTable::select('reference', DB::raw('COUNT(stock_code_id) AS count'), 'status')
             // ->where('requisition_store', $this->storeID)
             ->where('reference', 'like', 'SRIN-%')
-            ->groupBy('reference')
+            ->groupBy('reference', 'status')
             ->where(function ($filter) {
                 if ($this->search) {
                     $filter->where('reference', 'like', '%' . $this->search . '%');

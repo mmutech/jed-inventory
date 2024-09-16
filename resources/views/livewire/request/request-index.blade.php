@@ -100,6 +100,7 @@
                             <tr>
                                 <th>Reference</th>
                                 <th>Item Requested(No)</th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                             @if(!empty($data))
@@ -107,6 +108,21 @@
                                 <tr>
                                     <td>{{ $item->reference }}</td>
                                     <td>{{ $item->count }}</td>
+                                    <td>
+                                        @if($item->status == 'Pending')
+                                            <button class="btn btn-label-warning" data-bs-toggle="offcanvas" data-bs-target="#timeline">{{ $item->status }}</button>
+                                        @elseif($item->status == 'Recommended')
+                                            <button class="btn btn-label-info" data-bs-toggle="offcanvas" data-bs-target="#timeline">{{ $item->status }}</button>
+                                        @elseif($item->status == 'Approved')
+                                            <button class="btn btn-label-success" data-bs-toggle="offcanvas" data-bs-target="#timeline">{{ $item->status }}</button>
+                                        @elseif($item->status == 'Allocated')
+                                            <button class="btn btn-label-primary" data-bs-toggle="offcanvas" data-bs-target="#timeline">{{ $item->status }}</button>
+                                        @elseif($item->status == 'Issued')
+                                            <button class="btn btn-label-info" data-bs-toggle="offcanvas" data-bs-target="#timeline">{{ $item->status }}</button>
+                                        @elseif($item->status == 'Received')
+                                            <button class="btn btn-label-secondary" data-bs-toggle="offcanvas" data-bs-target="#timeline">{{ $item->status }}</button>
+                                        @endif
+                                    </td>
                                     <td>
                                             <a href="{{ url('request-view', $item->reference) }}" class="btn btn-outline-info"><i class="bx bx-show"></i></a>
                                         @if(strpos($item->reference, 'SRIN') !== false)

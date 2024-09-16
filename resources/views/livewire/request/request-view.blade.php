@@ -275,20 +275,6 @@
                         @endcan
                     @endif
 
-                    @can('hod-approval')
-                        <a href="{{ url('check-in/'.$data->reference) }}" class="btn btn-label-primary d-grid w-100 mt-2">
-                        <span class="d-flex align-items-center justify-content-center text-nowrap">
-                            <i class="bx bx-paper-plane bx-xs me-1"></i>Check In</span>
-                        </a>
-                    @endcan
-                    
-                    @can('hod-approval')
-                        <a href="{{ url('check-out/'.$data->reference) }}" class="btn btn-label-warning d-grid w-100 mt-2">
-                        <span class="d-flex align-items-center justify-content-center text-nowrap">
-                            <i class="bx bx-paper-plane bx-xs me-1"></i>Check Out</span>
-                        </a>
-                    @endcan
-
                     @if($title == 'SRCN')
                         @can('haop-approval')
                             <button class="btn btn-label-primary d-grid w-100 mt-2" 
@@ -300,25 +286,25 @@
                         @endcan
                     @endif
 
-                    <!--Issue-->
-                    @if($issuedStoreID == $storeID)
-                        <a class="btn btn-label-primary d-grid w-100 mt-2" 
-                            href="{{ url('srcn-issue/'.$data->srcn_id) }}">
+                    <!-- Issue -->
+                    @can('issue')
+                        @if($check_in == $storeID)
+                            <a href="{{ url('check-out/'.$data->reference) }}" class="btn btn-label-warning d-grid w-100 mt-2 mb-4">
                             <span class="d-flex align-items-center justify-content-center text-nowrap">
-                                <i class="bx bx-paper-plane bx-xs me-1"></i>Issue</span>
-                        </a>
-                    @endif
+                                <i class="bx bx-paper-plane bx-xs me-1"></i>ISSUE</span>
+                            </a>
+                        @endif
+                    @endcan
 
-                    <!--Received-->
-                    @if($createdBy == Auth()->user()->id && !empty($issued_store))
-                        <button class="btn btn-label-primary d-grid w-100 mt-2" 
-                            data-bs-toggle="offcanvas" 
-                            data-bs-target="#received">
-                        <span class="d-flex align-items-center justify-content-center text-nowrap">
-                            <i class="bx bx-paper-plane bx-xs me-1"></i>Received</span>
-                        </button>
-                    @endif
-                </div>
+                    <!-- Receive -->
+                    @can('receive')
+                        @if($check_out == $storeID)
+                            <a href="{{ url('check-in/'.$data->reference) }}" class="btn btn-label-primary d-grid w-100 mt-2 mb-4">
+                            <span class="d-flex align-items-center justify-content-center text-nowrap">
+                                <i class="bx bx-paper-plane bx-xs me-1"></i>RECEIVE</span>
+                            </a>
+                        @endif
+                    @endcan
 
                 <!-- Note -->
                 <div class="card mb-4">
@@ -423,7 +409,7 @@
                 </form>
             </div>
         </div>
-        <!-- /HOD Approval Sidebar -->
+        <!-- /HAOP Approval Sidebar -->
 
          <!-- Despatched Sidebar -->
          <div class="offcanvas offcanvas-end" id="despatch" aria-hidden="true">

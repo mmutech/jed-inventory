@@ -74,6 +74,9 @@ class PermissionTableSeeder extends Seeder
         Permission::create(['name' => 'view-bin-card']);
         Permission::create(['name' => 'index-bin-card']);
 
+        // Report Permission
+        Permission::create(['name' => 'general-report']);
+
         // create store permissions
         Permission::create(['name' => 'create-store']);
         Permission::create(['name' => 'modify-store']);
@@ -106,6 +109,8 @@ class PermissionTableSeeder extends Seeder
         Permission::create(['name' => 'haop-approval']);
         Permission::create(['name' => 'recommend']);
         Permission::create(['name' => 'index-stock']);
+        Permission::create(['name' => 'issue']);
+        Permission::create(['name' => 'receive']);
 
         // create roles and assign existing permissions
         $role1 = Role::create(['name' => 'Admin']);
@@ -130,6 +135,10 @@ class PermissionTableSeeder extends Seeder
         $role1->givePermissionTo('quality-check');
         $role1->givePermissionTo('recommend');
         $role1->givePermissionTo('fa-approval');
+        $role1->givePermissionTo('issue');
+        $role1->givePermissionTo('receive');
+
+        $role1->givePermissionTo('general-report');
 
         $role2 = Role::create(['name' => 'Store-Officer']);
         $role2->givePermissionTo('create-sra');
@@ -155,6 +164,8 @@ class PermissionTableSeeder extends Seeder
         
         $role2->givePermissionTo('view-ledger');
         $role2->givePermissionTo('view-bin-card');
+        $role2->givePermissionTo('issue');
+        $role2->givePermissionTo('receive');
 
         $role3 = Role::create(['name' => 'Manager']);
         $role3->givePermissionTo('create-store');
@@ -178,6 +189,8 @@ class PermissionTableSeeder extends Seeder
         $role3->givePermissionTo('index-category');
 
         $role3->givePermissionTo('index-stock');
+        $role3->givePermissionTo('issue');
+        $role3->givePermissionTo('receive');
 
         $role4 = Role::create(['name' => 'PO-Manager']);
         $role4->givePermissionTo('create-po');

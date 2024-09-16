@@ -22,6 +22,7 @@ return new class extends Migration
             $table->integer('requisition_store')->nullable();
             $table->date('requisition_date')->nullable();
             $table->date('issue_date')->nullable();
+            $table->enum('status', ['Pending', 'Recommended', 'Approved', 'Allocated', 'Issued', 'Received'])->default('Pending');
             $table->integer('added_by');
             $table->integer('updated_by')->nullable();
             $table->timestamps();

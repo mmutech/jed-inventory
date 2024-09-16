@@ -1,6 +1,6 @@
 <div>
     <h6 class="py-1 mb-2">
-        <span class="text-muted fw-light"><a href="{{url('request-index');}}">Available Request</a> /</span> Check Out
+        <span class="text-muted fw-light"><a href="{{url('request-index');}}">Available Request</a> /</span> Issue
     </h6>
 
     <div class="row">
@@ -27,11 +27,11 @@
                             <form wire:submit="addReqStock">
                                 <div class="row">
                                     <div class="col-sm-12 col-md-8 mb-3">
-                                        <input type="text" class="form-control" wire:model="stock_code('{{$stock_code->id}}')" placeholder="Enter Stock Code" value="{{ $stock_code->stock_code }}" hidden>
-                                        <input type="number" class="form-control" wire:model="quantity_allocated('{{$item->quantity}}')" placeholder="Enter Quantity" value="{{ $item->quantity }}" disabled>
+                                        <input type="text" class="form-control" wire:model="stock_code('{{$stock_code->id}}')" value="{{ $stock_code->stock_code }}" hidden>
+                                        <input type="number" class="form-control" wire:model="quantity_allocated('{{$item->quantity}}')" value="{{ $item->quantity }}" disabled>
                                     </div>
                                     <div class="col-sm-12 col-md-4 mb-3">
-                                        <button type="submit" class="btn btn-outline-primary">Add</button>
+                                        <button type="submit" class="btn btn-outline-primary">Issue</button>
                                     </div>
                                 </div>
                             </form>
@@ -45,7 +45,7 @@
         <div class="col-sm-12 col-md-7">
             <div class="card">
                 <div class="card-header">
-                    <h4>Check In Items</h4>
+                    <h4>Issued Items</h4>
                 </div>
                 <div class="card-body">
                     <table class="table table-responsive text-nowrap">

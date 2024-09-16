@@ -82,6 +82,12 @@ class Allocation extends Component
                 'hod_approved_date'    => now()
             ]);
 
+            if ($this->hod_approved_action == 'Approved') {
+                RequestItemTable::where('reference', $this->referenceId)->update([
+                    'status' => 'Allocated',
+                ]);
+            } 
+
             $this->dispatch('success', message: 'Items Allocated Successfully!');
             return redirect()->to('request-view/' . $this->referenceId);
 

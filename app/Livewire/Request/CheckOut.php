@@ -3,6 +3,7 @@
 namespace App\Livewire\Request;
 
 use App\Models\AllocationModel;
+use App\Models\RequestItemTable;
 use App\Models\StockCode;
 use App\Models\Store;
 use App\Models\StoreBook;
@@ -19,17 +20,28 @@ class CheckOut extends Component
         $this->stock_code = StockCode::where('stock_code', $this->barcode)->first();
 
         if ($this->stock_code) {
-            $this->item = AllocationModel::where('stock_code_id', $this->stock_code->id)
-                ->where('reference', $this->referenceId)
-                ->where('allocation_store', $this->storeID)
-                ->first();
-
-            $this->dispatch('success', message: 'Stock Code Found: '. $this->stock_code->name);
+            // Check if there is any record with the same reference, stock code, and quantity_issued not null
+            // $requestItem = RequestItemTable::where('reference', $this->referenceId)
+            //     ->where('stock_code_id', $this->stock_code->id)
+            //     ->whereNotNull('quantity_issued')
+            //     ->exists();
+        
+            // if (!$requestItem) {
+                // If no record exists with a non-null quantity_issued, fetch the allocation model
+                $this->item = AllocationModel::where('stock_code_id', $this->stock_code->id)
+                    ->where('reference', $this->referenceId)
+                    ->where('allocation_store', $this->storeID)
+                    ->first();
+        
+                // Dispatch success message
+                $this->dispatch('success', message: 'Stock Code Found: ' . $this->stock_code->name);
+            // } else {
+            //     $this->dispatch('warning', message: 'This Item has been Issued');
+            // }
         } else {
+            // Dispatch warning message if stock code is not set
             $this->dispatch('warning', message: 'Stock Code Not Found!');
         }
-
-        // dd($this->item);
 
         // Reset barcode input
         $this->barcode = '';
@@ -37,6 +49,11 @@ class CheckOut extends Component
 
     public function addReqStock()
     {
+        $this->item = AllocationModel::where('stock_code_id', $this->stock_code->id)
+            ->where('reference', $this->referenceId)
+            ->where('allocation_store', $this->storeID)
+            ->first();
+
         // Add the stock data to the array
         $this->stocks[] = [
             'referenceId' => $this->referenceId,
@@ -75,12 +92,21 @@ class CheckOut extends Component
             'date' => now(),
             'created_by' => Auth()->user()->id,
         ]);
+
+        // Update Request Status
+        RequestItemTable::where('reference', $this->referenceId)->update([
+            'status' => 'Issued',
+        ]);
+
+        $this->dispatch('success', message: 'Item Issued');
     }
 
     public function mount($referenceId)
     {
         $this->referenceId = $referenceId;
         $this->storeID = Store::where('store_officer', Auth()->user()->id)->pluck('id')->first();
+
+        // dd($this->storeID);
     }
 
     public function render()

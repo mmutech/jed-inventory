@@ -41,6 +41,12 @@ class RequestView extends Component
                 'recommend_date'    => now()
             ]);
 
+            if ($this->recommend_action == 'Recommend') {
+                RequestItemTable::where('reference', $this->referenceId)->update([
+                    'status' => 'Recommended',
+                ]);
+            }
+
             $this->dispatch('success', message: 'Recommend!');
         }
         
@@ -57,6 +63,12 @@ class RequestView extends Component
                 'approved_by'      => auth()->user()->id,
                 'approved_date'    => now()
             ]);
+
+            if ($this->approved_action == 'Approved') {
+                RequestItemTable::where('reference', $this->referenceId)->update([
+                    'status' => 'Approved',
+                ]);
+            } 
 
             $this->dispatch('success', message: 'HAOP Approval!');
         }
@@ -87,6 +99,8 @@ class RequestView extends Component
             'recommend'        => Recommendations::where('reference', $this->referenceId)->first(),
             'despatch'         => Despatched::where('reference', $this->referenceId)->first(),
             'received'         => Received::where('reference', $this->referenceId)->first(),
+            'check_in'         => AllocationModel::where('reference', $this->referenceId)->pluck('allocation_store')->first(),
+            'check_out'        => AllocationModel::where('reference', $this->referenceId)->pluck('requisition_store')->first(),
         ]);
     }
 }

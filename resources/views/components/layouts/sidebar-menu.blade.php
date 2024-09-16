@@ -96,14 +96,14 @@
             </li> -->
 
             <!-- Report -->
-            <li class="menu-item {{ Request::is('bin-card-show') || Request::is('store-ledger-show') ? 'active open' : '' }}">
+            <li class="menu-item {{ Request::is('bin-card-show') || Request::is('store-ledger-show') || Request::is('general-report') ? 'active open' : '' }}">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-folder-open"></i>
                 <div data-i18n="sra Settings">Report</div>
               </a>
               <ul class="menu-sub">
                 <!-- Store Bin Card-->
-                @can('index-bin-card')
+                @can('view-bin-card')
                 <li class="menu-item {{ Request::is('bin-card-show') ? 'active open' : '' }}">
                   <a href="{{url('bin-card-show');}}" class="menu-link">
                     <div data-i18n="bin_card">Stores Bin Card</div>
@@ -112,10 +112,19 @@
                 @endcan
 
                 <!-- Store Ledger-->
-                @can('index-ledger')
+                @can('view-ledger')
                 <li class="menu-item {{ Request::is('store-ledger-show') ? 'active open' : '' }}">
                   <a href="{{url('store-ledger-show');}}" class="menu-link">
                     <div data-i18n="ledger">Stores Ledger</div>
+                  </a>
+                </li>
+                @endcan
+
+                <!-- General Report-->
+                @can('general-report')
+                <li class="menu-item {{ Request::is('general-report') ? 'active open' : '' }}">
+                  <a href="{{url('general-report');}}" class="menu-link">
+                    <div data-i18n="general-report">General Report</div>
                   </a>
                 </li>
                 @endcan

@@ -67,6 +67,7 @@ use App\Livewire\Stock\Code\StockCodeIndex;
 //Store
 use App\Livewire\Store\BinCardIndex;
 use App\Livewire\Store\BinCardShow;
+use App\Livewire\Store\GeneralReport;
 use App\Livewire\Store\StoreCreate;
 use App\Livewire\Store\StoreEdit;
 use App\Livewire\Store\StoreIndex;
@@ -129,6 +130,9 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/store-index', StoreIndex::class);
     Route::get('/store-create', StoreCreate::class);
     Route::get('/store-edit/{stID}', StoreEdit::class);
+
+    // Report
+    Route::get('/general-report', GeneralReport::class);
 
     //Stores Bin Card
     Route::get('/bin-card-index', BinCardIndex::class);

@@ -5,17 +5,20 @@ namespace App\Livewire\Request;
 use App\Models\RequestItemTable;
 use App\Models\StockCode;
 use App\Models\Store;
+use App\Models\StoreBook;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 
 class RequestItem extends Component
 {
     public $referenceId, $storeID;
-    public $stockCode;
+    // public $stockCode;
     public $quantity_required, $quantity_issued, $work_location, $job_description;
     public $lastNumber;
     public $stocks = [];
     public $showInputFields = false;
+    public $selectedStockCode;
+    public $stockCount = 0;
 
     public function mount()
     {
@@ -98,7 +101,7 @@ class RequestItem extends Component
 
         // Validate the input
         $rules = [
-            'stockCode' => 'required|integer',
+            'selectedStockCode' => 'required|integer',
             'quantity_required' => 'required|integer|min:1',
         ];
         
@@ -112,14 +115,14 @@ class RequestItem extends Component
         // Add the stock data to the array
         $this->stocks[] = [
             'referenceId' => $this->referenceId,
-            'stockCode' => $this->stockCode,
+            'stockCode' => $this->selectedStockCode,
             'quantity_required' => $this->quantity_required,
         ];
 
         // Store to database
         RequestItemTable::create([
             'reference' => $this->referenceId,
-            'stock_code_id' => $this->stockCode,
+            'stock_code_id' => $this->selectedStockCode,
             'quantity_required' => $this->quantity_required,
             'requisition_store' => $this->storeID,
             'work_location' => $this->work_location,
@@ -129,14 +132,26 @@ class RequestItem extends Component
         ]);
 
         // Reset input fields
-        $this->stockCode = '';
+        $this->selectedStockCode = '';
         $this->quantity_required = '';
     }
 
     public function render()
     {
         return view('livewire.request.request-item')->with([
-            'stock_code' => StockCode::where('status', 'Active')->latest()->get(),
+            'stock_code' => StockCode::where('status', 'Active')->get(),
         ]);
+    }
+
+    public function updatedSelectedStockCode()
+    {
+        // Update the available stock whenever the stock code is selected/changed
+        $this->stockCount = StoreBook::select('station_id', DB::raw('MAX(id) as latest_id'))
+        ->where('stock_code_id', $this->selectedStockCode)
+        ->groupBy('station_id')
+        ->pluck('latest_id');
+
+        // Now sum the qty_balance of those latest records
+        $this->stockCount = StoreBook::whereIn('id', $this->stockCount)->sum('qty_balance');
     }
 }

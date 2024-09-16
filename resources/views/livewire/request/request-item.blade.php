@@ -20,6 +20,22 @@
                         <div class="col-sm-12">
                             <form wire:submit="addReqStock">
                                 <div class="row">
+                                    <div class="col-sm-12 mb-3">
+                                        <select class="form-control" wire:model.live="selectedStockCode" id="stockCode">
+                                            <option value="">Select...</option>
+                                            @foreach($stock_code as $stCode)
+                                                <option value="{{$stCode->id}}">{{$stCode->stock_code}} - {{$stCode->name}}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('stockCode') <span class="error">{{ $message }}</span> @enderror
+                                    </div>
+                                    <div class="col-sm-6 mb-3">
+                                        <input type="number" class="form-control" wire:model="quantity_required" placeholder="Enter Quantity">
+                                        @error('quantity_required') <span class="error">{{ $message }}</span> @enderror
+                                    </div>
+                                    <div class="col-sm-6 mb-3">
+                                        <input type="text" class="form-control" value="{{ $stockCount . ' Remain' }}" disabled>
+                                    </div>
                                     @if($showInputFields)
                                     <div class="col-sm-12 mb-3">
                                         <input type="text" class="form-control" wire:model="work_location" placeholder="Location Of Work">
@@ -30,20 +46,6 @@
                                         @error('job_description') <span class="error">{{ $message }}</span> @enderror
                                     </div>
                                     @endif
-                                    <div class="col-sm-12 mb-3">
-                                        <select class="form-control select2" wire:model="stockCode" id="drps">
-                                            <option value="">Select...</option>
-                                            @foreach($stock_code as $stCode)
-                                                <option value="{{$stCode->id}}">{{$stCode->stock_code}} - {{$stCode->name}}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('stockCode') <span class="error">{{ $message }}</span> @enderror
-                                        <!-- <input type="text" class="form-control" wire:model="stockCode" placeholder="Enter Stock Code"> -->
-                                    </div>
-                                    <div class="col-sm-12 mb-3">
-                                        <input type="number" class="form-control" wire:model="quantity_required" placeholder="Enter Quantity">
-                                        @error('quantity_required') <span class="error">{{ $message }}</span> @enderror
-                                    </div>
                                     <div class="col-sm-12 mb-3 d-flex justify-content-end">
                                         <button type="submit" class="btn btn-outline-primary"><i class='bx bx-cart-add'></i> Add</button>
                                     </div>
@@ -80,3 +82,20 @@
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener('livewire:load', function () {
+        function initializeSelect2() {
+            $('#select2-dropdown').select2();
+
+            $('#select2-dropdown').on('change', function (e) {
+                @this.set('stockCode', $(this).val());
+            });
+        }
+
+        initializeSelect2(); // Initialize on page load
+
+        document.addEventListener('livewire:update', function () {
+            initializeSelect2(); // Reinitialize after Livewire updates the DOM
+        });
+    });
+</script>

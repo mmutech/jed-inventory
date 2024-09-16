@@ -4,6 +4,7 @@ namespace App\Livewire\Request;
 
 use App\Models\AllocationModel;
 use App\Models\Item;
+use App\Models\RequestItemTable;
 use App\Models\StockCode;
 use App\Models\Store;
 use App\Models\StoreBook;
@@ -22,15 +23,13 @@ class CheckIn extends Component
         if ($this->stock_code) {
             $this->item = AllocationModel::where('stock_code_id', $this->stock_code->id)
             ->where('reference', $this->referenceId)
-            ->where('allocation_store', $this->storeID)
+            ->where('requisition_store', $this->storeID)
             ->first();
             
             $this->dispatch('success', message: 'Stock Code Found: '. $this->stock_code->name);
         } else {
             $this->dispatch('warning', message: 'Stock Code Not Found!');
         }
-
-        // dd($this->item);
 
         // Reset barcode input
         $this->barcode = '';
@@ -59,24 +58,63 @@ class CheckIn extends Component
                 ->first();
         }
 
-        // dd($storeBook);
-        
-        $valueIn = $storeBook->basic_price * $this->item->quantity;
+        if ($storeBook) {
+            $valueIn = $storeBook->basic_price * $this->item->quantity;
 
-        // Store to database
-        StoreBook::create([
-            'purchase_order_id' => $storeBook->purchase_order_id,
-            'stock_code_id' => $this->stock_code->id,
-            'reference' => $this->referenceId,
-            'station_id' => $this->item->allocation_store,
-            'qty_in' => $this->item->quantity,
-            'qty_balance' => $storeBook->qty_balance + $this->item->quantity,
-            'basic_price' => $storeBook->basic_price,
-            'value_in' => $valueIn,
-            'value_balance' => $storeBook->value_balance + $valueIn,
-            'date' => now(),
-            'created_by' => Auth()->user()->id,
-        ]);
+            // Store to database
+            StoreBook::create([
+                'purchase_order_id' => $storeBook->purchase_order_id,
+                'stock_code_id' => $this->stock_code->id,
+                'reference' => $this->referenceId,
+                'station_id' => $this->item->requisition_store,
+                'qty_in' => $this->item->quantity,
+                'qty_balance' => $storeBook->qty_balance + $this->item->quantity,
+                'basic_price' => $storeBook->basic_price,
+                'value_in' => $valueIn,
+                'value_balance' => $storeBook->value_balance + $valueIn,
+                'date' => now(),
+                'created_by' => Auth()->user()->id,
+            ]);
+
+            // Update Request Status
+            RequestItemTable::where('reference', $this->referenceId)->update([
+                'status' => 'Received',
+            ]);
+
+            $this->dispatch('success', message: 'Item Received');
+
+        } else {
+            // If no matching StoreBook found, check allocation_store as a fallback
+
+            $allocation_store = StoreBook::where('stock_code_id', $this->stock_code->id)
+                ->where('station_id', $this->item->allocation_store)
+                ->orderBy('created_at', 'desc')
+                ->first();
+
+            $valueIn = $allocation_store->basic_price * $this->item->quantity;
+
+            // Store to database
+            StoreBook::create([
+                'purchase_order_id' => $allocation_store->purchase_order_id,
+                'stock_code_id' => $this->stock_code->id,
+                'reference' => $this->referenceId,
+                'station_id' => $this->item->requisition_store,
+                'qty_in' => $this->item->quantity,
+                'qty_balance' => $this->item->quantity,
+                'basic_price' => $allocation_store->basic_price,
+                'value_in' => $valueIn,
+                'value_balance' => $valueIn,
+                'date' => now(),
+                'created_by' => Auth()->user()->id,
+            ]);
+
+            // Update Request Status
+            RequestItemTable::where('reference', $this->referenceId)->update([
+                'status' => 'Received',
+            ]);
+
+            $this->dispatch('success', message: 'Item Received');
+        }
     }
 
     public function mount($referenceId)
