@@ -13,6 +13,8 @@ use App\Livewire\PurchaseOrder\Edit;
 use App\Livewire\PurchaseOrder\EditItem;
 use App\Livewire\PurchaseOrder\Index;
 use App\Livewire\PurchaseOrder\Show;
+
+// Request
 use App\Livewire\Request\Allocation as RequestAllocation;
 use App\Livewire\Request\CheckIn;
 use App\Livewire\Request\CheckOut;
@@ -20,6 +22,9 @@ use App\Livewire\Request\RequestIndex;
 use App\Livewire\Request\RequestItem;
 use App\Livewire\Request\RequestView;
 use App\Livewire\Request\SCNRequest;
+use App\Livewire\Request\SRCNRequest;
+use App\Livewire\Request\SRINRequest;
+
 //SRA
 use App\Livewire\SRA\ConfirmItem;
 use App\Livewire\SRA\CreateSra;
@@ -27,28 +32,6 @@ use App\Livewire\SRA\EditSra;
 use App\Livewire\SRA\IndexSra;
 use App\Livewire\SRA\QualityCheck;
 use App\Livewire\SRA\ShowSra;
-
-//SRCN
-use App\Livewire\SRCN\SRCNCreate;
-use App\Livewire\SRCN\SRCNEdit;
-use App\Livewire\SRCN\SRCNIndex;
-use App\Livewire\SRCN\SRCNIssue;
-use App\Livewire\SRCN\SRCNAllocation;
-use App\Livewire\SRCN\SRCNShow;
-
-//SRIN
-use App\Livewire\SRIN\SRINCreate;
-use App\Livewire\SRIN\SRINEdit;
-use App\Livewire\SRIN\SRINIndex;
-use App\Livewire\SRIN\SRINIssue;
-use App\Livewire\SRIN\SRINShow;
-use App\Livewire\SRIN\SRINAllocation;
-
-//SCN
-use App\Livewire\SCN\SCNIndex;
-use App\Livewire\SCN\SCNCreate;
-use App\Livewire\SCN\SCNEdit;
-use App\Livewire\SCN\SCNShow;
 
 //Stock Category
 use App\Livewire\Stock\Category\StockCategoryCreate;
@@ -73,7 +56,6 @@ use App\Livewire\Store\StoreEdit;
 use App\Livewire\Store\StoreIndex;
 use App\Livewire\Store\StoreLedgerIndex;
 use App\Livewire\Store\StoreLedgerShow;
-use App\Models\Allocation;
 
 /*
 |--------------------------------------------------------------------------
@@ -120,6 +102,8 @@ Route::group(['middleware' => ['auth']], function() {
     // Request
     Route::get('/request-index', RequestIndex::class);
     Route::get('/request-item', RequestItem::class);
+    Route::get('/srcn-request', SRCNRequest::class);
+    Route::get('/srin-request', SRINRequest::class);
     Route::get('/request-scn/{srinId}', SCNRequest::class);
     Route::get('/request-view/{referenceId}', RequestView::class);
     Route::get('/allocation/{referenceId}', RequestAllocation::class);

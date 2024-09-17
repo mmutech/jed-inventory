@@ -54,13 +54,16 @@ class RequestIndex extends Component
 
         // Extract only the items (data records) for Livewire property
         $this->data = $paginatedData->items();
-        // $this->data = '';
     }
 
     public function mount()
     {
         // Get Store ID
         $this->storeID = Store::where('store_officer', Auth()->user()->id)->pluck('id')->first();
+
+        $this->data = RequestItemTable::select('reference', DB::raw('COUNT(stock_code_id) AS count'), 'status')
+            ->groupBy('reference', 'status')
+            ->get();
 
         // Request Category Count
         $this->srcnCount = RequestItemTable::select('reference')->where('reference', 'like', 'SRCN-%')

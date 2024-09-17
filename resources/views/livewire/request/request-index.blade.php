@@ -4,25 +4,6 @@
     </h6>
 
     <div class="row g-4">
-        <!-- New Request -->
-        <div class="col">
-            <div class="card border border-info h-100">
-                <div class="row h-100">
-                    <div class="col-sm-5">
-                        <div class="d-flex align-items-end h-100 justify-content-center mt-sm-0 mt-3">
-                            <img src="{{asset('assets/img/illustrations/man-with-laptop-light.png')}}" class="img-fluid" alt="Image" width="120" >
-                        </div>
-                    </div>
-                    <div class="col-sm-7">
-                        <div class="card-body text-sm-end text-center ps-sm-0">
-                            <a href="{{url('request-item');}}" class="btn btn-primary mb-3 text-nowrap add-new-request">New Request</a>
-                            <p class="mb-0">...if it does not exist</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- SRCN -->
         <div class="col">
             <div class="card">
@@ -36,7 +17,7 @@
                             <h4 class="mb-1">SRCN</h4>
                             <a href="javascript:;" wire:click="srcnId" class="role-edit-modal"><small>Available SRCN</small></a>
                         </div>
-                            <a href="javascript:void(0);" class="text-muted"> <b>10</b> Approved</a>
+                            <a href="{{url('srcn-request');}}" class="text-info btn btn-outline-primary"><i class="bx bx-plus"></i> New Request</a>
                     </div>
                 </div>
             </div>
@@ -55,7 +36,7 @@
                             <h4 class="mb-1">SRIN</h4>
                             <a href="javascript:;" wire:click="srinId" class="role-edit-modal"><small>Available SRIN</small></a>
                         </div>
-                            <a href="javascript:void(0);" class="text-muted"> <b>10</b> Approved</a>
+                        <a href="{{url('srin-request');}}" class="text-info btn btn-outline-primary"><i class="bx bx-plus"></i> New Request</a>
                     </div>
                 </div>
             </div>
@@ -110,17 +91,17 @@
                                     <td>{{ $item->count }}</td>
                                     <td>
                                         @if($item->status == 'Pending')
-                                            <button class="btn btn-label-warning" data-bs-toggle="offcanvas" data-bs-target="#timeline">{{ $item->status }}</button>
+                                            <button class="btn btn-label-warning" data-bs-toggle="modal" data-bs-target="#timeline">{{ $item->status }}</button>
                                         @elseif($item->status == 'Recommended')
-                                            <button class="btn btn-label-info" data-bs-toggle="offcanvas" data-bs-target="#timeline">{{ $item->status }}</button>
+                                            <button class="btn btn-label-info" data-bs-toggle="modal" data-bs-target="#timeline">{{ $item->status }}</button>
                                         @elseif($item->status == 'Approved')
-                                            <button class="btn btn-label-success" data-bs-toggle="offcanvas" data-bs-target="#timeline">{{ $item->status }}</button>
+                                            <button class="btn btn-label-success" data-bs-toggle="modal" data-bs-target="#timeline">{{ $item->status }}</button>
                                         @elseif($item->status == 'Allocated')
-                                            <button class="btn btn-label-primary" data-bs-toggle="offcanvas" data-bs-target="#timeline">{{ $item->status }}</button>
+                                            <button class="btn btn-label-primary" data-bs-toggle="modal" data-bs-target="#timeline">{{ $item->status }}</button>
                                         @elseif($item->status == 'Issued')
-                                            <button class="btn btn-label-info" data-bs-toggle="offcanvas" data-bs-target="#timeline">{{ $item->status }}</button>
+                                            <button class="btn btn-label-info" data-bs-toggle="modal" data-bs-target="#timeline">{{ $item->status }}</button>
                                         @elseif($item->status == 'Received')
-                                            <button class="btn btn-label-secondary" data-bs-toggle="offcanvas" data-bs-target="#timeline">{{ $item->status }}</button>
+                                            <button class="btn btn-label-secondary" data-bs-toggle="modal" data-bs-target="#timeline">{{ $item->status }}</button>
                                         @endif
                                     </td>
                                     <td>
@@ -143,4 +124,85 @@
         </div>
     </div>
     @endif
+
+    <!-- Modal -->
+    <div wire:ignore.self class="modal fade" id="timeline" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header d-flex justify-content-center align-items-center">
+                    <h5 class="modal-title">Request Timeline</strong></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> 
+                </div><hr>
+                <div class="modal-body" id="printSection">
+                    <ul class="timeline ms-2">
+                        <li class="timeline-item timeline-item-transparent">
+                            <span class="timeline-point-wrapper"><span class="timeline-point timeline-point-success"></span></span>
+                            <div class="timeline-event">
+                                <div class="timeline-header mb-1">
+                                    <h6 class="mb-0">Initiated</h6>
+                                    <!-- <span>2024-04-05</span>  -->
+                                </div>
+                                <span class="mb-0">{{ $item->status }}</span>  
+                            </div>
+                        </li>
+                        <li class="timeline-item timeline-item-transparent">
+                            <span class="timeline-point-wrapper"><span class="timeline-point {{ $item['status'] == 'Recommended' ? 'timeline-point-success' : 'timeline-point-secondary' }}"></span></span>
+                            <div class="timeline-event">
+                                <div class="timeline-header mb-1">
+                                    <h6 class="mb-0">Line Supervisor</h6>
+                                </div>
+                                <span class="mb-0">{{ $item->status  }}</span>
+                            </div>
+                        </li>
+                        <li class="timeline-item timeline-item-transparent">
+                            <span class="timeline-point-wrapper"><span class="timeline-point timeline-point-secondary"></span></span>
+                            <div class="timeline-event">
+                                <div class="timeline-header mb-1">
+                                    <h6 class="mb-0">Head of Department</h6>
+                                    <!-- <span>2024-04-05</span>  -->
+                                </div>
+                                <span class="mb-0">Approved and Allocated</span>
+                            </div>
+                        </li>
+                        <li class="timeline-item timeline-item-transparent">
+                            <span class="timeline-point-wrapper"><span class="timeline-point timeline-point-secondary"></span></span>
+                            <div class="timeline-event">
+                                <div class="timeline-header mb-1">
+                                    <h6 class="mb-0">Head Account Operation</h6>
+                                    <!-- <span>2024-04-05</span>  -->
+                                </div>
+                                <span class="mb-0">Approved</span>  
+                            </div>
+                        </li>
+
+                        <li class="timeline-item timeline-item-transparent">
+                            <span class="timeline-point-wrapper"><span class="timeline-point timeline-point-secondary"></span></span>
+                            <div class="timeline-event">
+                                <div class="timeline-header mb-1">
+                                    <h6 class="mb-0">Issuing Store</h6>
+                                    <!-- <span>2024-04-05</span>  -->
+                                </div>
+                                    <span class="mb-0">Issued and Despatch</span>
+                            </div>
+                        </li>
+
+                        <li class="timeline-item timeline-item-transparent">
+                            <span class="timeline-point-wrapper"><span class="timeline-point timeline-point-secondary"></span></span>
+                            <!-- <div class="timeline-event"> -->
+                                <div class="timeline-header mb-1">
+                                    <h6 class="mb-0">Received</h6>
+                                    <!-- <span>2024-04-05</span>  -->
+                                </div>
+                                <!-- <span class="mb-0">2024-04-05</span>   -->
+                            <!-- </div> -->
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                        <i class="bx bx-x bx-xs me-1"></i>Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

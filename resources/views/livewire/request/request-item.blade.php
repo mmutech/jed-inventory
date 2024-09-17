@@ -82,20 +82,3 @@
         </div>
     </div>
 </div>
-<script>
-    document.addEventListener('livewire:load', function () {
-        function initializeSelect2() {
-            $('#select2-dropdown').select2();
-
-            $('#select2-dropdown').on('change', function (e) {
-                @this.set('stockCode', $(this).val());
-            });
-        }
-
-        initializeSelect2(); // Initialize on page load
-
-        document.addEventListener('livewire:update', function () {
-            initializeSelect2(); // Reinitialize after Livewire updates the DOM
-        });
-    });
-</script>

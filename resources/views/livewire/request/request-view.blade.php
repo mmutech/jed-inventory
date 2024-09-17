@@ -73,7 +73,7 @@
                                             <tr>
                                                 <th>Stock Code</th>
                                                 <th>Issue Store</th>
-                                                <th>Allocation</th>
+                                                <th>QTY Allocated</th>
                                             </tr>
                                         </thead>
                                             @if(!empty($allocation))
@@ -108,8 +108,8 @@
                                             <tr>
                                                 <th>Stock Code</th>
                                                 <th>Description</th>
-                                                <th>Quantity Required (Unit)</th>
-                                                <th>Allocation</th>
+                                                <th>QTY Required (Unit)</th>
+                                                <th>QTY Allocated</th>
                                             </tr>
                                         </thead>
                                             @if(!empty($items))
@@ -249,7 +249,7 @@
                 <div class="card-header mb-2"> 
                     <!--Print-->
                     @if(!empty($hod_approval->hod_approved_by))
-                    <button class="btn btn-label-primary d-grid w-100" onclick="window.print()">
+                    <button class="btn btn-label-primary d-grid w-100 mb-4" onclick="window.print()">
                         <span class="d-flex align-items-center justify-content-center text-nowrap">
                         <i class="bx bx-file bx-xs me-1"></i>Print</span>
                     </button>
@@ -257,7 +257,7 @@
 
                     @if(empty($recommend->recommend_by))
                         @can('recommend')
-                        <button class="btn btn-label-primary d-grid w-100 mt-2" 
+                        <button class="btn btn-label-primary d-grid w-100 mt-2 mb-4" 
                             data-bs-toggle="offcanvas" 
                             data-bs-target="#recommendation">
                         <span class="d-flex align-items-center justify-content-center text-nowrap">
@@ -266,18 +266,18 @@
                         @endcan
                     @endif
 
-                    @if(!empty($recommend->recommend_by))
+                    @if(!empty($recommend->recommend_by) AND empty($hod_approval->hod_approved_by))
                         @can('hod-approval')
-                        <a href="{{ url('allocation/'.$data->reference) }}" class="btn btn-label-primary d-grid w-100 mt-2">
+                        <a href="{{ url('allocation/'.$data->reference) }}" class="btn btn-label-primary d-grid w-100 mt-2 mb-4">
                         <span class="d-flex align-items-center justify-content-center text-nowrap">
                             <i class="bx bx-paper-plane bx-xs me-1"></i>Allocation</span>
                         </a>
                         @endcan
                     @endif
 
-                    @if($title == 'SRCN')
+                    @if($title == 'SRCN' AND empty($approval->approved_by))
                         @can('haop-approval')
-                            <button class="btn btn-label-primary d-grid w-100 mt-2" 
+                            <button class="btn btn-label-primary d-grid w-100 mt-2 mb-4" 
                                 data-bs-toggle="offcanvas" 
                                 data-bs-target="#approval">
                             <span class="d-flex align-items-center justify-content-center text-nowrap">
