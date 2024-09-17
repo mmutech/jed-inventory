@@ -19,7 +19,6 @@ use App\Livewire\Request\Allocation as RequestAllocation;
 use App\Livewire\Request\CheckIn;
 use App\Livewire\Request\CheckOut;
 use App\Livewire\Request\RequestIndex;
-use App\Livewire\Request\RequestItem;
 use App\Livewire\Request\RequestView;
 use App\Livewire\Request\SCNRequest;
 use App\Livewire\Request\SRCNRequest;
@@ -101,7 +100,6 @@ Route::group(['middleware' => ['auth']], function() {
 
     // Request
     Route::get('/request-index', RequestIndex::class);
-    Route::get('/request-item', RequestItem::class);
     Route::get('/srcn-request', SRCNRequest::class);
     Route::get('/srin-request', SRINRequest::class);
     Route::get('/request-scn/{srinId}', SCNRequest::class);
