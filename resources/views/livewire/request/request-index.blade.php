@@ -106,7 +106,7 @@
                                     </td>
                                     <td>
                                             <a href="{{ url('request-view', $item->reference) }}" class="btn btn-outline-info"><i class="bx bx-show"></i></a>
-                                        @if(strpos($item->reference, 'SRIN') !== false)
+                                        @if(strpos($item->reference, 'SRIN') !== false AND $item->status == 'Received')
                                             <a href="{{ url('request-scn', $item->reference) }}" class="btn btn-outline-warning m-2">SCN</a>
                                         @endif
                                     </td>
@@ -140,9 +140,8 @@
                             <div class="timeline-event">
                                 <div class="timeline-header mb-1">
                                     <h6 class="mb-0">Initiated</h6>
-                                    <!-- <span>2024-04-05</span>  -->
                                 </div>
-                                <span class="mb-0">{{ $item->status }}</span>  
+                                <span class="mb-0"></span>  
                             </div>
                         </li>
                         <li class="timeline-item timeline-item-transparent">
@@ -151,7 +150,7 @@
                                 <div class="timeline-header mb-1">
                                     <h6 class="mb-0">Line Supervisor</h6>
                                 </div>
-                                <span class="mb-0">{{ $item->status  }}</span>
+                                <span class="mb-0">Recommended</span>
                             </div>
                         </li>
                         <li class="timeline-item timeline-item-transparent">
@@ -159,7 +158,6 @@
                             <div class="timeline-event">
                                 <div class="timeline-header mb-1">
                                     <h6 class="mb-0">Head of Department</h6>
-                                    <!-- <span>2024-04-05</span>  -->
                                 </div>
                                 <span class="mb-0">Approved and Allocated</span>
                             </div>
@@ -169,7 +167,6 @@
                             <div class="timeline-event">
                                 <div class="timeline-header mb-1">
                                     <h6 class="mb-0">Head Account Operation</h6>
-                                    <!-- <span>2024-04-05</span>  -->
                                 </div>
                                 <span class="mb-0">Approved</span>  
                             </div>
@@ -180,7 +177,6 @@
                             <div class="timeline-event">
                                 <div class="timeline-header mb-1">
                                     <h6 class="mb-0">Issuing Store</h6>
-                                    <!-- <span>2024-04-05</span>  -->
                                 </div>
                                     <span class="mb-0">Issued and Despatch</span>
                             </div>
@@ -188,18 +184,14 @@
 
                         <li class="timeline-item timeline-item-transparent">
                             <span class="timeline-point-wrapper"><span class="timeline-point timeline-point-secondary"></span></span>
-                            <!-- <div class="timeline-event"> -->
-                                <div class="timeline-header mb-1">
-                                    <h6 class="mb-0">Received</h6>
-                                    <!-- <span>2024-04-05</span>  -->
-                                </div>
-                                <!-- <span class="mb-0">2024-04-05</span>   -->
-                            <!-- </div> -->
+                            <div class="timeline-header mb-1">
+                                <h6 class="mb-0">Received</h6>
+                            </div>
                         </li>
                     </ul>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                    <button type="button" class="btn btn-info" data-bs-dismiss="modal">
                         <i class="bx bx-x bx-xs me-1"></i>Close</button>
                 </div>
             </div>
