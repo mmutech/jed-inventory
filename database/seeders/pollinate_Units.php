@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class pollinate_Units extends Seeder
+class pollinate_units extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,7 +16,7 @@ class pollinate_Units extends Seeder
         /**
          * Created by pollinate.
          * 
-         * Table: jed_inventory.Units
+         * Table: jed_inventory.units
          * User:  MMUHADEJIA
          * Host:  DESKTOP-R740F0R
          * Date:  2024-02-06 10:54:07 UTC
@@ -25,9 +25,9 @@ class pollinate_Units extends Seeder
 
         \Schema::disableForeignKeyConstraints();
 
-        \DB::table('Units')->delete();
+        \DB::table('units')->delete();
 
-        \DB::table('Units')->insert([
+        \DB::table('units')->insert([
             [
                 'id' => 1,
                 'description' => 'No',
@@ -70,7 +70,7 @@ class pollinate_Units extends Seeder
             ],
         ]);
 
-        \DB::table('Units')->insert([
+        \DB::table('units')->insert([
             [
                 'id' => 6,
                 'description' => 'Sqm',
@@ -113,7 +113,7 @@ class pollinate_Units extends Seeder
             ],
         ]);
 
-        \DB::table('Units')->insert([
+        \DB::table('units')->insert([
             [
                 'id' => 11,
                 'description' => 'Other',
