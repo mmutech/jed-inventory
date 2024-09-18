@@ -145,7 +145,7 @@
                             </div>
                         </li>
                         <li class="timeline-item timeline-item-transparent">
-                            <span class="timeline-point-wrapper"><span class="timeline-point {{ $item['status'] == 'Recommended' ? 'timeline-point-success' : 'timeline-point-secondary' }}"></span></span>
+                            <span class="timeline-point-wrapper"><span class="timeline-point timeline-point-success"></span></span>
                             <div class="timeline-event">
                                 <div class="timeline-header mb-1">
                                     <h6 class="mb-0">Line Supervisor</h6>
