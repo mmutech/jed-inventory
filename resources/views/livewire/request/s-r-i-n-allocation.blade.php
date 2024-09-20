@@ -5,39 +5,12 @@
 
     <div class="card">
         <div class="card-header">
-            <h6 class="mb-0">Store Requisition and Consignment Note</h6>
+            <h6 class="mb-0">STORES REQUISITION / ISSUE NOTE (SRIN)</h6>
             <small>Allocation.</small>
         </div>
         <hr class="my-1">
         <form wire:submit="update">
             <div class="card-body">
-                <h5 class="text-capitalize mb-0 text-nowrap text-center fw-bolder mt-2">
-                    Requisition Items
-                </h5>
-                <hr class="my-1 mx-n4">
-                <div class="table-responsive text-nowrap mb-4">
-                    <div id="dynamicFieldsContainer" wire:ignore>
-                        <table class="table" id="itemsTable">
-                            <thead>
-                                <tr>
-                                <th>Stock Code</th>
-                                <th>Description</th>
-                                <th>Qty Recommended</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            @foreach ($items as $key => $item)               
-                                <tr class="input-container">
-                                    <td><p>{{$item->stockCodeID->stock_code}}</p></td>
-                                    <td><p>{{$item->stockCodeID->name}}</p></td>
-                                    <td><p>{{$item->quantity_recommend}}</p></td>
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
                 <h5 class="text-capitalize mb-0 text-nowrap text-center fw-bolder mt-2">
                     Allocation Store
                 </h5>
@@ -47,10 +20,10 @@
                         <table class="table" id="itemsTable">
                             <thead>
                                 <tr>
-                                    <th>Station</th>
                                     <th>Stock Code</th>
                                     <th>Description</th>
                                     <th>Available</th>
+                                    <th>Qty Recommended</th>
                                     <th>Allocate Quantity</th>
                                     <th class="text-end">Action</th>
                                 </tr>
@@ -58,10 +31,10 @@
                             <tbody wire:ignore>
                             @foreach ($allocationStores as $key => $item)               
                                 <tr class="input-container">
-                                    <td><p>{{$item->stationID->name}}</p></td>
                                     <td><p>{{$item->stockCodeID->stock_code}}</p></td>
                                     <td><p>{{$item->stockCodeID->name}}</p></td>
-                                    <td><p>{{$item->total_balance}}</p></td>
+                                    <td><p>{{$item->qty_balance}}</p></td>
+                                    <td><p>{{$item->quantity_recommend}}</p></td>
                                     <td class="col-sm-2">
                                         <input type="number" wire:model="allocationQty.{{$key}}" class="form-control invoice-item-qty">
                                         @error("allocationQty") <span class="error">{{ $message }}</span> @enderror 

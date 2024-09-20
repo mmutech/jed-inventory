@@ -10,7 +10,7 @@ use Livewire\Attributes\Locked;
 
 class StoreLedgerShow extends Component
 {
-    public $title = 'Stores Ledger', $storeID, $data, $items, $search;
+    public $title = 'Stores Ledger', $storeID, $data, $items, $search, $storeBinCards, $stockCodeID, $value_in, $value_out;
 
     public function stockCode()
     {
@@ -33,6 +33,18 @@ class StoreLedgerShow extends Component
             $this->items = collect(); // or some default value
         }
         // dd($this->max);
+    }
+
+    public function mount($stockCodeID)
+    {
+        $this->stockCodeID = $stockCodeID;
+        $storeBinCards = StoreBook::where('stock_code_id', $this->stockCodeID)->get();
+        $this->data = $storeBinCards->first();
+        $this->items = $storeBinCards;
+
+        $this->value_in = StoreBook::where('stock_code_id', $this->stockCodeID)->sum('value_in');
+        $this->value_out = StoreBook::where('stock_code_id', $this->stockCodeID)->sum('value_out');
+
     }
 
     public function render()

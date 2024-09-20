@@ -112,6 +112,7 @@ class SRINRequest extends Component
     {
         // Update the available stock whenever the stock code is selected/changed
         $this->stockCount = StoreBook::select('station_id', DB::raw('MAX(id) as latest_id'))
+        ->where('station_id', $this->storeID)
         ->where('stock_code_id', $this->selectedStockCode)
         ->groupBy('station_id')
         ->pluck('latest_id');

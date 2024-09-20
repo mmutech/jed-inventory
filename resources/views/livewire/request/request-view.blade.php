@@ -257,21 +257,26 @@
 
                     @if(empty($recommend->recommend_by))
                         @can('recommend')
-                        <button class="btn btn-label-primary d-grid w-100 mt-2 mb-4" 
-                            data-bs-toggle="offcanvas" 
-                            data-bs-target="#recommendation">
-                        <span class="d-flex align-items-center justify-content-center text-nowrap">
-                            <i class="bx bx-paper-plane bx-xs me-1"></i>Recommendation</span>
-                        </button>
+                            <a href="{{ url('qty-recommend/'.$data->reference) }}" class="btn btn-label-primary d-grid w-100 mt-2 mb-4">
+                                <span class="d-flex align-items-center justify-content-center text-nowrap">
+                                <i class="bx bx-paper-plane bx-xs me-1"></i>Recommendation</span>
+                            </a>
                         @endcan
                     @endif
 
                     @if(!empty($recommend->recommend_by) AND empty($hod_approval->hod_approved_by))
                         @can('hod-approval')
-                        <a href="{{ url('allocation/'.$data->reference) }}" class="btn btn-label-primary d-grid w-100 mt-2 mb-4">
-                        <span class="d-flex align-items-center justify-content-center text-nowrap">
-                            <i class="bx bx-paper-plane bx-xs me-1"></i>Allocation</span>
-                        </a>
+                        @if($title == 'SRCN')
+                            <a href="{{ url('srcn-allocation/'.$data->reference) }}" class="btn btn-label-primary d-grid w-100 mt-2 mb-4">
+                            <span class="d-flex align-items-center justify-content-center text-nowrap">
+                                <i class="bx bx-paper-plane bx-xs me-1"></i>Allocation</span>
+                            </a>
+                        @else
+                            <a href="{{ url('srin-allocation/'.$data->reference) }}" class="btn btn-label-primary d-grid w-100 mt-2 mb-4">
+                            <span class="d-flex align-items-center justify-content-center text-nowrap">
+                                <i class="bx bx-paper-plane bx-xs me-1"></i>Allocation</span>
+                            </a>
+                        @endif
                         @endcan
                     @endif
 

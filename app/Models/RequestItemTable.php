@@ -17,6 +17,7 @@ class RequestItemTable extends Model
         'work_location',
         'job_description',
         'quantity_required',
+        'quantity_recommend',
         'quantity_issued',
         'requisition_store',
         'requisition_date',

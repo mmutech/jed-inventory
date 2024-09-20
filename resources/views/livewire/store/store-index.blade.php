@@ -85,34 +85,38 @@
         </div>
         <div class="card-body">
             <div class="table-responsive text-nowrap">
-                <table class="table">
-                    <tr>
-                        <th>Store Name</th>
-                        <th>Location</th>
-                        <th>Store Officer</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                    @if(!empty($data))
-                        @foreach ($data as $key => $store)
+                <table class="table" id="dataTable">
+                    <thead>
                         <tr>
-                            <td>{{ $store->name }}</td>
-                            <td>{{ $store->locationID->name }}</td>
-                            <td>{{ $store->storeOfficerID->name }}</td>
-                            <td>
-                            @if($store->status == 'Active')
-                                <label class="badge bg-label-success">{{ $store->status }}</label>
-                            @else
-                                <label class="badge bg-label-danger">{{ $store->status }}</label>
-                            @endif
-                        <td><a href="{{ url('store-edit', $store->id) }}"><i class="bx bx-pencil text-info"></i></a></td>
+                            <th>Store Name</th>
+                            <th>Location</th>
+                            <th>Store Officer</th>
+                            <th>Status</th>
+                            <th>Action</th>
                         </tr>
-                        @endforeach
-                    @else
-                        <tr>
-                            <td colspan="5" class="text-center">No Record Available</td>
-                        </tr>
-                    @endif
+                    </thead>
+                    <tbody>
+                        @if(!empty($data))
+                            @foreach ($data as $key => $store)
+                            <tr>
+                                <td>{{ $store->name }}</td>
+                                <td>{{ $store->locationID->name }}</td>
+                                <td>{{ $store->storeOfficerID->name }}</td>
+                                <td>
+                                @if($store->status == 'Active')
+                                    <label class="badge bg-label-success">{{ $store->status }}</label>
+                                @else
+                                    <label class="badge bg-label-danger">{{ $store->status }}</label>
+                                @endif
+                            <td><a href="{{ url('store-edit', $store->id) }}"><i class="bx bx-pencil text-info"></i></a></td>
+                            </tr>
+                            @endforeach
+                        @else
+                            <tr>
+                                <td colspan="5" class="text-center">No Record Available</td>
+                            </tr>
+                        @endif
+                    </tbody>
                 </table>  
             </div>
         </div>

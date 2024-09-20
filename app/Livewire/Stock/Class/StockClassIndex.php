@@ -19,7 +19,7 @@ class StockClassIndex extends Component
             ->where(function ($filter){
                     $filter->where('status', 'like', '%'.$this->search.'%')
                         ->orWhere('name', 'like', '%'.$this->search.'%');
-            })->paginate(10),
+            })->get(),
         ]);
     }
 }

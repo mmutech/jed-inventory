@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('reference');
             $table->integer('stock_code_id');
             $table->integer('quantity_required');
+            $table->integer('quantity_recommend')->nullable();
             $table->string('work_location')->nullable();
             $table->string('job_description')->nullable();
             $table->integer('quantity_issued')->nullable();

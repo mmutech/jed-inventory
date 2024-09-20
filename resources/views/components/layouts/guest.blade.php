@@ -60,6 +60,9 @@
     <script src="{{asset('assets/vendor/js/template-customizer.js')}}"></script>
     <script src="{{asset('assets/js/config.js')}}"></script>
 
+    <!-- DataTable CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.6/css/dataTables.bootstrap5.css">
+    
     <!-- Toast CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
 
@@ -134,6 +137,16 @@
     <!-- Toast JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     
+    <!-- DataTable JS -->
+    <script src="https://cdn.datatables.net/2.1.6/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.1.6/js/dataTables.bootstrap5.js"></script>
+
+    <script>
+      // $(document).ready(function (){
+        $('#dataTable').DataTable();
+      // });   
+    </script>
+
     <!-- Toast Script For Livewire -->
     <script>
       $(document).ready(function() {

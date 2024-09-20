@@ -8,17 +8,6 @@
                 <div class="col-xl-12 col-sm-12 col-md-12 mx-auto d-flex justify-content-between align-items-center">
                     <!--Search Filter-->
                     <div class="col-xl-4 col-sm-4 col-md-4">
-                        <div class="input-group input-group-merge">
-                            <span class="input-group-text" id="basic-addon-search31"><i class="bx bx-search"></i></span>
-                            <input
-                                type="text"
-                                class="form-control"
-                                placeholder="Search..."
-                                aria-label="Search..."
-                                aria-describedby="basic-addon-search31"
-                                wire:model.live.debounce.100ms="search"
-                            />
-                        </div>
                     </div>
                     <!-- Create permission -->
                     @can('create-permission')
@@ -36,23 +25,27 @@
             @endif
         </div>
         <div class="table-responsive text-nowrap">
-            <table class="table">
-                <tr>
-                    <th>No</th>
-                    <th>Name</th>
-                    <th width="280px">Action</th>
-                </tr>
-                @foreach ($permissions as $key => $permission)
-                <tr>
-                    <td>{{ ++$i }}</td>
-                    <td>{{ $permission->name }}</td>
-                    <td>
-                        @can('modify-permission')
-                        <a href="{{ route('permissions.edit',$permission->id) }}"><i class="bx bx-edit-alt me-1 text-info"></i></a>
-                        @endcan
-                    </td>
-                </tr>
-                @endforeach
+            <table class="table" id="dataTable">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Name</th>
+                        <th width="280px">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($permissions as $key => $permission)
+                    <tr>
+                        <td>{{ ++$i }}</td>
+                        <td>{{ $permission->name }}</td>
+                        <td>
+                            @can('modify-permission')
+                            <a href="{{ route('permissions.edit',$permission->id) }}"><i class="bx bx-edit-alt me-1 text-info"></i></a>
+                            @endcan
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
             </table>
         </div>
     </div>

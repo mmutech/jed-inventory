@@ -8,17 +8,6 @@
                 <div class="col-xl-12 col-sm-12 col-md-12 mx-auto d-flex justify-content-between align-items-center">
                     <!--Search Filter-->
                     <div class="col-xl-4 col-sm-4 col-md-4">
-                        <div class="input-group input-group-merge">
-                            <span class="input-group-text" id="basic-addon-search31"><i class="bx bx-search"></i></span>
-                            <input
-                                type="text"
-                                class="form-control"
-                                placeholder="Search..."
-                                aria-label="Search..."
-                                aria-describedby="basic-addon-search31"
-                                wire:model.live.debounce.100ms="search"
-                            />
-                        </div>
                     </div>
                     <!-- Create Role -->
                     @can('create-role')
@@ -36,37 +25,39 @@
             @endif
         </div>
         <div class="table-responsive text-nowrap">
-            <table class="table">
-                <tr>
-                    <th>No</th>
-                    <th>Name</th>
-                    <th width="280px">Action</th>
-                </tr>
-                @foreach ($roles as $key => $role)
-                <tr>
-                    <td>{{ ++$i }}</td>
-                    <td>{{ $role->name }}</td>
-                    <td>
-                        <div class="dropdown">
-                          <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                            <i class="bx bx-dots-vertical-rounded"></i>
-                          </button>
-                          <div class="dropdown-menu">
-                            @can('view-role')
-                                <a class="dropdown-item" href="{{ route('roles.show',$role->id) }}">Show</a>
-                            @endcan
+            <table class="table" id="dataTable">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Name</th>
+                        <th width="280px">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($roles as $key => $role)
+                    <tr>
+                        <td>{{ ++$i }}</td>
+                        <td>{{ $role->name }}</td>
+                        <td>
+                            <div class="dropdown">
+                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                <i class="bx bx-dots-vertical-rounded"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                                @can('view-role')
+                                    <a class="dropdown-item" href="{{ route('roles.show',$role->id) }}">Show</a>
+                                @endcan
 
-                            @can('modify-role')
-                                <a class="dropdown-item" href="{{ route('roles.edit',$role->id) }}">Edit</a> 
-                            @endcan
-                          </div>
-                        </div>
-                    </td>
-                </tr>
-                @endforeach
+                                @can('modify-role')
+                                    <a class="dropdown-item" href="{{ route('roles.edit',$role->id) }}">Edit</a> 
+                                @endcan
+                            </div>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
             </table>
-
-            {!! $roles->render() !!}
         </div>
     </div>
 @endsection

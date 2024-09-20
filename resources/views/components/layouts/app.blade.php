@@ -53,7 +53,11 @@
     <link rel="stylesheet" href="{{asset('assets/vendor/libs/select2/select2.css')}}" />
     <link rel="stylesheet" href="{{asset('assets/vendor/libs/@form-validation/umd/styles/index.min.css')}}" />
 
+    <!-- DataTable CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.6/css/dataTables.bootstrap5.css">
     <!-- Page CSS -->
+
+    
 
     <!-- Helpers -->
     <script src="{{asset('assets/vendor/js/helpers.js')}}"></script>
@@ -63,7 +67,6 @@
     <!-- Toast CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
 
-    
     <!-- Page CSS -->
     <style>
    /* Customize progress bar using a custom class */
@@ -219,6 +222,16 @@
 
 
   </script>  
+
+    <!-- DataTable JS -->
+    <script src="https://cdn.datatables.net/2.1.6/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.1.6/js/dataTables.bootstrap5.js"></script>
+
+    <script>
+      // $(document).ready(function (){
+        $('#dataTable').DataTable();
+      // });   
+    </script>
 
     <!-- Connect Component Files js -->
     <!-- @stack('scripts') -->

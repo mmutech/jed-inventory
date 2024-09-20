@@ -24,33 +24,11 @@ class RequestView extends Component
     #[Locked]
     public $referenceId;
 
-    public $recommend_action, $recommend_note, $approved_action, $approved_note,
-    $storeID, $data, $received_note, $createdBy, $allocation, $scn;
+    public $approved_action, $approved_note,
+    $storeID, $data, $createdBy, $allocation, $scn;
 
     public $items, $reference, $stockCodeIDs, $issuingStore, $issuedStore, $issuedStoreID;
 
-    //Recommendation
-    public function recommend()
-    {
-        if($this->referenceId){
-            Recommendations::create([
-                'reference'         => $this->referenceId,
-                'recommend_note'    => $this->recommend_note,
-                'recommend_action'  => $this->recommend_action,
-                'recommend_by'      => auth()->user()->id,
-                'recommend_date'    => now()
-            ]);
-
-            if ($this->recommend_action == 'Recommend') {
-                RequestItemTable::where('reference', $this->referenceId)->update([
-                    'status' => 'Recommended',
-                ]);
-            }
-
-            $this->dispatch('success', message: 'Recommend!');
-        }
-        
-    }
  
     //HOD Approval
     public function haopApproval()

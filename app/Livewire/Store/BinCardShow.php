@@ -15,7 +15,7 @@ class BinCardShow extends Component
     public $title = 'Stores Bin Card';
     public $search = '';
 
-    public $max, $min, $re_order, $storeID, $data, $items;
+    public $max, $min, $re_order, $storeID, $data, $items, $storeBinCards, $stockCodeID, $qty_in, $qty_out, $value_in, $value_out;
 
     #[Locked]
     public $binID;
@@ -45,6 +45,24 @@ class BinCardShow extends Component
             $this->min = null;
         }
         // dd($this->max);
+    }
+
+    public function mount($stockCodeID)
+    {
+        $this->stockCodeID = $stockCodeID;
+        $this->storeID = Store::where('store_officer', Auth()->user()->id)->pluck('id')->first();
+        $storeBinCards = StoreBook::where('stock_code_id', $this->stockCodeID)->where('station_id', $this->storeID)->get();
+        $this->data = $storeBinCards->first();
+        $this->items = $storeBinCards;
+        $this->max = $storeBinCards->max('qty_balance');
+        $this->min = $storeBinCards->min('qty_balance');
+
+        $this->qty_in = StoreBook::where('stock_code_id', $this->stockCodeID)->where('station_id', $this->storeID)->sum('qty_in');
+        $this->qty_out = StoreBook::where('stock_code_id', $this->stockCodeID)->where('station_id', $this->storeID)->sum('qty_out');
+        $this->value_in = StoreBook::where('stock_code_id', $this->stockCodeID)->where('station_id', $this->storeID)->sum('value_in');
+        $this->value_out = StoreBook::where('stock_code_id', $this->stockCodeID)->where('station_id', $this->storeID)->sum('value_out');
+
+        // dd($this->data);
     }
 
     public function render()

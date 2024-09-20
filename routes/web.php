@@ -18,10 +18,13 @@ use App\Livewire\PurchaseOrder\Show;
 use App\Livewire\Request\Allocation as RequestAllocation;
 use App\Livewire\Request\CheckIn;
 use App\Livewire\Request\CheckOut;
+use App\Livewire\Request\Recommendation;
 use App\Livewire\Request\RequestIndex;
 use App\Livewire\Request\RequestView;
 use App\Livewire\Request\SCNRequest;
+use App\Livewire\Request\SRCNAllocation;
 use App\Livewire\Request\SRCNRequest;
+use App\Livewire\Request\SRINAllocation;
 use App\Livewire\Request\SRINRequest;
 
 //SRA
@@ -104,7 +107,10 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/srin-request', SRINRequest::class);
     Route::get('/request-scn/{srinId}', SCNRequest::class);
     Route::get('/request-view/{referenceId}', RequestView::class);
+    Route::get('/qty-recommend/{referenceId}', Recommendation::class);
     Route::get('/allocation/{referenceId}', RequestAllocation::class);
+    Route::get('/srcn-allocation/{referenceId}', SRCNAllocation::class);
+    Route::get('/srin-allocation/{referenceId}', SRINAllocation::class);
     Route::get('/check-in/{referenceId}', CheckIn::class);
     Route::get('/check-out/{referenceId}', CheckOut::class);
 
@@ -118,11 +124,11 @@ Route::group(['middleware' => ['auth']], function() {
 
     //Stores Bin Card
     Route::get('/bin-card-index', BinCardIndex::class);
-    Route::get('/bin-card-show', BinCardShow::class);
+    Route::get('/bin-card-show/{stockCodeID}', BinCardShow::class);
 
     //Stores Ledger
     Route::get('/store-ledger-index', StoreLedgerIndex::class);
-    Route::get('/store-ledger-show', StoreLedgerShow::class);
+    Route::get('/store-ledger-show/{stockCodeID}', StoreLedgerShow::class);
 
     //Stock Category
     Route::get('/stock-category-index', StockCategoryIndex::class);

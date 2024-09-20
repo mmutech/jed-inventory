@@ -59,20 +59,7 @@
                 <div class="col-xl-12 col-sm-12 col-md-12 mx-auto d-flex justify-content-between align-items-center">
                     {{-- Search --}}
                     <div class="me-3">
-                        <div id="DataTables_Table_0_filter" class="dataTables_filter mb-3">
-                            <label>
-                                <div class="input-group input-group-merge">
-                                    <span class="input-group-text" id="basic-addon-search31"><i class="bx bx-search"></i></span>
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        placeholder="Search..."
-                                        aria-label="Search..."
-                                        aria-describedby="basic-addon-search31"
-                                        wire:model.live.debounce.100ms="search" />
-                                </div>
-                            </label>
-                        </div>
+                    
                     </div>
                     <!-- Create user -->
                     @can('create-category')
@@ -87,35 +74,39 @@
         </div>
         <div class="card-body">
             <div class="table-responsive text-nowrap">
-                <table class="table">
-                    <tr>
-                        <th>Stock Category</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                    @if(!empty($data))
-                        @foreach ($data as $key => $stockCat)
+                <table class="table" id="dataTable">
+                    <thead>
                         <tr>
-                            <td>{{ $stockCat->name }}</td>
+                            <th>Stock Category</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if(!empty($data))
+                            @foreach ($data as $key => $stockCat)
+                            <tr>
+                                <td>{{ $stockCat->name }}</td>
 
+                                <td>
+                                @if($stockCat->status == 'Active')
+                                    <label class="badge bg-label-success">{{ $stockCat->status }}</label>
+                                @else
+                                    <label class="badge bg-label-danger">{{ $stockCat->status }}</label>
+                                @endif
                             <td>
-                            @if($stockCat->status == 'Active')
-                                <label class="badge bg-label-success">{{ $stockCat->status }}</label>
-                            @else
-                                <label class="badge bg-label-danger">{{ $stockCat->status }}</label>
-                            @endif
-                        <td>
-                            @can('modify-category')
-                                <a href="{{ url('stock-category-edit', $stockCat->id) }}"><i class="bx bx-pencil text-info"></i></a>
-                            @endcan
-                        </td>
-                        </tr>
-                        @endforeach
-                    @else
-                        <tr>
-                            <td colspan="5" class="text-center">No Record Available</td>
-                        </tr>
-                    @endif
+                                @can('modify-category')
+                                    <a href="{{ url('stock-category-edit', $stockCat->id) }}"><i class="bx bx-pencil text-info"></i></a>
+                                @endcan
+                            </td>
+                            </tr>
+                            @endforeach
+                        @else
+                            <tr>
+                                <td colspan="5" class="text-center">No Record Available</td>
+                            </tr>
+                        @endif
+                    </tbody>
                 </table>  
             </div>
         </div>

@@ -104,8 +104,8 @@
               <ul class="menu-sub">
                 <!-- Store Bin Card-->
                 @can('view-bin-card')
-                <li class="menu-item {{ Request::is('bin-card-show') ? 'active open' : '' }}">
-                  <a href="{{url('bin-card-show');}}" class="menu-link">
+                <li class="menu-item {{ Request::is('bin-card-index') ? 'active open' : '' }}">
+                  <a href="{{url('bin-card-index');}}" class="menu-link">
                     <div data-i18n="bin_card">Stores Bin Card</div>
                   </a>
                 </li>
@@ -113,8 +113,8 @@
 
                 <!-- Store Ledger-->
                 @can('view-ledger')
-                <li class="menu-item {{ Request::is('store-ledger-show') ? 'active open' : '' }}">
-                  <a href="{{url('store-ledger-show');}}" class="menu-link">
+                <li class="menu-item {{ Request::is('store-ledger-index') ? 'active open' : '' }}">
+                  <a href="{{url('store-ledger-index');}}" class="menu-link">
                     <div data-i18n="ledger">Stores Ledger</div>
                   </a>
                 </li>

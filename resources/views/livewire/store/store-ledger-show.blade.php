@@ -4,15 +4,15 @@
     </h6>
 
     <div class="container-xxl flex-grow-1 container-p-y">
-        <div class="row mb-3">
+        <!-- <div class="row mb-3">
             <div class="col-sm-4">
                 <div class="input-group input-group-merge">
                     <input type="text" class="form-control" wire:model="search" wire:keydown.enter="stockCode" placeholder="Search Stock Code..." />
                     <button class="input-group-text btn btn-outline-primary" wire:click="stockCode" id="basic-addon-search31"><i class="bx bx-search"></i></button>
                 </div>
             </div>
-        </div>
-        @if ($data && $items)
+        </div> -->
+
         <div class="row invoice-add">
             <!-- Ledger / Item Details-->
             <div class="col-lg-12 col-12 mb-lg-0 mb-4">
@@ -104,6 +104,31 @@
                                             @endif
                                     </table>
                                 </div>
+
+                                <!-- Summary -->
+                                <div class="row py-sm-1 mt-3">
+                                    <div class="col-md-6 mb-md-0 mb-1"></div>
+                                    <div class="col-md-6 d-flex justify-content-end">
+                                        <div class="invoice-calculations">
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <span class="w-px-100">Cumulative Value In:</span>
+                                                <span class="fw-medium">&#8358; {{ number_format(round($value_in, 2)) }}</span>
+                                            </div>
+                                        
+                                            <hr class="mb-1 mt-1">
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <span class="w-px-100">Cumulative Value Out:</span>
+                                                <span class="fw-medium">&#8358; {{ number_format(round($value_out, 2)) }}</span>
+                                            </div>
+
+                                            <hr class="mb-1 mt-1">
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <span class="w-px-100">Cumulative Balance:</span>
+                                                <span class="fw-medium">&#8358; {{ number_format(round($value_in - $value_out, 2)) }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -124,7 +149,6 @@
                 
             </div>
             <!-- /Print Actions --> 
-        </div>  
-        @endif    
+        </div>     
     </div>
 </div>

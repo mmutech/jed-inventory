@@ -37,7 +37,7 @@ class StockCodeIndex extends Component
                     $filter->where('status', 'like', '%'.$this->search.'%')
                         ->orWhere('name', 'like', '%'.$this->search.'%')
                         ->orWhere('stock_code', 'like', '%'.$this->search.'%');
-            })->paginate(10),
+            })->get(),
         ]);
     }
 }

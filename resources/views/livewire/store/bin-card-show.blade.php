@@ -4,15 +4,14 @@
     </h6>
 
     <div class="container-xxl flex-grow-1 container-p-y">
-        <div class="row mb-3">
+        <!-- <div class="row mb-3">
             <div class="col-sm-4">
                 <div class="input-group input-group-merge">
                     <input type="text" class="form-control" wire:model="search" wire:keydown.enter="stockCode" placeholder="Search Stock Code..." />
                     <button class="input-group-text btn btn-outline-primary" wire:click="stockCode" id="basic-addon-search31"><i class="bx bx-search"></i></button>
                 </div>
             </div>
-        </div>
-        @if ($data && $items)
+        </div> -->
         <div class="row invoice-add">
             <!-- Bin Card / Item Details-->
             <div class="col-lg-12 col-12 mb-lg-0 mb-4">
@@ -69,26 +68,38 @@
                         </div>
 
                         <div class="row p-sm-3 p-0">
-                            <div class="col-md-12">
+                            <div class="col-md-8">
                                 <span class="fw-bolder">DESCRIPTION:</span>
                                 <span>{{ $data->stockCodeID->name }} </span>
+                                <hr class="mb-0 mt-0">
+                            </div>
+                            <div class="col-md-4">
+                                <span class="fw-bolder">Basic Price:</span>
+                                <span>&#8358; {{number_format($data->basic_price) ?? ''}}</span>
                                 <hr class="mb-0 mt-0">
                             </div>
                         
                             <div class="mb-3 mt-0" data-repeater-list="group-a">
                                 <div class="repeater-wrapper pt-0 pt-md-4" data-repeater-item="">
                                     <div class="table-responsive text-nowrap">
-                                        <table class="table">
+                                        <table class="table table-bordered">
                                             <thead>
                                                 <tr>
-                                                    <th class="text-nowrap">Date Receipt/Issue</th>
+                                                    <th colspan="3"></th>
+                                                    <th colspan="3" class="text-center fw-bolder">QUANTITY</th>
+                                                    <th colspan="4" class="text-center fw-bolder">VALUE</th>
+                                                </tr>
+                                                <tr>
+                                                    <th class="text-nowrap">Date</th>
                                                     <th>Reference</th>
-                                                    <!-- <th>Vendor Name</th> -->
-                                                    <th>station</th>
-                                                    <th>In</th>
-                                                    <th>Out</th>
+                                                    <th>Station</th>
+                                                    <th>Received</th>
+                                                    <th>Issued</th>
                                                     <th>Balance</th>
-                                                    <th>Initiated by</th>
+                                                    <th>Basic Price</th>
+                                                    <th>Current(IN)</th>
+                                                    <th>Current(OUT)</th>
+                                                    <th>Current Balance</th>
                                                 </tr>
                                             </thead>
                                                 @if(!empty($items))
@@ -96,12 +107,14 @@
                                                     <tr>
                                                         <td>{{ $item->date }}</td>
                                                         <td>{{ $item->reference }}</td>
-                                                        <!-- <td>{{ $item->jobOrderId->vendor_name ?? '' }}</td> -->
-                                                        <td>{{ $item->issueStationID->name ?? $item->stationID->name }}</td>
-                                                        <td>{{ $item->qty_in ?? '-' }}</td>
-                                                        <td>{{ $item->qty_out  ?? '-' }}</td>
-                                                        <td>{{ $item->qty_balance ?? '-' }}</td>
-                                                        <td>{{ $item->createdBy->name }}</td>
+                                                        <td>{{ $item->stationID->name }}</td>
+                                                        <td>{{ number_format(round($item->qty_in, 2)) ?? '-' }}</td>
+                                                        <td>{{ number_format(round($item->qty_out, 2)) ?? '-' }}</td>
+                                                        <td>{{ number_format(round($item->qty_balance, 2)) ?? '-' }}</td>
+                                                        <td>{{ number_format(round($item->basic_price, 2)) ?? '-' }}</td>
+                                                        <td>{{ number_format(round($item->value_in, 2)) ?? '-' }}</td>
+                                                        <td>{{ number_format(round($item->value_out, 2)) ?? '-' }}</td>
+                                                        <td>{{ number_format(round($item->value_balance, 2)) ?? '-' }}</td>
                                                     </tr>
                                                     @endforeach
                                                 @else
@@ -110,6 +123,26 @@
                                                     </tr>
                                                 @endif
                                         </table>
+                                    </div>
+
+                                     <!-- Summary -->
+                                    <div class="row py-sm-1 mt-3">
+                                        <div class="col-md-4">
+                                            <p class="mb-0 fw-semibold">Cumulative Received</p><hr>
+                                            <span class="d-block">Quantity: {{number_format($qty_in)}}</span>
+                                            <span class="d-block">Value: &#8358; {{ number_format(round($value_in, 2)) }}</span>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <p class="mb-0 fw-semibold">Cumulative Issued</p><hr>
+                                            <span class="d-block">Quantity: {{number_format($qty_out)}}</span>
+                                            <span class="d-block">Value: &#8358; {{ number_format(round($value_out, 2)) }}</span>
+                                        </div>
+
+                                        <div class="col-md-4"> 
+                                            <p class="mb-0 fw-semibold">Cumulative Balance</p><hr>
+                                            <span class="d-block">Quantity: {{number_format($qty_in - $qty_out)}}</span>
+                                            <span class="d-block">Value: &#8358; {{ number_format(round($value_in, 2)) }}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -132,7 +165,6 @@
                 
             </div>
             <!-- /Print Actions --> 
-        </div> 
-        @endif     
+        </div>     
     </div>
 </div>
