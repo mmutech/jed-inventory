@@ -163,19 +163,6 @@
                                 </div>
                             @endif
 
-                            <!--Quality Checks -->
-                            @if(!empty($qualityCheck->quality_check_by))
-                                <hr class="mx-n1">
-                                <div class="col-sm-8">
-                                    <span class="fw-bolder">Checked by: </span>
-                                    <span>{{$qualityCheck->QualityCheckBy->name ?? '' }}</span>
-                                </div>
-                                <div class="col-sm-4">
-                                    <span class="fw-bolder">Date: </span>
-                                    <span>{{$qualityCheck->quality_check_date}}</span>
-                                </div>
-                            @endif
-
                             <!--Account Remarks -->
                             @if(!empty($approval->approved_by))
                                 <hr class="mx-n1">
@@ -205,38 +192,30 @@
                     </button>
                     @endif
 
-                    @if(!empty($qualityCheck->quality_check_by))
-                        @if(empty($approval->approved_by))
+                    @if(empty($approval->approved_by))
                         @can('haop-approval')
-                        <button class="btn btn-label-primary d-grid w-100 mt-2" 
-                            data-bs-toggle="offcanvas" 
-                            data-bs-target="#account-operation">
-                        <span class="d-flex align-items-center justify-content-center text-nowrap">
-                            <i class="bx bx-paper-plane bx-xs me-1"></i>Account Operations</span>
-                        </button>
+                            <button class="btn btn-label-primary d-grid w-100 mt-2" 
+                                data-bs-toggle="offcanvas" 
+                                data-bs-target="#account-operation">
+                            <span class="d-flex align-items-center justify-content-center text-nowrap">
+                                <i class="bx bx-paper-plane bx-xs me-1"></i>Account Operations</span>
+                            </button>
                         @endcan
-                        
-                        @endif
                     @endif
                 </div>
 
                 <!-- Approval Note -->
+                @if(!empty($approval->approved_by))
                 <div class="card mb-4">
                     <div class="card-body">
-                    @if(!empty($qualityCheck->quality_check_by))
-                        <h6 class="fw-bolder">Quality Check Note:</h6>
-                        <p>{{$qualityCheck->quality_check_note}}</p>
-                    @endif
-
-                    @if(!empty($approval->approved_by))
                         <h6 class="fw-bolder">Account Operation Remark:</h6>
                         <p>{{$approval->approved_note}}</p>
-                    @endif
                     </div>
                 </div>
+                @endif
 
-                    <!-- Modify SRA / Quality Check -->
-                    @if(empty($approval->approved_by))
+                <!-- Modify SRA-->
+                @if(empty($approval->approved_by))
                     <div class="card">
                         <div class="card-header">
                             <p class="mb-2 fw-bolder">Modify SRA / Item</p>
@@ -253,21 +232,21 @@
                                 </label>
                             </div>
                             @endcan
-
-                            @can('quality-check')
-                            <div class="d-flex justify-content-between mb-2">
-                                <label for="client-notes" class="mb-0">Quality Check</label>
-                                <label class="switch switch-primary me-0">
-                                    <span class="switch-label">
-                                    <a href="{{ url('quality-check/'.$item->purchase_order_id) }}">
-                                        <i class="bx bx-pencil bx-sm me-sm-n2"></i></a>
-                                    </span>
-                                </label>
-                            </div>
-                            @endcan
                         </div>
                     </div>
-                    @endif
+                @endif
+                <a href="{{asset('storage/' .$data->delivery_note)}}" class="btn btn-label-primary d-grid w-100 mb-2 mt-2">
+                    <span class="d-flex align-items-center justify-content-center text-nowrap">
+                    <i class="bx bx-file bx-xs me-1"></i>Delivery Note</span>
+                </a>
+                <a href="{{asset('storage/' .$data->invoice_doc)}}" class="btn btn-label-primary d-grid w-100 mb-2">
+                    <span class="d-flex align-items-center justify-content-center text-nowrap">
+                    <i class="bx bx-file bx-xs me-1"></i>Invoice Document</span>
+                </a>
+                <a href="{{asset('storage/' .$data->quality_cert)}}" class="btn btn-label-primary d-grid w-100 mb-2">
+                    <span class="d-flex align-items-center justify-content-center text-nowrap">
+                    <i class="bx bx-file bx-xs me-1"></i>Quality Check Cert</span>
+                </a>
             </div>
             <!-- /Approval Actions -->
         </div>

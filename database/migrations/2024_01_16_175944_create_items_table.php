@@ -18,11 +18,13 @@ return new class extends Migration
             $table->integer('unit');
             $table->integer('quantity');
             $table->double('rate');
+            $table->integer('balance_qty')->nullable();
             $table->integer('updated_by')->nullable();
             $table->integer('confirm_qty')->nullable();
             $table->double('confirm_rate')->nullable();
             $table->integer('confirm_by')->nullable();
             $table->integer('quality_check')->nullable();
+            $table->integer('recommend')->nullable();
             $table->string('stock_code')->nullable();
             $table->date('confirm_date')->nullable();
             $table->enum('status', ['In-stock', 'Out of Stock'])->default('In-stock');

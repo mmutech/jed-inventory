@@ -53,20 +53,6 @@
                         <div class="col-xl-12 col-sm-12 col-md-12 mx-auto d-flex justify-content-between align-items-center">
                             {{-- Search --}}
                             <div class="me-3">
-                                <div id="DataTables_Table_0_filter" class="dataTables_filter mb-3">
-                                    <label>
-                                        <div class="input-group input-group-merge">
-                                            <span class="input-group-text" id="basic-addon-search31"><i class="bx bx-search"></i></span>
-                                            <input
-                                                type="text"
-                                                class="form-control"
-                                                placeholder="Search..."
-                                                aria-label="Search..."
-                                                aria-describedby="basic-addon-search31"
-                                                wire:model.live.debounce.100ms="search" />
-                                        </div>
-                                    </label>
-                                </div>
                             </div>
                         </div>
 
@@ -77,46 +63,50 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive text-nowrap">
-                        <table class="table">
-                            <tr>
-                                <th>Reference</th>
-                                <th>Item Requested(No)</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                            @if(!empty($data))
-                                @foreach ($data as $item)
+                        <table class="table" id="dataTable">
+                            <thead>
                                 <tr>
-                                    <td>{{ $item->reference }}</td>
-                                    <td>{{ $item->count }}</td>
-                                    <td>
-                                        @if($item->status == 'Pending')
-                                            <button class="btn btn-label-warning" data-bs-toggle="modal" data-bs-target="#timeline">{{ $item->status }}</button>
-                                        @elseif($item->status == 'Recommended')
-                                            <button class="btn btn-label-info" data-bs-toggle="modal" data-bs-target="#timeline">{{ $item->status }}</button>
-                                        @elseif($item->status == 'Approved')
-                                            <button class="btn btn-label-success" data-bs-toggle="modal" data-bs-target="#timeline">{{ $item->status }}</button>
-                                        @elseif($item->status == 'Allocated')
-                                            <button class="btn btn-label-primary" data-bs-toggle="modal" data-bs-target="#timeline">{{ $item->status }}</button>
-                                        @elseif($item->status == 'Issued')
-                                            <button class="btn btn-label-info" data-bs-toggle="modal" data-bs-target="#timeline">{{ $item->status }}</button>
-                                        @elseif($item->status == 'Received')
-                                            <button class="btn btn-label-secondary" data-bs-toggle="modal" data-bs-target="#timeline">{{ $item->status }}</button>
-                                        @endif
-                                    </td>
-                                    <td>
-                                            <a href="{{ url('request-view', $item->reference) }}" class="btn btn-outline-info"><i class="bx bx-show"></i></a>
-                                        @if(strpos($item->reference, 'SRIN') !== false AND $item->status == 'Received')
-                                            <a href="{{ url('request-scn', $item->reference) }}" class="btn btn-outline-warning m-2">SCN</a>
-                                        @endif
-                                    </td>
+                                    <th>Reference</th>
+                                    <th>Item Requested(No)</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
                                 </tr>
-                                @endforeach
-                            @else
-                                <tr>
-                                    <td colspan="3" class="text-center">No Record Available</td>
-                                </tr>
-                            @endif
+                            </thead>
+                            <tbody>
+                                @if(!empty($data))
+                                    @foreach ($data as $item)
+                                    <tr>
+                                        <td>{{ $item->reference }}</td>
+                                        <td>{{ $item->count }}</td>
+                                        <td>
+                                            @if($item->status == 'Pending')
+                                                <button class="btn btn-label-warning" data-bs-toggle="modal" data-bs-target="#timeline">{{ $item->status }}</button>
+                                            @elseif($item->status == 'Recommended')
+                                                <button class="btn btn-label-info" data-bs-toggle="modal" data-bs-target="#timeline">{{ $item->status }}</button>
+                                            @elseif($item->status == 'Approved')
+                                                <button class="btn btn-label-success" data-bs-toggle="modal" data-bs-target="#timeline">{{ $item->status }}</button>
+                                            @elseif($item->status == 'Allocated')
+                                                <button class="btn btn-label-primary" data-bs-toggle="modal" data-bs-target="#timeline">{{ $item->status }}</button>
+                                            @elseif($item->status == 'Issued')
+                                                <button class="btn btn-label-info" data-bs-toggle="modal" data-bs-target="#timeline">{{ $item->status }}</button>
+                                            @elseif($item->status == 'Received')
+                                                <button class="btn btn-label-secondary" data-bs-toggle="modal" data-bs-target="#timeline">{{ $item->status }}</button>
+                                            @endif
+                                        </td>
+                                        <td>
+                                                <a href="{{ url('request-view', $item->reference) }}" class="btn btn-outline-info"><i class="bx bx-show"></i></a>
+                                            @if(strpos($item->reference, 'SRIN') !== false AND $item->status == 'Received')
+                                                <a href="{{ url('request-scn', $item->reference) }}" class="btn btn-outline-warning m-2">SCN</a>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td colspan="3" class="text-center">No Record Available</td>
+                                    </tr>
+                                @endif
+                            </tbody>
                         </table>  
                     </div>
                 </div>

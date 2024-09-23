@@ -62,12 +62,13 @@
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th>#</th>
                                             <th>Description</th>
                                             <th>Unit</th>
                                             <th>Quantity</th>
+                                            <th>Balance</th>
                                             <th>Rate (&#8358;)</th>
                                             <th>Amount (&#8358;)</th>
+                                            <th>Quality Check</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
@@ -82,12 +83,21 @@
                                             $subtotal += $amount;
                                             @endphp
                                             <tr>
-                                                <td><a href=""></a></td>
                                                 <td>{{$item->description}}</td>
                                                 <td>{{$item->unitID->description}}</td>
                                                 <td>{{ number_format($item->quantity)}}</td>
+                                                <td>{{ number_format($item->balance_qty ?? '0')}}</td>
                                                 <td>{{ number_format(round($item->rate, 2))}}</td>
                                                 <td>{{ number_format(round($amount, 2)) }}</td>
+                                                <td>
+                                                    @if($item->quality_check == 1)
+                                                        <span class="text-success"><i class="bx bx-check"></i></span>
+                                                        <span>Checked</span>
+                                                    @else
+                                                        <span class="text-danger"><i class="bx bx-x"></i></span>
+                                                        <span>Checked</span>
+                                                    @endif
+                                                </td>
                                             </tr>
                                             @endforeach
                                         @else
@@ -143,10 +153,10 @@
                     </div>
 
                     <!--Recommendation of purchase order -->
-                    @if(!empty($recommend->recommend_action))
+                    @if(!empty($recommend->recommend_by))
                         <hr class="mx-n1">
                         <div class="col-sm-8">
-                        <span class="fw-bolder">{{$recommend->recommend_action ?? ''}} by: </span>
+                        <span class="fw-bolder">Recommend by: </span>
                         <span>{{$recommend->recommendID->name ?? ''}}</span>
                         </div>
                         <div class="col-sm-4">
@@ -167,6 +177,19 @@
                         <span>{{$approval->approved_date}}</span>
                         </div>
                     @endif
+
+                    <!--Quality Check-->
+                    @if(!empty($qualityCheck->quality_check_by))
+                        <hr class="mx-n1">
+                        <div class="col-sm-8">
+                        <span class="fw-bolder">Checked by: </span>
+                        <span>{{$qualityCheck->QualityCheckBy->name ?? '' }}</span>
+                        </div>
+                        <div class="col-sm-4">
+                        <span class="fw-bolder">Date: </span>
+                        <span>{{$qualityCheck->quality_check_date}}</span>
+                        </div>
+                    @endif
                     </div>
                 </div>
                 </div>
@@ -175,14 +198,43 @@
         
             <!-- Approval Actions -->
             <div class="col-lg-3 col-12 invoice-actions">
+                @if(empty($recommend->recommend_by))
+                    @can('recommend')
+                        <a href="{{ url('po-recommend/'.$data->purchase_order_id) }}" class="btn btn-label-primary d-grid w-100 mb-2">
+                        <span class="d-flex align-items-center justify-content-center text-nowrap">
+                            <i class="bx bx-paper-plane bx-xs me-1"></i>Recommendation</span>
+                        </a> 
+                    @endcan
+                @elseif(empty($approval->approved_by))
+                    @can('mds-approval')
+                        <button class="btn btn-label-primary d-grid w-100 mb-2" 
+                            data-bs-toggle="offcanvas" 
+                            data-bs-target="#approval">
+                        <span class="d-flex align-items-center justify-content-center text-nowrap">
+                            <i class="bx bx-paper-plane bx-xs me-1"></i>MDs Approval</span>
+                        </button>
+                    @endcan
+                @endif
                 @if(!empty($approval->approved_action))
                     <div class="card-header mb-2">
+                        <!--Quality Check-->
+                        @can('quality-check')
+                            @if(empty($qualityCheck->quality_check_by))
+                                <a href="{{ url('quality-check/'.$data->purchase_order_id) }}" class="btn btn-label-primary d-grid w-100 mb-2">
+                                <span class="d-flex align-items-center justify-content-center text-nowrap">
+                                    <i class="bx bx-check bx-xs me-1"></i>Quality Check</span>
+                                </a>
+                            @endif
+                        @endcan
+
                         <!--Raised SRA-->
                         @can('index-sra')
-                        <a href="{{ url('confirm-item/'.$data->purchase_order_id) }}" class="btn btn-label-primary d-grid w-100 mb-2">
-                        <span class="d-flex align-items-center justify-content-center text-nowrap">
-                            <i class="bx bx-dock-top bx-xs me-1"></i>Raised SRA</span>
-                        </a>
+                            @if(!empty($qualityCheck->quality_check_by))
+                                <a href="{{ url('confirm-item/'.$data->purchase_order_id) }}" class="btn btn-label-primary d-grid w-100 mb-2">
+                                <span class="d-flex align-items-center justify-content-center text-nowrap">
+                                    <i class="bx bx-dock-top bx-xs me-1"></i>Raised SRA</span>
+                                </a>
+                            @endif
                         @endcan
 
                         <!--Print-->
@@ -193,116 +245,65 @@
                     </div>
                 @endif
                 
-
                 <!-- Approval Note -->
+                @if(!empty($recommend->recommend_by))
                 <div class="card mb-4">
                     <div class="card-body">
-                    @if(!empty($recommend->recommend_by))
                         <h6 class="fw-bolder">Recommendation Note:</h6>
                         <p>{{$recommend->recommend_note}}</p>
                         <hr>
-                    @endif
+                   
 
-                    @if(!empty($approval->approved_by))
-                        <h6 class="fw-bolder">MDs Approved Note:</h6>
-                        <p>{{$approval->approved_note}}</p>
-                    @endif
+                        @if(!empty($approval->approved_by))
+                            <h6 class="fw-bolder">MDs Approved Note:</h6>
+                            <p>{{$approval->approved_note}}</p>
+                        @endif
 
-                    @if(empty($recommend->recommend_by))
-                        @can('recommend')
-                            <button 
-                                class="btn btn-primary d-grid w-100 mb-3" 
-                                data-bs-toggle="offcanvas" 
-                                data-bs-target="#recommendation">
-                            <span class="d-flex align-items-center justify-content-center text-nowrap">
-                                <i class="bx bx-paper-plane bx-xs me-1"></i>Recommendation</span>
-                            </button>
-                        @endcan
-                    @elseif(empty($approval->approved_by))
-                        @can('mds-approval')
-                            <button 
-                                class="btn btn-label-primary d-grid w-100" 
-                                data-bs-toggle="offcanvas" 
-                                data-bs-target="#approval">
-                            <span class="d-flex align-items-center justify-content-center text-nowrap">
-                                <i class="bx bx-paper-plane bx-xs me-1"></i>MDs Approval</span>
-                            </button>
-                        @endcan
-                    @endif
+                        @if(!empty($qualityCheck->quality_check_by))
+                            <h6 class="fw-bolder">Quality Check Note:</h6>
+                            <p>{{$qualityCheck->quality_check_note}}</p>
+                        @endif
                     </div>
                 </div>
+                @endif
 
                 <!-- Modify Purchase Order / Item -->
                 @if(empty($approval->approved_action))
-                @can('modify-po')
-                <div class="card">
-                    <div class="card-header">
-                        <p class="mb-2 fw-bolder">Purchase Order / Item</p>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between mb-2">
-                        <label for="payment-terms" class="mb-0">Purchase Order</label>
-                        <label class="switch switch-primary me-0">
-                            <span class="switch-label">
-                            <a href="{{ url('purchase-order-edit/'.$data->purchase_order_id)}}">
-                                <i class="bx bx-pencil bx-sm me-sm-n2"></i>
-                            </a> 
-                            </span>
-                        </label>
+                    @can('modify-po')
+                    <div class="card">
+                        <div class="card-header">
+                            <p class="mb-2 fw-bolder">Purchase Order / Item</p>
                         </div>
-                        <div class="d-flex justify-content-between mb-2">
-                        <label for="client-notes" class="mb-0">Item</label>
-                        <label class="switch switch-primary me-0">
-                            <span class="switch-label">
-                            <a href="{{ url('purchase-order-edit-item/'.$data->purchase_order_id)}}">
-                                <i class="bx bx-pencil bx-sm me-sm-n2"></i>
-                            </a>
-                            </span>
-                        </label>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-2">
+                            <label for="payment-terms" class="mb-0">Purchase Order</label>
+                            <label class="switch switch-primary me-0">
+                                <span class="switch-label">
+                                <a href="{{ url('purchase-order-edit/'.$data->purchase_order_id)}}">
+                                    <i class="bx bx-pencil bx-sm me-sm-n2"></i>
+                                </a> 
+                                </span>
+                            </label>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                            <label for="client-notes" class="mb-0">Item</label>
+                            <label class="switch switch-primary me-0">
+                                <span class="switch-label">
+                                <a href="{{ url('purchase-order-edit-item/'.$data->purchase_order_id)}}">
+                                    <i class="bx bx-pencil bx-sm me-sm-n2"></i>
+                                </a>
+                                </span>
+                            </label>
+                            </div>
                         </div>
                     </div>
-                </div>
-                @endcan
+                    @endcan
                 @endif
             </div>
             <!-- /Approval Actions -->
         </div>
         
         <!-- Offcanvas -->
-        <!-- Send Recommendation Sidebar -->
-        <div class="offcanvas offcanvas-end" id="recommendation" aria-hidden="true">
-            <div class="offcanvas-header mb-0">
-                <h5 class="offcanvas-title">Recommendation</h5>
-                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <hr class="mx-n1">
-            <div class="offcanvas-body flex-grow-1">
-                <form wire:submit="recommends">
-                    <div class="mb-3">
-                        <label for="invoice-from" class="form-label">Recommendation Action</label>
-                        <select class="form-select mb-4" wire:model="recommended_action" required>
-                            <option value=""></option>
-                            <option value="Recommend">Recommend</option>
-                            <option value="Rejected">Reject</option>
-                        </select>
-                        @error("recommended_action") <span class="error">{{ $message }}</span> @enderror 
-                    </div>
-                    <div class="mb-3">
-                        <label for="invoice-message" class="form-label">Recommendation Remark</label>
-                        <textarea class="form-control" wire:model="recommend_note" id="invoice-message" cols="3" rows="3" required></textarea>
-                        @error("recommend_note") <span class="error">{{ $message }}</span> @enderror 
-                    </div>
-                
-                    <div class="mb-3 d-flex flex-wrap">
-                        <button type="submit" class="btn btn-primary me-3" data-bs-dismiss="offcanvas">Save</button>
-                        <button type="button" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">Cancel</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-       
-        <!-- /Send Recommendation Sidebar -->
-
         <!-- Send Approval Sidebar -->
         <div class="offcanvas offcanvas-end" id="approval" aria-hidden="true">
             <div class="offcanvas-header mb-3">

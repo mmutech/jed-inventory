@@ -11,12 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('recommendations', function (Blueprint $table) {
+        Schema::create('note_tables', function (Blueprint $table) {
             $table->id();
             $table->string('reference');
-            $table->integer('recommend_by');
-            $table->string('recommend_note');
-            $table->date('recommend_date');
+            $table->integer('stock_code_id');
+            $table->string('recommend');
+            $table->string('issue');
+            $table->string('receive');
+            $table->string('allocation');
+            $table->string('acctApproval');
             $table->timestamps();
         });
     }
@@ -26,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('recommendations');
+        Schema::dropIfExists('note_tables');
     }
 };

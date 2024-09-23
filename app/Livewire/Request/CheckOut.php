@@ -3,6 +3,7 @@
 namespace App\Livewire\Request;
 
 use App\Models\AllocationModel;
+use App\Models\Despatched;
 use App\Models\RequestItemTable;
 use App\Models\StockCode;
 use App\Models\Store;
@@ -14,7 +15,7 @@ class CheckOut extends Component
 {
     public $barcode, $referenceId, $storeID, $station;
     public $stock_code, $item, $stocks, $quantity_allocated;
-    public $lorry_no, $driver_name;
+    public $lorry_no, $driver_name, $despatched_note;
 
     public function searchStockCode()
     {
@@ -98,6 +99,7 @@ class CheckOut extends Component
         // Update Request Status
         RequestItemTable::where('reference', $this->referenceId)->update([
             'status' => 'Issued',
+            'issue_date' => now(),
         ]);
 
         $this->dispatch('success', message: 'Item Issued');
@@ -105,24 +107,41 @@ class CheckOut extends Component
 
     public function addLorryDetails()
     {
-        Vehicle::create([
-            'lorry_no' => $this->lorry_no,
-            'driver_name' => $this->driver_name,
-            'reference' => $this->referenceId,
-            'pickup_station' => $this->item->allocation_store,
-            'delivery_station' => $this->item->requisition_store,
-            'status' => 'Picked Up',
-            'pickup_date' => now(),
-            'created_by' => Auth()->user()->id,
-        ]);
+        $this->item = AllocationModel::where('reference', $this->referenceId)
+            ->where('allocation_store', $this->storeID)
+            ->first();
+
+        if (!Vehicle::where('reference', $this->referenceId)->exists()) {
+            Vehicle::create([
+                'lorry_no' => $this->lorry_no,
+                'driver_name' => $this->driver_name,
+                'reference' => $this->referenceId,
+                'pickup_station' => $this->item->allocation_store,
+                'delivery_station' => $this->item->requisition_store,
+                'status' => 'Picked Up',
+                'pickup_date' => now(),
+                'created_by' => Auth()->user()->id,
+            ]);
+
+            Despatched::create([
+                'despatched_note' => $this->despatched_note,
+                'reference' => $this->referenceId,
+                'store_id' => $this->item->requisition_store,
+                'despatched_date' => now(),
+                'despatched_by' => Auth()->user()->id,
+            ]);
+
+            $this->dispatch('success', message: 'Despatched Successfully!');
+            return redirect()->to('request-view/' . $this->referenceId);
+        }else {
+            $this->dispatch('error', message: 'Despatch Fails!');
+        }
     }
 
     public function mount($referenceId)
     {
         $this->referenceId = $referenceId;
         $this->storeID = Store::where('store_officer', Auth()->user()->id)->pluck('id')->first();
-
-        // dd($this->storeID);
     }
 
     public function render()

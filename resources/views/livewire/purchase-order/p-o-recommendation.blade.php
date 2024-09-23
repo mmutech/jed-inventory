@@ -1,12 +1,12 @@
 <div>
     <h6 class="py-1 mb-2">
-    <span class="text-muted fw-light"><a href="{{url('sra');}}">Store Receive Advice</a> /</span> {{$title}}
+        <span class="text-muted fw-light"><a href="{{url('purchase-order');}}">Purchase Order</a> /</span> {{$title}}
     </h6>
 
     <div class="card">
         <div class="card-header">
-            <h6 class="mb-0">SRA Items</h6>
-            <small>Quality Checks SRA Items.</small>
+            <h6 class="mb-0">Purchase Order Items</h6>
+            <small>Recommendation.</small>
         </div>
         <hr class="my-1">
         <div class="card-body">
@@ -16,10 +16,11 @@
                         <table class="table" id="itemsTable">
                             <thead>
                                 <tr>
-                                <th rowspan="3">Stock Code</th>
                                 <th>Description</th>
-                                <th>Quantity/Unit</th>
-                                <th>Current Amount</th>
+                                <th>Unit</th>
+                                <th>Quantity</th>
+                                <th>Rate</th>
+                                <th>Total Amount</th>
                                 <th>Action</th>
                                 </tr>
                             </thead>
@@ -33,16 +34,16 @@
                                     $subtotal += $amount;
                                 @endphp
                                     <tr class="input-container">
-                                        <input type="text" wire:model="itemIDs.{{ $key }}"  value="{{$item->id}}" hidden>
-                                        <td><p>{{$item->stockCodeID->stock_code}}</p></td>
-                                        <td><p>{{$item->stockCodeID->name}}</p></td>
-                                        <td><p>{{$item->confirm_qty}} ({{$item->unitID->description}})</p></td>
-                                        <td><p class="mb-0 ">{{number_format($amount)}}</p></td>
+                                        <td><p>{{$item->description}}</p></td>
+                                        <td><p>{{$item->unitID->description}}</p></td>
+                                        <td><p>{{$item->quantity}}</p></td>
+                                        <td><p>&#8358; {{number_format($item->rate)}}</p></td>
+                                        <td><p>&#8358; {{number_format($amount)}}</p></td>
                                         <td>
                                             <div class="d-flex justify-content-between">
-                                                <label for="quality-check-stub" class="mb-0"></label>
+                                                <label for="recommend-stub" class="mb-0"></label>
                                                 <label class="switch switch-primary me-0">
-                                                <input type="checkbox" wire:click="qualityCheck('{{ $item->id }}')" class="switch-input" id="quality-check-stub">
+                                                <input type="checkbox" wire:click="recommend('{{ $item->id }}')" class="switch-input" id="recommend-stub">
                                                 <span class="switch-toggle-slider">
                                                     <span class="switch-on">
                                                         <i class="bx bx-check"></i>
@@ -64,17 +65,17 @@
             </div>
         </div>
         <hr class="my-1">
-        <form wire:submit="qualityCheckRemark">
+        <form wire:submit="update">
             <div class="card-footer">
                 <div class="col-sm-12 mt-4">
-                    <label class="form-label" for="quality_check_note">Quality Check Note</label>
-                    <textarea class="form-control" wire:model="quality_check_note"id="quality_check_note" cols="10" rows="2"></textarea>
-                    @error("quality_check_note") <span class="error">{{ $message }}</span> @enderror 
+                    <label class="form-label" for="recommend_note">Recommendation Note</label>
+                    <textarea class="form-control" wire:model="recommend_note"id="recommend_note" cols="10" rows="2"></textarea>
+                    @error("recommend_note") <span class="error">{{ $message }}</span> @enderror 
                 </div>
                 <div class="row py-sm-3">
                     <div class="col-12 d-flex justify-content-between">
                         <button type="submit" class="btn btn-info btn-next">
-                            <span class="align-middle d-sm-inline-block d-none me-sm-1">Modify</span>
+                            <span class="align-middle d-sm-inline-block d-none me-sm-1">Save</span>
                             <i class="bx bx-pencil bx-sm me-sm-n2"></i>
                         </button>
                     </div>

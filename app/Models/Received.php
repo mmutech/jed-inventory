@@ -24,11 +24,6 @@ class Received extends Model
         return $this->belongsTo(SRA::class, 'reference');
     }
 
-    public function srcnReceivedID(): BelongsTo
-    {
-        return $this->belongsTo(SRCN::class, 'reference');
-    }
-
     public function receivedID(): BelongsTo
     {
         return $this->belongsTo(user::class, 'received_by');

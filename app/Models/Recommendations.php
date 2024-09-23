@@ -15,7 +15,6 @@ class Recommendations extends Model
         'reference',
         'recommend_by',
         'recommend_note',
-        'recommend_action',
         'recommend_date'
     ];
 
@@ -27,11 +26,6 @@ class Recommendations extends Model
     public function sraRecommendID(): BelongsTo
     {
         return $this->belongsTo(SRA::class, 'reference');
-    }
-
-    public function srcnRecommendID(): BelongsTo
-    {
-        return $this->belongsTo(SRCN::class, 'reference');
     }
 
     public function recommendID(): BelongsTo

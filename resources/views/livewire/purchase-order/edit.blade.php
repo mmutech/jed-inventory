@@ -15,7 +15,7 @@
                 <div class="row g-3">
                     <div class="col-sm-6">
                         <label class="form-label" for="purchase_order_no">Purchase Order No:</label>
-                        <input type="text" wire:model="purchase_order_no" class="form-control">
+                        <input type="text" wire:model="purchase_order_no" class="form-control" disabled>
                         @error('purchase_order_no') <span class="error">{{ $message }}</span> @enderror 
                     </div>
 

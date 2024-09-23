@@ -123,7 +123,6 @@ class ShowSra extends Component
             'data' => SRA::where('purchase_order_id', $this->poID)->first(),
             'items' => Item::where('purchase_order_id', $this->poID)->get(),
             'approval' => Approvals::where('reference', $this->reference)->first(),
-            'qualityCheck' => QualityChecks::where('reference', $this->poID)->first(),
         ]);
     }
 }

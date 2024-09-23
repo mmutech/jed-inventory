@@ -32,10 +32,24 @@
                         </span>
                         </button>
                     </div>
+
+                    <!--Pointer-->
+                    <div class="line">
+                        <i class="bx bx-chevron-right"></i>
+                    </div>
+                    <div class="step" data-target="#document">
+                        <button type="button" class="step-trigger" aria-selected="false" disabled>
+                        <span class="bs-stepper-circle">2</span>
+                        <span class="bs-stepper-label mt-1">
+                            <span class="bs-stepper-title">Documents</span>
+                            <span class="bs-stepper-subtitle">Upload Documents</span>
+                        </span>
+                        </button>
+                    </div>
                 </div>
                 @else
                 <div class="bs-stepper-header">
-                    <div class="step">
+                    <div class="step success">
                         <button type="button" class="step-trigger" wire:click="previousStep">
                         <span class="bs-stepper-circle">1</span>
                         <span class="bs-stepper-label mt-1">
@@ -98,6 +112,32 @@
                                     <input type="text" wire:model="consignment_note_no" class="form-control" placeholder="johndoe">
                                     @error('consignment_note_no') <span class="text-danger">{{ $message }}</span> @enderror
                                 </div>
+                            </div><hr>
+                            
+                            <!-- Documents-->
+                            <div class="row mb-3">
+                                <div class="col-md-12 mb-3">
+                                    <h4>
+                                        <label>Documents <small class="text-danger">*</small></label>
+                                    </h4>
+                                    <span class="text-warning"><i class="bx bx-bell"></i> Allowed JPEG, JPG or PNG. Max size of 1MB</span>
+                                    
+                                </div>
+                                <div class="col-sm-12 col-md-4 col-lg-4">
+                                    <label class="form-label" for="delivery_note">Delivery Note: </label>
+                                    <input type="file" wire:model="delivery_note" accept="image/jpeg,image/jpg,image/png" class="form-control">
+                                    @error('delivery_note') <span class="text-danger">{{ $message }}</span> @enderror
+                                </div>
+                                <div class="col-sm-12 col-md-4 col-lg-4">
+                                    <label class="form-label" for="invoice_doc">Invoice Document: </label>
+                                    <input type="file" wire:model="invoice_doc" accept="image/jpeg,image/jpg,image/png" class="form-control">
+                                    @error('invoice_doc') <span class="text-danger">{{ $message }}</span> @enderror
+                                </div>
+                                <div class="col-sm-12 col-md-4 col-lg-4">
+                                    <label class="form-label" for="quality_cert">Quality Check Certificate: </label>
+                                    <input type="file" wire:model="quality_cert" accept="image/jpeg,image/jpg,image/png" class="form-control">
+                                    @error('quality_cert') <span class="text-danger">{{ $message }}</span> @enderror
+                                </div>
                             </div>
 
                             <div class="col-12 d-flex justify-content-between">
@@ -112,7 +152,7 @@
                             </div>
                         </div>
 
-                    @elseif($step === 2)
+                    @else
                         <div class="content-header mb-3">
                             <h6 class="mb-0">Item Info</h6>
                             <small>Enter Your Item Info.</small>
@@ -143,8 +183,6 @@
                                                             <th>Quantity/(Unit)</th>
                                                             <th>Rate</th>
                                                             <th>Job Order Amount (&#8358;)</th>
-                                                            <th>Confirm Quantity</th>
-                                                            <th>Confirm Rate (&#8358;)</th>
                                                             <th></th>
                                                             </tr>
                                                         </thead>
@@ -154,7 +192,7 @@
                                                         @endphp
                                                         @foreach ($items as $key => $item)
                                                             @php 
-                                                                $amount = $item->rate * $item->quantity;
+                                                                $amount = $item->confirm_rate * $item->confirm_qty;
                                                                 $subtotal += $amount;
                                                             @endphp
                                                             <tr class="input-container">
@@ -169,17 +207,9 @@
                                                                     @error("stock_codes.$key") <span class="error">{{ $message }}</span> @enderror 
                                                                 </td>
                                                                 <td><p>{{$item->description}}</p></td>
-                                                                <td><p>{{$item->quantity}} ({{$item->unitID->description}})</p></td>
-                                                                <td><p>{{number_format($item->rate)}}</p></td>
+                                                                <td><p>{{$item->confirm_qty}} ({{$item->unitID->description}})</p></td>
+                                                                <td><p>{{number_format($item->confirm_rate)}}</p></td>
                                                                 <td><p>{{number_format($amount)}}</p></td>
-                                                                <td class="col-sm-2">
-                                                                    <input type="number" wire:model="confirm_qtys.{{ $key }}" class="form-control invoice-item-qty" step="1" min="1" oninput="calculateAmount(this)">
-                                                                    @error("confirm_qtys.$key") <span class="error">{{ $message }}</span> @enderror 
-                                                                </td>
-                                                                <td class="col-sm-2">
-                                                                    <input type="number" wire:model="confirm_rates.{{ $key }}" class="form-control invoice-item-rate" step="0.01" min="1" oninput="calculateAmount(this)">
-                                                                    @error("confirm_rates.$key") <span class="error">{{ $message }}</span> @enderror 
-                                                                </td>
                                                             </tr>
                                                         @endforeach
                                                         </tbody>
@@ -198,14 +228,14 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="col-12 d-flex justify-content-between">
-                        <button class="btn btn-primary btn-prev" wire:click="previousStep">
-                            <i class="bx bx-chevron-left bx-sm ms-sm-n2"></i>
-                            <span class="align-middle d-sm-inline-block d-none">Previous</span>
-                        </button>
-                        <button class="btn btn-success btn-next btn-submit" wire:click="confirmed">Submit</button>
-                        </div>
+                            <button class="btn btn-primary btn-prev" wire:click="previousStep">
+                                <i class="bx bx-chevron-left bx-sm ms-sm-n2"></i>
+                                <span class="align-middle d-sm-inline-block d-none">Previous</span>
+                            </button>
+                            <button class="btn btn-success btn-next btn-submit" wire:click="confirmed">Submit</button>
+                        </div> 
+                        
                     @endif
                 </div>
             </div>

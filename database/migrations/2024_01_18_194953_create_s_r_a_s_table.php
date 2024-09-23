@@ -18,6 +18,9 @@ return new class extends Migration
             $table->string('sra_code');
             $table->string('consignment_note_no');
             $table->string('invoice_no');
+            $table->string('delivery_note');
+            $table->string('invoice_doc');
+            $table->string('quality_cert');
             $table->date('received_date');
             $table->integer('created_by');
             $table->integer('updated_by')->nullable();

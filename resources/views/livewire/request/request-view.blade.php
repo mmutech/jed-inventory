@@ -151,7 +151,7 @@
                             @if(!empty($recommend->recommend_by))
                                 <hr class="mx-n1">
                                 <div class="col-sm-8">
-                                    <span class="fw-bolder">{{$recommend->recommend_action}} by: </span>
+                                    <span class="fw-bolder">Recommend by: </span>
                                     <span>{{$recommend->recommendID->name ?? '' }}</span>
                                 </div>
                                 <div class="col-sm-4">
@@ -280,7 +280,7 @@
                         @endcan
                     @endif
 
-                    @if($title == 'SRCN' AND empty($approval->approved_by))
+                    @if($title == 'SRCN' AND empty($approval->approved_by) AND !empty($recommend->recommend_by) AND !empty($hod_approval->hod_approved_by))
                         @can('haop-approval')
                             <button class="btn btn-label-primary d-grid w-100 mt-2 mb-4" 
                                 data-bs-toggle="offcanvas" 
@@ -293,7 +293,7 @@
 
                     <!-- Issue -->
                     @can('issue')
-                        @if($check_in == $storeID)
+                        @if($check_in == $storeID AND !empty($approval->approved_by) AND empty($despatch->despatched_by))
                             <a href="{{ url('check-out/'.$data->reference) }}" class="btn btn-label-warning d-grid w-100 mt-2 mb-4">
                             <span class="d-flex align-items-center justify-content-center text-nowrap">
                                 <i class="bx bx-paper-plane bx-xs me-1"></i>ISSUE</span>
@@ -303,7 +303,7 @@
 
                     <!-- Receive -->
                     @can('receive')
-                        @if($check_out == $storeID)
+                        @if($check_out == $storeID AND empty($received->received_by))
                             <a href="{{ url('check-in/'.$data->reference) }}" class="btn btn-label-primary d-grid w-100 mt-2 mb-4">
                             <span class="d-flex align-items-center justify-content-center text-nowrap">
                                 <i class="bx bx-paper-plane bx-xs me-1"></i>RECEIVE</span>

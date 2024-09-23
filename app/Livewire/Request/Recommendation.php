@@ -53,7 +53,6 @@ class Recommendation extends Component
             Recommendations::create([
                 'reference'         => $this->referenceId,
                 'recommend_note'    => $this->recommend_note,
-                'recommend_action'  => $this->recommend_action,
                 'recommend_by'      => auth()->user()->id,
                 'recommend_date'    => now()
             ]);

@@ -22,6 +22,7 @@ class RequestItemTable extends Model
         'requisition_store',
         'requisition_date',
         'issue_date',
+        'receive_date',
         'status',
         'added_by',
         'updated_by'

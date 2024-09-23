@@ -15,7 +15,6 @@ class QualityChecks extends Model
         'reference',
         'quality_check_by',
         'quality_check_note',
-        'quality_check_action',
         'quality_check_date'
     ];
 

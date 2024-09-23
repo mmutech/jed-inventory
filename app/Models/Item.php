@@ -19,12 +19,14 @@ class Item extends Model
         'unit',
         'quantity',
         'rate',
+        'balance_qty',
         'updated_by',
         'confirm_qty',
         'confirm_rate',
         'confirm_by',
         'confirm_date',
         'quality_check',
+        'recommend',
         'status',
         'stock_code'
     ];

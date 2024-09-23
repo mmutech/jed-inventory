@@ -8,6 +8,7 @@ use App\Models\PurchaseOrders;
 use App\Models\Item;
 use App\Models\ApprovalPO;
 use App\Models\Approvals;
+use App\Models\QualityChecks;
 use App\Models\Recommendations;
 
 
@@ -73,6 +74,7 @@ class Show extends Component
             'items' => Item::where('purchase_order_id', $this->poID)->get(),
             'recommend' => Recommendations::where('reference', $this->poID)->first(),
             'approval' => Approvals::where('reference', $this->poID)->first(),
+            'qualityCheck' => QualityChecks::where('reference', $this->poID)->first(),
         ]);
     }
 }

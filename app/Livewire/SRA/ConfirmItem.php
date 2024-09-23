@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 
 class ConfirmItem extends Component
 {
+    use WithFileUploads;
+
     public $title = 'New SRA';
 
     public $step = 1;
@@ -30,8 +32,11 @@ class ConfirmItem extends Component
     #[Rule('required')]
     public $consignment_note_no, $invoice_no;
 
+    #[Rule('required|image|max:1024')]
+    public $quality_cert, $delivery_note, $invoice_doc;
+
     // #[Rule('required')]
-    public $confirm_qtys = [], $confirm_rates = [], $stock_codes = [], $itemIDs = [];
+    public $quantity = [], $confirm_qtys = [], $confirm_rates = [], $stock_codes = [], $itemIDs = [];
 
     public function nextStep()
     {
@@ -47,12 +52,13 @@ class ConfirmItem extends Component
     public function confirmed()
     {
         $this->validate([
-            'confirm_qtys'      => ['required'],
-            'confirm_rates'     => ['required'],
             'stock_codes'       => ['required'],
         ]);
 
         if (!SRA::where('purchase_order_id', $this->poID)->exists()) {
+            $deliveryNote = $this->delivery_note->store('deliveryNote', 'public');
+            $invoiceDoc = $this->invoice_doc->store('invoiceDoc', 'public');
+            $qualityCert = $this->quality_cert->store('qualityCert', 'public');
             // Create SRA
             SRA::create([
                 'sra_id' => $this->sraID,
@@ -60,21 +66,21 @@ class ConfirmItem extends Component
                 'invoice_no' => $this->invoice_no,
                 'sra_code' => 'SRA-'.$this->sraID,
                 'purchase_order_id' => $this->poID,
+                'delivery_note' => $deliveryNote,
+                'invoice_doc' => $invoiceDoc,
+                'quality_cert' => $qualityCert,
                 'received_date' => now(),
                 'created_by' => Auth::user()->id
             ]);
 
             //Confirm Items
-            foreach ($this->confirm_qtys as $key => $confirm_qty) {
-                Item::where('id', $this->itemIDs[$key])->update([
-                    'confirm_qty' => $confirm_qty,
-                    'confirm_rate' => $this->confirm_rates[$key],
+            foreach ($this->itemIDs as $key => $itemIDs) {
+                Item::where('id', $itemIDs)->update([
                     'stock_code' => $this->stock_codes[$key],
-                    'confirm_by' => Auth::user()->id
                 ]);
             }
 
-            $this->dispatch('success', message: 'Purchase Order Item Confirmed!');
+            $this->dispatch('success', message: 'SRA Created!');
             return redirect()->to('show-sra/' . $this->poID);
 
         }else {
@@ -110,6 +116,7 @@ class ConfirmItem extends Component
         if ($items->count() > 0) {
             foreach ($items as $key => $data) {
                 $this->itemIDs[$key] = $data->id;
+                $this->quantity[$key] = $data->quantity;
                 $this->confirm_qtys[$key] = $data->confirm_qty;
                 $this->confirm_rates[$key] = $data->confirm_rate;
                 $this->stock_codes[$key] = $data->stock_code;

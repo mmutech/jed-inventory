@@ -64,16 +64,6 @@
                 </div>    
             </div>
             <div class="card-footer">
-                <div class="col-md-6 mb-1">
-                    <label for="invoice-from" class="form-label">Line Manager Recommendation</label>
-                    <select class="form-select mb-4" wire:model="recommend_action">
-                        <option value=""></option>
-                        <option value="Recommend">Recommend</option>
-                        <option value="Rejected">Reject</option>
-                    </select>
-                    @error("recommend_action") <span class="error">{{ $message }}</span> @enderror 
-                </div>
-
                 <div class="col-sm-12 mb-3">
                     <label class="form-label" for="recommend_note">Recommendation Note</label>
                     <textarea class="form-control" wire:model="recommend_note" id="recommend_note" cols="10" rows="2"></textarea>

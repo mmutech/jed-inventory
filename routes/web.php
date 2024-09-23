@@ -12,6 +12,8 @@ use App\Livewire\PurchaseOrder\Create;
 use App\Livewire\PurchaseOrder\Edit;
 use App\Livewire\PurchaseOrder\EditItem;
 use App\Livewire\PurchaseOrder\Index;
+use App\Livewire\PurchaseOrder\PORecommendation;
+use App\Livewire\PurchaseOrder\QualityCheck;
 use App\Livewire\PurchaseOrder\Show;
 
 // Request
@@ -32,7 +34,6 @@ use App\Livewire\SRA\ConfirmItem;
 use App\Livewire\SRA\CreateSra;
 use App\Livewire\SRA\EditSra;
 use App\Livewire\SRA\IndexSra;
-use App\Livewire\SRA\QualityCheck;
 use App\Livewire\SRA\ShowSra;
 
 //Stock Category
@@ -92,6 +93,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/purchase-order-show/{poID}', Show::class)->name('purchase-order-show/{poID}');
     Route::get('/purchase-order-edit/{editPoID}', Edit::class);
     Route::get('/purchase-order-edit-item/{editItemID}', EditItem::class);
+    Route::get('/quality-check/{poID}', QualityCheck::class);
+    Route::get('/po-recommend/{poID}', PORecommendation::class);
 
     //SRA
     Route::get('/sra', IndexSra::class);
@@ -99,7 +102,6 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/confirm-item/{poID}', ConfirmItem::class);
     Route::get('/show-sra/{poID}', ShowSra::class);
     Route::get('/edit-sra/{sraID}', EditSra::class);
-    Route::get('/quality-check/{poID}', QualityCheck::class);
 
     // Request
     Route::get('/request-index', RequestIndex::class);

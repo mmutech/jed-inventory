@@ -86,6 +86,11 @@
                                         <label class="form-label">Driver Name:</label>
                                         <input type="text" class="form-control" wire:model="driver_name" placeholder="Mr. John Doe">
                                     </div>
+                                    <div class="col-sm-12 mb-3">
+                                        <label class="form-label">Despatch Note:</label>
+                                        <textarea class="form-control" wire:model="despatched_note" id="despatched_note" cols="10" rows="2"></textarea>
+                                        @error("despatched_note") <span class="error">{{ $message }}</span> @enderror 
+                                    </div>
                                     <div class="col-sm-12 col-md-4 mb-3">
                                         <button type="submit" class="btn btn-outline-primary">Save</button>
                                     </div>

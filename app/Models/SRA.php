@@ -19,6 +19,9 @@ class SRA extends Model
         'sra_code',
         'consignment_note_no',
         'invoice_no',
+        'delivery_note',
+        'invoice_doc',
+        'quality_cert',
         'received_date',
         'created_by',
         'updated_by'

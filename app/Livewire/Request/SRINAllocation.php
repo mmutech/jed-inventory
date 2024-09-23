@@ -43,7 +43,7 @@ class SRINAllocation extends Component
 
             $this->dispatch('success', message: 'Item Allocated Successfully!');
         } else{
-            $this->dispatch('danger', message: 'Items Allocation Fails!');
+            $this->dispatch('error', message: 'Items Allocation Fails!');
         }
      
     }
@@ -93,7 +93,7 @@ class SRINAllocation extends Component
             return redirect()->to('request-view/' . $this->referenceId);
 
         }else{
-            $this->dispatch('danger', message: 'Items Allocation Fails!');
+            $this->dispatch('error', message: 'Items Allocation Fails!');
         }
     }
 
@@ -114,17 +114,29 @@ class SRINAllocation extends Component
             'store_books.qty_balance', 
             'request_item_tables.stock_code_id', 
             'request_item_tables.quantity_recommend', 
-            'store_books.station_id'
+            'store_books.station_id',
+            'store_books.created_at'
         )
         ->join('store_books', 'store_books.stock_code_id', '=', 'request_item_tables.stock_code_id')
         ->whereIn('store_books.stock_code_id', $this->stockCodeIDs)
         ->where('store_books.station_id', $this->storeID)
+        ->where('request_item_tables.reference', $this->referenceId)
+        ->whereIn(DB::raw("(store_books.stock_code_id, store_books.created_at)"), function($query) {
+            $query->select(
+                'stock_code_id', 
+                DB::raw('MAX(created_at)')
+            )
+            ->from('store_books')
+            ->whereIn('stock_code_id', $this->stockCodeIDs)
+            ->where('station_id', $this->storeID)
+            ->groupBy('stock_code_id');
+        })
         ->get();
+    
+    
 
-        // dd($this->allocationStores);
+        //  dd($this->allocationStores);
     }
-
-
 
     public function render()
     {
