@@ -89,9 +89,20 @@ class ShowSra extends Component
             }
 
             // Updated Purchase Order Status
-            PurchaseOrders::where('purchase_order_id', $this->poID)->first()->update([
-                'status' => 'Completed',
-            ]);
+            $qty_bal = Item::where('purchase_order_id', $this->poID)
+               ->where('balance_qty', '>', 0)
+               ->first();
+
+            $purchaseOrder = PurchaseOrders::where('purchase_order_id', $this->poID)->first();
+
+            if ($purchaseOrder) {
+                $status = $qty_bal === null ? 'Completed' : 'Incomplete';
+                $purchaseOrder->update([
+                    'status' => $status,
+                ]);
+            }
+
+           
 
             //HOAOP Or CFO Approval
             Approvals::create([

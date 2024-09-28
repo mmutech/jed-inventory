@@ -59,7 +59,7 @@
                     <div class="mb-3 mt-0" data-repeater-list="group-a">
                         <div class="repeater-wrapper pt-0 pt-md-4" data-repeater-item="">
                             <div class="table-responsive text-nowrap">
-                                <table class="table">
+                                <table class="table" id="dataTable">
                                     <thead>
                                         <tr>
                                             <th>Description</th>
@@ -71,7 +71,7 @@
                                             <th>Quality Check</th>
                                         </tr>
                                     </thead>
-                                    <tbody></tbody>
+                                    <tbody>
                                         @if(!empty($items))
                                             @php
                                                 $subtotal = 0;
@@ -105,6 +105,7 @@
                                                 <td colspan="5" class="text-center">No Record Available</td>
                                             </tr>
                                         @endif
+                                    </tbody>
                                 </table>
                                 
                             </div>
@@ -235,6 +236,12 @@
                                     <i class="bx bx-dock-top bx-xs me-1"></i>Raised SRA</span>
                                 </a>
                             @endif
+                            @if($data->status == 'Incomplete')
+                            <a href="{{ url('po-balance/'.$data->purchase_order_id)}}" class="btn btn-label-primary d-grid w-100 mb-2">
+                                <span class="d-flex align-items-center justify-content-center text-nowrap">
+                                <i class="bx bx-dock-top bx-xs me-1"></i>Order Balance</span>
+                            </a>
+                            @endif
                         @endcan
 
                         <!--Print-->
@@ -268,37 +275,27 @@
                 @endif
 
                 <!-- Modify Purchase Order / Item -->
-                @if(empty($approval->approved_action))
-                    @can('modify-po')
-                    <div class="card">
-                        <div class="card-header">
-                            <p class="mb-2 fw-bolder">Purchase Order / Item</p>
-                        </div>
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between mb-2">
-                            <label for="payment-terms" class="mb-0">Purchase Order</label>
-                            <label class="switch switch-primary me-0">
-                                <span class="switch-label">
-                                <a href="{{ url('purchase-order-edit/'.$data->purchase_order_id)}}">
-                                    <i class="bx bx-pencil bx-sm me-sm-n2"></i>
-                                </a> 
-                                </span>
-                            </label>
-                            </div>
-                            <div class="d-flex justify-content-between mb-2">
-                            <label for="client-notes" class="mb-0">Item</label>
-                            <label class="switch switch-primary me-0">
-                                <span class="switch-label">
-                                <a href="{{ url('purchase-order-edit-item/'.$data->purchase_order_id)}}">
-                                    <i class="bx bx-pencil bx-sm me-sm-n2"></i>
-                                </a>
-                                </span>
-                            </label>
-                            </div>
-                        </div>
+                @can('modify-po')
+                <div class="card">
+                    <div class="card-header">
+                        <p class="mb-2 fw-bolder">Purchase Order / Item</p>
                     </div>
-                    @endcan
-                @endif
+                    <div class="card-body">
+                        @if(empty($approval->approved_action))
+                            <div class="d-flex justify-content-between mb-2">
+                                <label for="payment-terms" class="mb-0">Purchase Order</label>
+                                <label class="switch switch-primary me-0">
+                                    <span class="switch-label">
+                                    <a href="{{ url('purchase-order-edit/'.$data->purchase_order_id)}}">
+                                        <i class="bx bx-pencil bx-sm me-sm-n2"></i>
+                                    </a> 
+                                    </span>
+                                </label>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+                @endcan
             </div>
             <!-- /Approval Actions -->
         </div>

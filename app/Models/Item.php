@@ -22,12 +22,15 @@ class Item extends Model
         'balance_qty',
         'updated_by',
         'confirm_qty',
+        'confirm_bal_qty',
         'confirm_rate',
         'confirm_by',
         'confirm_date',
+        'confirm_bal_by',
+        'confirm_bal_date',
         'quality_check',
+        'balance_check',
         'recommend',
-        'status',
         'stock_code'
     ];
 

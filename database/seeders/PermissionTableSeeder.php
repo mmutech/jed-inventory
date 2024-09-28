@@ -189,8 +189,9 @@ class PermissionTableSeeder extends Seeder
         $role3->givePermissionTo('index-category');
 
         $role3->givePermissionTo('index-stock');
-        $role3->givePermissionTo('issue');
-        $role3->givePermissionTo('receive');
+        $role3->givePermissionTo('hod-approval');
+        $role3->givePermissionTo('recommend');
+        $role3->givePermissionTo('fa-approval');
 
         $role4 = Role::create(['name' => 'PO-Manager']);
         $role4->givePermissionTo('create-po');

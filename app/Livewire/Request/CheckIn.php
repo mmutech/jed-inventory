@@ -57,7 +57,9 @@ class CheckIn extends Component
                 ]);
     
                 // Update Request Status
-                RequestItemTable::where('reference', $this->referenceId)->update([
+                RequestItemTable::where('reference', $this->referenceId)
+                ->where('stock_code_id', $stockCodeID)
+                ->update([
                     'status' => 'Received',
                     'receive_date' => now(),
                 ]);
@@ -100,7 +102,9 @@ class CheckIn extends Component
                 ]);
     
                 // Update Request Status
-                RequestItemTable::where('reference', $this->referenceId)->update([
+                RequestItemTable::where('reference', $this->referenceId)
+                ->where('stock_code_id', $stockCodeID)
+                ->update([
                     'status' => 'Received',
                     'receive_date' => now(),
                 ]);
@@ -123,7 +127,7 @@ class CheckIn extends Component
 
     public function srinReceive($id)
     {
-        if (!RequestItemTable::where('id', $id)->pluck('status')->first() == 'Received') {
+        if (RequestItemTable::where('id', $id)->value('status') == 'Issued') {
             RequestItemTable::where('id', $id)->update([
                 'status' => 'Received',
                 'receive_date' => now(),

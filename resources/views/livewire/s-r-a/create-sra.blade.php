@@ -43,38 +43,24 @@
     <div class="card-header mb-3">
         <h6 class="mb-0">New SRA</h6>
         <small>Search Purchase Order Number Here.</small>
-         <!--Search Filter-->
         <div class="col-xl-4 col-sm-4 col-md-4 justify-content-between">
-            {{-- Search --}}
-            <div class="me-3">
-                <div id="DataTables_Table_0_filter" class="dataTables_filter mb-3">
-                    <label>
-                        <div class="input-group input-group-merge">
-                            <span class="input-group-text" id="basic-addon-search31"><i class="bx bx-search"></i></span>
-                            <input
-                                type="text"
-                                class="form-control"
-                                placeholder="Search..."
-                                aria-label="Search..."
-                                aria-describedby="basic-addon-search31"
-                                wire:model.live.debounce.100ms="search" />
-                        </div>
-                    </label>
-                </div>
-            </div>
+            <div class="me-3"></div>
         </div>
         <hr class="my-1">
     </div>
     <div class="card-body">
         <div class="table-responsive text-nowrap">
-            <table class="table">
+            <table class="table" id="dataTable">
                 <thead>
-                <tr>
-                    <th>PURCHASE ORDER NO.</th>
-                    <th>Beneficiary</th>
-                    <th>Status</th>
-                    <th>Date</th>
-                </tr>
+                    <tr>
+                        <th>PURCHASE ORDER NO.</th>
+                        <th>Beneficiary</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+
+                <tbody>
                 @if(!empty($data))
                     @foreach ($data as $key => $po)
                     <tr>
@@ -86,7 +72,7 @@
                             @elseif($po->status == 'Pending')
                                 <label class="badge bg-label-warning">{{ $po->status }}</label>
                             @else
-                                <label class="badge bg-label-danger">{{ $po->status }}</label>
+                                <label class="badge bg-label-info">{{ $po->status }}</label>
                             @endif
                         <td>{{ $po->purchase_order_date }}</td>
                     </tr>
@@ -96,6 +82,7 @@
                         <td colspan="5" class="text-center">No Record Available</td>
                     </tr>
                 @endif
+                </tbody>
             </table>  
         </div>
     </div>

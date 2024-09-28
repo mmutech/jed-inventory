@@ -71,17 +71,19 @@
                         <div class="mb-3 mt-0" data-repeater-list="group-a">
                             <div class="repeater-wrapper pt-0 pt-md-4" data-repeater-item="">
                                 <div class="table-responsive text-nowrap">
-                                    <table class="table">
+                                    <table class="table" id="dataTable">
                                         <thead>
                                             <tr>
                                                 <th>Stock Code</th>
                                                 <th>Description</th>
                                                 <th>Quantity (Unit)</th>
+                                                <th>Balance</th>
                                                 <th>Price (&#8358;)</th>
                                                 <th>Value (&#8358;)</th>
                                                 <th>Quality Check</th>
                                             </tr>
                                         </thead>
+                                        <tbody>
                                             @if(!empty($items))
                                                 @php
                                                     $subtotal = 0;
@@ -89,13 +91,15 @@
 
                                                 @foreach ($items as $key => $item)
                                                 @php 
-                                                    $amount = $item->confirm_rate * $item->confirm_qty;
+                                                    $quantity = $item->confirm_qty + $item->confirm_bal_qty;
+                                                    $amount = $item->confirm_rate * $quantity;
                                                     $subtotal += $amount;
                                                 @endphp
                                                 <tr>
                                                     <td>{{$item->stockCodeID->stock_code}}</td>
                                                     <td>{{$item->stockCodeID->name}}</td>
                                                     <td>{{ number_format($item->confirm_qty)}} ({{$item->unitID->description}})</td>
+                                                    <td>{{ number_format($item->confirm_bal_qty)}}</td>
                                                     <td>{{ number_format(round($item->confirm_rate, 2))}}</td>
                                                     <td>{{ number_format(round($amount, 2)) }}</td>
                                                     <td>
@@ -114,6 +118,7 @@
                                                     <td colspan="5" class="text-center">No Record Available</td>
                                                 </tr>
                                             @endif
+                                        </tbody>
                                     </table>
                                 </div>
                             </div>

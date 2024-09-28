@@ -103,7 +103,7 @@ class SRINAllocation extends Component
         $referenceId = $this->referenceId;
         $this->title = substr($referenceId, 0, strpos($referenceId, '-'));
 
-        $this->storeID = Store::where('store_officer', Auth()->user()->id)->pluck('id')->first();
+        $this->storeID = Store::where('store_officer', Auth()->user()->id)->pluck('store_id')->first();
         $items = RequestItemTable::where('reference', $this->referenceId)->get();
 
         $this->stockCodeIDs = $items->pluck('stock_code_id');

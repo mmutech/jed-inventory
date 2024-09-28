@@ -13,58 +13,51 @@ use Livewire\Component;
 
 class CheckOut extends Component
 {
-    public $barcode, $referenceId, $storeID, $station;
+    public $title, $referenceId, $storeID, $station, $items, $key;
     public $stock_code, $item, $stocks, $quantity_allocated;
     public $lorry_no, $driver_name, $despatched_note;
 
-    public function searchStockCode()
-    {
-        // Assuming 'barcode' is a unique identifier for StockCodes
-        $this->stock_code = StockCode::where('stock_code', $this->barcode)->first();
+    // public function searchStockCode()
+    // {
+    //     // Assuming 'barcode' is a unique identifier for StockCodes
+    //     $this->stock_code = StockCode::where('stock_code', $this->barcode)->first();
 
-        if ($this->stock_code) {
-            // Check if there is any record with the same reference, stock code, and quantity_issued not null
-            // $requestItem = RequestItemTable::where('reference', $this->referenceId)
-            //     ->where('stock_code_id', $this->stock_code->id)
-            //     ->whereNotNull('quantity_issued')
-            //     ->exists();
+    //     if ($this->stock_code) {
+    //         // Check if there is any record with the same reference, stock code, and quantity_issued not null
+    //         // $requestItem = RequestItemTable::where('reference', $this->referenceId)
+    //         //     ->where('stock_code_id', $stockCodeID)
+    //         //     ->whereNotNull('quantity_issued')
+    //         //     ->exists();
         
-            // if (!$requestItem) {
-                // If no record exists with a non-null quantity_issued, fetch the allocation model
-                $this->item = AllocationModel::where('stock_code_id', $this->stock_code->id)
-                    ->where('reference', $this->referenceId)
-                    ->where('allocation_store', $this->storeID)
-                    ->first();
+    //         // if (!$requestItem) {
+    //             // If no record exists with a non-null quantity_issued, fetch the allocation model
+    //             $this->item = AllocationModel::where('stock_code_id', $stockCodeID)
+    //                 ->where('reference', $this->referenceId)
+    //                 ->where('allocation_store', $this->storeID)
+    //                 ->first();
         
-                // Dispatch success message
-                $this->dispatch('success', message: 'Stock Code Found: ' . $this->stock_code->name);
-            // } else {
-            //     $this->dispatch('warning', message: 'This Item has been Issued');
-            // }
-        } else {
-            // Dispatch warning message if stock code is not set
-            $this->dispatch('warning', message: 'Stock Code Not Found!');
-        }
+    //             // Dispatch success message
+    //             $this->dispatch('success', message: 'Stock Code Found: ' . $this->stock_code->name);
+    //         // } else {
+    //         //     $this->dispatch('warning', message: 'This Item has been Issued');
+    //         // }
+    //     } else {
+    //         // Dispatch warning message if stock code is not set
+    //         $this->dispatch('warning', message: 'Stock Code Not Found!');
+    //     }
 
-        // Reset barcode input
-        $this->barcode = '';
-    }
+    //     // Reset barcode input
+    //     $this->barcode = '';
+    // }
 
-    public function addReqStock()
+    public function issueItem($stockCodeID)
     {
-        $this->item = AllocationModel::where('stock_code_id', $this->stock_code->id)
+        $this->item = AllocationModel::where('stock_code_id', $stockCodeID)
             ->where('reference', $this->referenceId)
             ->where('allocation_store', $this->storeID)
             ->first();
 
-        // Add the stock data to the array
-        $this->stocks[] = [
-            'referenceId' => $this->referenceId,
-            'stock_code' => $this->stock_code->stock_code,
-            'quantity_allocated' => $this->item->quantity,
-        ];
-
-        $storeBook = StoreBook::where('stock_code_id', $this->stock_code->id)
+        $storeBook = StoreBook::where('stock_code_id', $stockCodeID)
         ->where('station_id', $this->storeID)
         ->orderBy('created_at', 'desc')
         ->first();
@@ -72,7 +65,7 @@ class CheckOut extends Component
         while ($storeBook !== null && $storeBook->qty_out == $storeBook->qty_in) {
             // Skip the current record and fetch the next one
             $storeBook = StoreBook::where('station_id', $this->storeID)
-                ->where('stock_code_id', $this->stock_code->id)
+                ->where('stock_code_id', $stockCodeID)
                 ->where('created_at', '>', $storeBook->created_at)
                 ->orderBy('created_at', 'desc')
                 ->first();
@@ -83,7 +76,7 @@ class CheckOut extends Component
         // Store to database
         StoreBook::create([
             'purchase_order_id' => $storeBook->purchase_order_id,
-            'stock_code_id' => $this->stock_code->id,
+            'stock_code_id' => $stockCodeID,
             'reference' => $this->referenceId,
             'station_id' => $this->storeID,
             'issue_store' => $this->item->allocation_store,
@@ -141,7 +134,9 @@ class CheckOut extends Component
     public function mount($referenceId)
     {
         $this->referenceId = $referenceId;
+        $this->title = substr($referenceId, 0, strpos($referenceId, '-'));
         $this->storeID = Store::where('store_officer', Auth()->user()->id)->pluck('id')->first();
+        $this->items = RequestItemTable::where('reference', $this->referenceId)->get();
     }
 
     public function render()

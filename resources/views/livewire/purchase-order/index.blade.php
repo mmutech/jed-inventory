@@ -67,26 +67,11 @@
     </div>
     <!-- Responsive Table -->
     <div class="card">
-        <h5 class="card-header">Purchase Order Lists</h5>
         <div class="card-header">
             <div class="row">
                 <div class="col-xl-12 col-sm-12 col-md-12 mx-auto d-flex justify-content-between align-items-center">
-                    {{-- Search --}}
                     <div class="me-3">
-                        <div id="DataTables_Table_0_filter" class="dataTables_filter mb-3">
-                            <label>
-                                <div class="input-group input-group-merge">
-                                    <span class="input-group-text" id="basic-addon-search31"><i class="bx bx-search"></i></span>
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        placeholder="Search..."
-                                        aria-label="Search..."
-                                        aria-describedby="basic-addon-search31"
-                                        wire:model.live.debounce.100ms="search" />
-                                </div>
-                            </label>
-                        </div>
+                        <h3>Purchase Order Lists</h3>
                     </div>
                     <!-- Create user -->
                     @can('create-po')
@@ -98,40 +83,45 @@
                 <div class="col-xl-4 col-sm-4 col-md-4 mx-auto"></div>
             </div>
         </div>
-        <div class="table-responsive text-nowrap">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>PURCHASE ORDER NO.</th>
-                    <th>Beneficiary</th>
-                    <th>Status</th>
-                    <th>Date</th>
-                </tr>
-                @if(!empty($data))
-                    @foreach ($data as $key => $po)
-                    <tr>
-                        <td><a href="{{ url('purchase-order-show/'.$po->purchase_order_id)}}">{{ $po->purchase_order_no }}</a></td>
-                        <td>{{ $po->beneficiary }}</td>
-                        <td>
-                            @if($po->status == 'Approved')
-                                <label class="badge bg-label-success">{{ $po->status }}</label>
-                            @elseif($po->status == 'Pending')
-                                <label class="badge bg-label-warning">{{ $po->status }}</label>
-                            @elseif($po->status == 'Completed')
-                                <label class="badge bg-label-primary">{{ $po->status }}</label>
-                            @else
-                                <label class="badge bg-label-danger">{{ $po->status }}</label>
-                            @endif
-                        <td>{{ $po->purchase_order_date }}</td>
-                    </tr>
-                    @endforeach
-                @else
-                    <tr>
-                        <td colspan="5" class="text-center">No Record Available</td>
-                    </tr>
-                @endif
-            </table>
-            
+        <div class="card-body">
+            <div class="table-responsive text-nowrap">
+                <table class="table" id="dataTable">
+                    <thead>
+                        <tr>
+                            <th>PURCHASE ORDER NO.</th>
+                            <th>Beneficiary</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @if(!empty($data))
+                        @foreach ($data as $key => $po)
+                        <tr>
+                            <td><a href="{{ url('purchase-order-show/'.$po->purchase_order_id)}}">{{ $po->purchase_order_no }}</a></td>
+                            <td>{{ $po->beneficiary }}</td>
+                            <td>
+                                @if($po->status == 'Approved')
+                                    <label class="badge bg-label-success">{{ $po->status }}</label>
+                                @elseif($po->status == 'Pending')
+                                    <label class="badge bg-label-warning">{{ $po->status }}</label>
+                                @elseif($po->status == 'Completed')
+                                    <label class="badge bg-label-primary">{{ $po->status }}</label>
+                                @else
+                                    <label class="badge bg-label-info">{{ $po->status }}</label>
+                                @endif
+                            <td>{{ $po->purchase_order_date }}</td>
+                        </tr>
+                        @endforeach
+                    @else
+                        <tr>
+                            <td colspan="5" class="text-center">No Record Available</td>
+                        </tr>
+                    @endif
+                    </tbody>
+                </table>
+                
+            </div>
         </div>
     </div>
     <!--/ Responsive Table -->

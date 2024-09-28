@@ -45,10 +45,7 @@ class QualityCheck extends Component
             $this->dispatch('success', message: 'Checked and Confirmed!');
         }else{
             $this->dispatch('error', message: 'Already Checked and Confirmed!');
-        }
-        
-
-       
+        } 
 
     }
 

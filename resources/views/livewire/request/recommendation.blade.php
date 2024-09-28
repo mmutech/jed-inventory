@@ -17,7 +17,7 @@
                 <hr class="my-1 mx-n4">
                 <div class="table-responsive text-nowrap mb-0">
                     <div id="dynamicFieldsContainer">
-                        <table class="table" id="itemsTable">
+                        <table class="table" id="dataTable">
                             <thead>
                                 <tr>
                                     <th>Station</th>

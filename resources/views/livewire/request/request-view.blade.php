@@ -103,7 +103,7 @@
                         <div class="mb-3 mt-0" data-repeater-list="group-a">
                             <div class="repeater-wrapper pt-0 pt-md-4" data-repeater-item="">
                                 <div class="table-responsive text-nowrap">
-                                    <table class="table">
+                                    <table class="table" id="dataTable">
                                         <thead>
                                             <tr>
                                                 <th>Stock Code</th>
@@ -112,6 +112,7 @@
                                                 <th>QTY Allocated</th>
                                             </tr>
                                         </thead>
+                                        <tbody>
                                             @if(!empty($items))
                                                 @foreach ($items as $key => $item)
                                                 <tr>
@@ -126,6 +127,7 @@
                                                     <td colspan="5" class="text-center">No Record Available</td>
                                                 </tr>
                                             @endif
+                                        </tbody>
                                     </table>
                                 </div>
                             </div>
@@ -215,7 +217,7 @@
 
 
                         <!-- SCN List -->
-                        @if(!empty($scn) && $title != 'SRCN')
+                        @if(!empty($scn))
                         <div class="col-12 mb-lg-0 mb-4">
                             <h5 class="modal-title">SCN List</strong></h5>
                             <div class="table-responsive text-nowrap">
@@ -233,6 +235,23 @@
                                         <td>{{ $item->stockCodeId->stock_code }}</td>
                                         <td>{{ $item->quantity_returned }}</td>
                                         <td>{{ $item->return_date }}</td>
+                                        <td>
+                                            <div class="d-flex justify-content-between">
+                                                <label for="allocation_store" class="mb-0"></label>
+                                                <label class="switch switch-primary me-0">
+                                                <input type="checkbox" wire:click="scnReceive('{{ $item->stock_code_id }}', '{{ $item->reference }}')" class="switch-input" name="check.{{$key}}">
+                                                <span class="switch-toggle-slider">
+                                                    <span class="switch-on">
+                                                        <i class="bx bx-check"></i>
+                                                    </span>
+                                                    <span class="switch-off">
+                                                        <i class="bx bx-x"></i>
+                                                    </span>
+                                                </span>
+                                                <span class="switch-label"></span>
+                                                </label>
+                                            </div>
+                                        </td>
                                     </tr>
                                     @endforeach 
                                 </table>  
@@ -293,7 +312,7 @@
 
                     <!-- Issue -->
                     @can('issue')
-                        @if($check_in == $storeID AND !empty($approval->approved_by) AND empty($despatch->despatched_by))
+                        @if($check_out == $storeID AND empty($despatch->despatched_by))
                             <a href="{{ url('check-out/'.$data->reference) }}" class="btn btn-label-warning d-grid w-100 mt-2 mb-4">
                             <span class="d-flex align-items-center justify-content-center text-nowrap">
                                 <i class="bx bx-paper-plane bx-xs me-1"></i>ISSUE</span>
@@ -303,7 +322,7 @@
 
                     <!-- Receive -->
                     @can('receive')
-                        @if($check_out == $storeID AND empty($received->received_by))
+                        @if($check_in == $storeID AND empty($received->received_by))
                             <a href="{{ url('check-in/'.$data->reference) }}" class="btn btn-label-primary d-grid w-100 mt-2 mb-4">
                             <span class="d-flex align-items-center justify-content-center text-nowrap">
                                 <i class="bx bx-paper-plane bx-xs me-1"></i>RECEIVE</span>
