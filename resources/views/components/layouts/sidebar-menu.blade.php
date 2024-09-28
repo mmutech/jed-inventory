@@ -62,39 +62,6 @@
               </a>
             </li> 
 
-            <!-- <li class="menu-item">
-              <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-folder-open"></i>
-                <div data-i18n="Settings">Request</div>
-              </a>
-              <ul class="menu-sub">
-
-                @can('index-srcn')
-                <li class="menu-item">
-                  <a href="{{url('srcn-index');}}" class="menu-link">
-                    <div data-i18n="Basic">SRCN</div>
-                  </a>
-                </li> 
-                @endcan
-
-                @can('index-srin')
-                <li class="menu-item">
-                  <a href="{{url('srin-index');}}" class="menu-link">
-                    <div data-i18n="Basic">SRIN</div>
-                  </a>
-                </li> 
-                @endcan
-
-                @can('index-scn')
-                <li class="menu-item">
-                  <a href="{{url('scn-index');}}" class="menu-link">
-                    <div data-i18n="Basic">SCN</div>
-                  </a>
-                </li> 
-                @endcan
-              </ul>
-            </li> -->
-
             <!-- Report -->
             <li class="menu-item {{ Request::is('bin-card-show') || Request::is('store-ledger-show') || Request::is('general-report') ? 'active open' : '' }}">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -107,15 +74,6 @@
                 <li class="menu-item {{ Request::is('bin-card-index') ? 'active open' : '' }}">
                   <a href="{{url('bin-card-index');}}" class="menu-link">
                     <div data-i18n="bin_card">Stores Bin Card</div>
-                  </a>
-                </li>
-                @endcan
-
-                <!-- Store Ledger-->
-                @can('view-ledger')
-                <li class="menu-item {{ Request::is('store-ledger-index') ? 'active open' : '' }}">
-                  <a href="{{url('store-ledger-index');}}" class="menu-link">
-                    <div data-i18n="ledger">Stores Ledger</div>
                   </a>
                 </li>
                 @endcan

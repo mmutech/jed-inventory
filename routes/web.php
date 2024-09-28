@@ -130,10 +130,6 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/bin-card-index', BinCardIndex::class);
     Route::get('/bin-card-show/{stockCodeID}', BinCardShow::class);
 
-    //Stores Ledger
-    Route::get('/store-ledger-index', StoreLedgerIndex::class);
-    Route::get('/store-ledger-show/{stockCodeID}', StoreLedgerShow::class);
-
     //Stock Category
     Route::get('/stock-category-index', StockCategoryIndex::class);
     Route::get('/stock-category-create', StockCategoryCreate::class);
