@@ -35,9 +35,9 @@ class GeneralReport extends Component
             'store_books.value_out AS ValueIssue',
             'store_books.value_balance AS ValueBalance'
         )
-        ->join('purchase_orders', 'store_books.purchase_order_id', '=', 'purchase_orders.purchase_order_id')
-        ->join('stock_codes', 'store_books.stock_code_id', '=', 'stock_codes.id')
-        ->join('stores', 'store_books.station_id', '=', 'stores.store_id')
+        ->leftJoin('purchase_orders', 'store_books.purchase_order_id', '=', 'purchase_orders.purchase_order_id')
+        ->leftJoin('stock_codes', 'store_books.stock_code_id', '=', 'stock_codes.id')
+        ->leftJoin('stores', 'store_books.station_id', '=', 'stores.store_id')
         ->whereBetween('store_books.date', [$startDate, $endDate])
         ->get();
 
@@ -45,6 +45,33 @@ class GeneralReport extends Component
         if ($data->count() == 0) {
             $this->dispatch('warning', message: 'No Record Found!');
         }else {
+            // Calculate cumulative totals
+            $totalReceive = $data->sum('QuantityReceive');
+            $totalIssue = $data->sum('QuantityIssue');
+            $totalBalance = number_format(round($totalReceive - $totalIssue, 2));
+
+            $totalValReceive = $data->sum('ValueReceive');
+            $totalValIssue = $data->sum('ValueIssue');
+            $totalValBalance = number_format(round($totalValReceive - $totalValIssue, 2));
+
+            // Append totals to the dataset (for example as the last row)
+            $data->push([
+                'Date' => '',
+                'PurchaseOrderNumber' => '',
+                'Reference' => '',
+                'Store' => '',
+                'stockCode' => '',
+                'Description' => '',
+                'LedgerCode' => 'Cumulative:',
+                'QuantityReceive' => $totalReceive,
+                'QuantityIssue' => $totalIssue,
+                'QuantityBalance' => $totalBalance,
+                'BasicPrice' => '',
+                'ValueReceive' => $totalValReceive,
+                'ValueIssue' => $totalValIssue,
+                'ValueBalance' => $totalValBalance,
+            ]);
+
             // Generate Excel file using Laravel Excel
             return Excel::download(new GeneralReportExport($data), 'general_report.xlsx');
         }
