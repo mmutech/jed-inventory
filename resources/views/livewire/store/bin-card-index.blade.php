@@ -57,31 +57,6 @@
     </div>
 
     <div class="card">
-        <div class="card-header mb-3">
-            <div class="row">
-                <div class="d-flex justify-content-between align-items-center row pt-4 gap-6 gap-md-0 g-md-6">
-                    <div class="col-md-4">
-                        <div class="input-group input-group-merge">
-                            <span class="input-group-text" id="basic-addon-search31"><i class="bx bx-search"></i></span>
-                            <input
-                                type="text"
-                                class="form-control"
-                                placeholder="Search..."
-                                aria-label="Search..."
-                                aria-describedby="basic-addon-search31"
-                                wire:model.live.debounce.100ms="search" />
-                        </div>
-                    </div>
-                    <div class="col-md-5"></div>
-
-                    <div class="col-md-3 justify-content-end">
-                        <button class="btn btn-secondary"><i class='bx bx-export'></i> Export</button>
-                    </div>
-                </div>
-                <hr class="my-1">
-            </div>
-        </div>
-
         <div class="card-body">
             <div class="table-responsive text-nowrap">
                 <table class="table" id="dataTable">
