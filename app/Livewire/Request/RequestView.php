@@ -30,7 +30,7 @@ class RequestView extends Component
 
     public $items, $reference, $stockCodeID, $issuingStore, $issuedStore, $issuedStoreID;
 
- 
+
     //HOD Approval
     public function haopApproval()
     {
@@ -47,11 +47,11 @@ class RequestView extends Component
                 RequestItemTable::where('reference', $this->referenceId)->update([
                     'status' => 'Approved',
                 ]);
-            } 
+            }
 
             $this->dispatch('success', message: 'HAOP Approval!');
         }
-        
+
     }
 
     public function scnReceive($stockCodeID, $referenceId)
@@ -78,7 +78,7 @@ class RequestView extends Component
 
         if ($item) {
                 $valueIn = $storeBook->basic_price * $item->quantity_returned;
-    
+
                 // Store to database
                 StoreBook::create([
                     'purchase_order_id' => $storeBook->purchase_order_id,
@@ -93,7 +93,7 @@ class RequestView extends Component
                     'date' => now(),
                     'created_by' => Auth()->user()->id,
                 ]);
-    
+
                 // Update Request Status
                 RequestItemTable::where('reference', $referenceId)
                 ->where('stock_code_id', $stockCodeID)
@@ -101,13 +101,13 @@ class RequestView extends Component
                     'status' => 'Received',
                     'receive_date' => now(),
                 ]);
-    
+
                 // Update Delivery Status
                 Vehicle::where('reference', $referenceId)->update([
                     'status' => 'Delivered',
                     'delivery_date' => now(),
                 ]);
-    
+
                 $this->dispatch('success', message: 'Item Received');
 
         }else {
@@ -115,7 +115,7 @@ class RequestView extends Component
         }
 
         $this->stockCodeID = '';
-       
+
     }
 
     public function mount($referenceId)
@@ -127,9 +127,12 @@ class RequestView extends Component
         $this->data = RequestItemTable::where('reference', $this->referenceId)->first();
         $this->items = RequestItemTable::where('reference', $this->referenceId)->get();
         $this->allocation = AllocationModel::where('reference', $this->referenceId)->get();
-        $this->storeID = Store::where('store_officer', Auth()->user()->id)->pluck('store_id')->first();
-
         $this->scn = SCNRequestTable::where('srin_id', $this->referenceId)->get();
+        
+        // Check if auth user hasRole Store-office
+        if (auth()->user()->hasRole('Store-Officer')) {
+            $this->storeID = Store::where('store_officer', Auth()->user()->id)->pluck('store_id')->first();
+        }
         // dd($this->scn);
     }
 

@@ -31,7 +31,7 @@
                                     $subtotal = 0;
                                 @endphp
                                 @foreach ($items as $key => $item)
-                                @php 
+                                @php
                                     $amount = $item->rate * $item->quantity;
                                     $subtotal += $amount;
                                 @endphp
@@ -44,11 +44,11 @@
                                         <td><p>&#8358; {{number_format($amount)}}</p></td>
                                         <td class="col-sm-2">
                                             <input type="number" wire:model="confirm_qtys.{{ $key }}" class="form-control invoice-item-qty" step="1" min="1">
-                                            @error("confirm_qtys.$key") <span class="error">{{ $message }}</span> @enderror 
+                                            @error("confirm_qtys.$key") <span class="error">{{ $message }}</span> @enderror
                                         </td>
                                         <td class="col-sm-2">
                                             <input type="number" wire:model="confirm_rates.{{ $key }}" class="form-control invoice-item-rate" step="0.01" min="1">
-                                            @error("confirm_rates.$key") <span class="error">{{ $message }}</span> @enderror 
+                                            @error("confirm_rates.$key") <span class="error">{{ $message }}</span> @enderror
                                         </td>
                                         <td>
                                             <div class="d-flex justify-content-between">
@@ -81,7 +81,7 @@
                 <div class="col-sm-12 mt-4">
                     <label class="form-label" for="quality_check_note">Quality Check Note</label>
                     <textarea class="form-control" wire:model="quality_check_note"id="quality_check_note" cols="10" rows="2"></textarea>
-                    @error("quality_check_note") <span class="error">{{ $message }}</span> @enderror 
+                    @error("quality_check_note") <span class="error">{{ $message }}</span> @enderror
                 </div>
                 <div class="row py-sm-3">
                     <div class="col-12 d-flex justify-content-between">

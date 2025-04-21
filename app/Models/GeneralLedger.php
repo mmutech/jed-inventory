@@ -5,17 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Traits\CreatedUpdatedBy;
 
-class Unit extends Model
+class GeneralLedger extends Model
 {
     use HasFactory;
-    use CreatedUpdatedBy;
 
-    protected $table = 'units';
+    protected $table = 'general_ledgers';
     protected $fillable = [
-        'description',
-        'status',
+        'name',
+        'code',
+        'category',
         'created_by',
         'updated_by'
     ];

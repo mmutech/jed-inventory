@@ -16,15 +16,16 @@ class DatabaseSeeder extends Seeder
             //CreateAdminUserSeeder::class,
             PermissionTableSeeder::class,
             LocationSeeder::class,
-            pollinate_StockCategories::class,
-            pollinate_StockClasses::class,
-            pollinate_StockCodes::class,
-            pollinate_Units::class,
             pollinate_Items::class,
             pollinate_PurchaseOrders::class,
+            pollinate_GeneralLedgers::class,
+            pollinate_StockClasses::class,
+            pollinate_StockCategories::class,
+            pollinate_StockCodes::class,
+            pollinate_Units::class,
             StoreSeeder::class,
         ]);
-        
+
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([

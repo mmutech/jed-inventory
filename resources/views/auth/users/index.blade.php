@@ -7,10 +7,10 @@
             <div class="card-header">
                 <div class="row">
                     <div class="col-xl-12 col-sm-12 col-md-12 mx-auto d-flex justify-content-between align-items-center">
-                        
+
                         <!--Search Filter-->
                         <div class="col-xl-4 col-sm-4 col-md-4">
-                          
+
                         </div>
                         <!-- Create user -->
                         @can('create-user')
@@ -37,7 +37,7 @@
                     @foreach ($data as $key => $user)
                       <tr>
                         <td>{{ ++$i }}</td>
-                        <td>{{ $user->name }}</td>
+                        <td>{{ $user->name }} ({{ $user->staff_id }})</td>
                         <td>{{ $user->email }}</td>
                         <td>
                           @if(!empty($user->getRoleNames()))
@@ -62,7 +62,7 @@
                               </div>
                             <!-- <a class="btn btn-info" href="{{ route('users.show',$user->id) }}">Show</a>
                             <a class="btn btn-primary" href="{{ route('users.edit',$user->id) }}">Edit</a> -->
-                          @endcan 
+                          @endcan
                           </td>
                       </tr>
                     @endforeach

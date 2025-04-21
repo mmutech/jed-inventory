@@ -8,7 +8,7 @@ use App\Models\RequestItemTable;
 use App\Models\Store;
 use App\Models\StoreBook;
 use Livewire\Component;
-use Livewire\Attributes\Rule; 
+use Livewire\Attributes\Rule;
 use Livewire\Attributes\Locked;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -22,7 +22,7 @@ class SRINAllocation extends Component
 
     public $allocationQty = [], $allocationQuantity;
 
-    public $hod_approved_note, $hod_approved_action, $reference, $items, $stockCodeIDs, 
+    public $hod_approved_note, $hod_approved_action, $reference, $items, $stockCodeIDs,
     $allocationStores, $balance, $requisitionStore;
 
     #[Rule('required')]
@@ -45,7 +45,7 @@ class SRINAllocation extends Component
         } else{
             $this->dispatch('error', message: 'Items Allocation Fails!');
         }
-     
+
     }
 
     public function update()
@@ -87,7 +87,7 @@ class SRINAllocation extends Component
                 RequestItemTable::where('reference', $this->referenceId)->update([
                     'status' => 'Allocated',
                 ]);
-            } 
+            }
 
             $this->dispatch('success', message: 'Items Allocated Successfully!');
             return redirect()->to('request-view/' . $this->referenceId);
@@ -103,7 +103,7 @@ class SRINAllocation extends Component
         $referenceId = $this->referenceId;
         $this->title = substr($referenceId, 0, strpos($referenceId, '-'));
 
-        $this->storeID = Store::where('store_officer', Auth()->user()->id)->pluck('store_id')->first();
+        // $this->storeID = Store::where('store_officer', Auth()->user()->id)->pluck('store_id')->first();
         $items = RequestItemTable::where('reference', $this->referenceId)->get();
 
         $this->stockCodeIDs = $items->pluck('stock_code_id');
@@ -111,29 +111,24 @@ class SRINAllocation extends Component
 
          // Get the Issue Store
          $this->allocationStores = RequestItemTable::select(
-            'store_books.qty_balance', 
-            'request_item_tables.stock_code_id', 
-            'request_item_tables.quantity_recommend', 
+            'store_books.qty_balance',
+            'request_item_tables.stock_code_id',
+            'request_item_tables.quantity_recommend',
             'store_books.station_id',
             'store_books.created_at'
         )
         ->join('store_books', 'store_books.stock_code_id', '=', 'request_item_tables.stock_code_id')
         ->whereIn('store_books.stock_code_id', $this->stockCodeIDs)
-        ->where('store_books.station_id', $this->storeID)
         ->where('request_item_tables.reference', $this->referenceId)
         ->whereIn(DB::raw("(store_books.stock_code_id, store_books.created_at)"), function($query) {
             $query->select(
-                'stock_code_id', 
+                'stock_code_id',
                 DB::raw('MAX(created_at)')
             )
             ->from('store_books')
             ->whereIn('stock_code_id', $this->stockCodeIDs)
-            ->where('station_id', $this->storeID)
             ->groupBy('stock_code_id');
-        })
-        ->get();
-    
-    
+        })->get();
 
         //  dd($this->allocationStores);
     }

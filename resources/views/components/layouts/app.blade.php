@@ -47,7 +47,7 @@
 
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="{{asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css')}}" />
-    <link rel="stylesheet" href="{{asset('assets/vendor/libs/typeahead-js/typeahead.css')}}" /> 
+    <link rel="stylesheet" href="{{asset('assets/vendor/libs/typeahead-js/typeahead.css')}}" />
     <link rel="stylesheet" href="{{asset('assets/vendor/libs/bs-stepper/bs-stepper.css')}}" />
     <link rel="stylesheet" href="{{asset('assets/vendor/libs/bootstrap-select/bootstrap-select.css')}}" />
     <link rel="stylesheet" href="{{asset('assets/vendor/libs/select2/select2.css')}}" />
@@ -57,7 +57,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.6/css/dataTables.bootstrap5.css">
     <!-- Page CSS -->
 
-    
+
 
     <!-- Helpers -->
     <script src="{{asset('assets/vendor/js/helpers.js')}}"></script>
@@ -112,7 +112,7 @@
 
     <!-- Helpers -->
     <script src="{{asset('assets/vendor/js/helpers.js')}}"></script>
-    
+
     <script src="{{asset('assets/js/config.js')}}"></script>
   </head>
 
@@ -128,7 +128,7 @@
         <div class="layout-page">
           <!-- Navbar -->
           @include('components.layouts.top-nav')
-          
+
           <!-- Content wrapper -->
           <div class="content-wrapper">
             <!-- Content -->
@@ -162,7 +162,7 @@
   <script src="{{asset('assets/vendor/libs/i18n/i18n.js')}}"></script>
   <script src="{{asset('assets/vendor/libs/typeahead-js/typeahead.js')}}"></script>
   <script src="{{asset('assets/vendor/js/menu.js')}}"></script>
-  
+
   <!-- endbuild -->
 
   <!-- Vendors JS -->
@@ -175,53 +175,53 @@
 
   <!-- Main JS -->
   <script src="{{asset('assets/js/main.js')}}"></script>
-  
-  <!-- Page JS --> 
+
+  <!-- Page JS -->
   <script src="{{asset('assets/js/form-wizard-numbered.js')}}"></script>
   <script src="{{asset('assets/js/form-wizard-validation.js')}}"></script>
   <script src="{{asset('assets/js/dynamic-input.js')}}"></script>
 
-   
+
     <!-- Toast JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    
+
     <!-- Toast Script For Livewire -->
-  <script>
-      $(document).ready(function() {
-          toastr.options = {
-              "progressBar": true,
-              "positionClass": "toast-top-right",
-              "timeOut": 3000,
-              "progressBarClass": "custom-toast",
-          };
+    <script>
+        $(document).ready(function() {
+            toastr.options = {
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "timeOut": 3000,
+                "progressBarClass": "custom-toast",
+            };
 
-          $('#drps').select2({
-            dropdownParent: $('#dynamicFieldsContainer')
-          });
-      });
-  
-      window.addEventListener('success', (event) => {
-          toastr.success(event.detail.message);
-          document.querySelector('.custom-toast').classList.add('toast-success');
-      });
-  
-      window.addEventListener('warning', (event) => {
-          toastr.warning(event.detail.message);
-          document.querySelector('.custom-toast').classList.add('toast-warning');
-      });
-  
-      window.addEventListener('error', (event) => {
-          toastr.error(event.detail.message);
-          document.querySelector('.custom-toast').classList.add('toast-danger');
-      });
+            $('#drps').select2({
+                dropdownParent: $('#dynamicFieldsContainer')
+            });
+        });
 
-      window.addEventListener('info', (event) => {
-          toastr.info(event.detail.message);
-          document.querySelector('.custom-toast').classList.add('toast-info');
-      });
+        window.addEventListener('success', (event) => {
+            toastr.success(event.detail.message);
+            document.querySelector('.custom-toast').classList.add('toast-success');
+        });
+
+        window.addEventListener('warning', (event) => {
+            toastr.warning(event.detail.message);
+            document.querySelector('.custom-toast').classList.add('toast-warning');
+        });
+
+        window.addEventListener('error', (event) => {
+            toastr.error(event.detail.message);
+            document.querySelector('.custom-toast').classList.add('toast-danger');
+        });
+
+        window.addEventListener('info', (event) => {
+            toastr.info(event.detail.message);
+            document.querySelector('.custom-toast').classList.add('toast-info');
+        });
 
 
-  </script>  
+    </script>
 
     <!-- DataTable JS -->
     <script src="https://cdn.datatables.net/2.1.6/js/dataTables.js"></script>
@@ -230,7 +230,7 @@
     <script>
       // $(document).ready(function (){
         $('#dataTable').DataTable();
-      // });   
+      // });
     </script>
 
     <!-- Connect Component Files js -->

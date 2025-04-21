@@ -7,6 +7,11 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Livewire\DashboardComponent;
 
+// Others
+use App\Livewire\Other\LocationManagement;
+use App\Livewire\Other\StoreManagement;
+use App\Livewire\Other\UnitManagement;
+
 //Purchase Order Number
 use App\Livewire\PurchaseOrder\Create;
 use App\Livewire\PurchaseOrder\Edit;
@@ -16,6 +21,11 @@ use App\Livewire\PurchaseOrder\POBalance;
 use App\Livewire\PurchaseOrder\PORecommendation;
 use App\Livewire\PurchaseOrder\QualityCheck;
 use App\Livewire\PurchaseOrder\Show;
+
+// Reports
+use App\Livewire\Reports\BinCard;
+use App\Livewire\Reports\GeneralReport;
+use App\Livewire\Reports\Journal;
 
 // Request
 use App\Livewire\Request\Allocation as RequestAllocation;
@@ -36,30 +46,12 @@ use App\Livewire\SRA\CreateSra;
 use App\Livewire\SRA\EditSra;
 use App\Livewire\SRA\IndexSra;
 use App\Livewire\SRA\ShowSra;
-use App\Livewire\SRA\SRABalance;
-//Stock Category
-use App\Livewire\Stock\Category\StockCategoryCreate;
-use App\Livewire\Stock\Category\StockCategoryEdit;
-use App\Livewire\Stock\Category\StockCategoryIndex;
 
-//Stock Class
-use App\Livewire\Stock\Class\StockClassCreate;
-use App\Livewire\Stock\Class\StockClassEdit;
-use App\Livewire\Stock\Class\StockClassIndex;
-use App\Livewire\Stock\Code\Barcode;
-use App\Livewire\Stock\Code\StockCodeCreate;
-use App\Livewire\Stock\Code\StockCodeEdit;
-use App\Livewire\Stock\Code\StockCodeIndex;
-
-//Store
-use App\Livewire\Store\BinCardIndex;
-use App\Livewire\Store\BinCardShow;
-use App\Livewire\Store\GeneralReport;
-use App\Livewire\Store\StoreCreate;
-use App\Livewire\Store\StoreEdit;
-use App\Livewire\Store\StoreIndex;
-use App\Livewire\Store\StoreLedgerIndex;
-use App\Livewire\Store\StoreLedgerShow;
+//Stock
+use App\Livewire\Stock\GeneralLedgerManagement;
+use App\Livewire\Stock\StockCategoryManagement;
+use App\Livewire\Stock\StockClassManagement;
+use App\Livewire\Stock\StockCodeManagement;
 
 /*
 |--------------------------------------------------------------------------
@@ -81,7 +73,7 @@ Route::get('/dashboard', DashboardComponent::class);
 
 
 Auth::routes();
-  
+
 Route::group(['middleware' => ['auth']], function() {
     // User Management
     Route::resource('permissions', PermissionController::class);
@@ -118,32 +110,20 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/check-in/{referenceId}', CheckIn::class);
     Route::get('/check-out/{referenceId}', CheckOut::class);
 
-    //Store
-    Route::get('/store-index', StoreIndex::class);
-    Route::get('/store-create', StoreCreate::class);
-    Route::get('/store-edit/{stID}', StoreEdit::class);
-
     // Report
     Route::get('/general-report', GeneralReport::class);
+    Route::get('/journal-report', Journal::class);
+    Route::get('/bin-card', BinCard::class);
 
-    //Stores Bin Card
-    Route::get('/bin-card-index', BinCardIndex::class);
-    Route::get('/bin-card-show/{stockCodeID}', BinCardShow::class);
+    //Stock Management
+    Route::get('/stock-categories', StockCategoryManagement::class);
+    Route::get('/stock-classes', StockClassManagement::class);
+    Route::get('/stock-codes', StockCodeManagement::class);
+    Route::get('/general-ledger', GeneralLedgerManagement::class);
 
-    //Stock Category
-    Route::get('/stock-category-index', StockCategoryIndex::class);
-    Route::get('/stock-category-create', StockCategoryCreate::class);
-    Route::get('/stock-category-edit/{stCategoryID}', StockCategoryEdit::class);
-
-    //Stock Class
-    Route::get('/stock-class-index', StockClassIndex::class);
-    Route::get('/stock-class-create', StockClassCreate::class);
-    Route::get('/stock-class-edit/{stClassID}', StockClassEdit::class);
-
-    //Stock Codes
-    Route::get('/stock-code-index', StockCodeIndex::class);
-    Route::get('/stock-code-create', StockCodeCreate::class);
-    Route::get('/stock-code-edit/{stCodeID}', StockCodeEdit::class);
-    Route::get('/barcode', Barcode::class);
+    // Other Management
+    Route::get('/stores', StoreManagement::class);
+    Route::get('/units', UnitManagement::class);
+    Route::get('/locations', LocationManagement::class);
 });
 

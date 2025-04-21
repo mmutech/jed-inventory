@@ -15,14 +15,8 @@ class StockClass extends Model
     protected $table = 'stock_classes';
     protected $fillable = [
         'name',
-        'stock_category_id',
         'status',
         'created_by',
         'updated_by'
     ];
-
-    public function stockCategoryID(): BelongsTo
-    {
-        return $this->belongsTo(StockCategory::class, 'stock_category_id');
-    }
 }

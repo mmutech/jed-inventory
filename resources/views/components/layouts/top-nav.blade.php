@@ -26,18 +26,26 @@
 
     <ul class="navbar-nav flex-row align-items-center ms-auto">
       <!-- Place this tag where you want the button to render. -->
-      <li class="nav-item lh-1 me-3">
-        <a
-          class="btn"
-          href="#"
-          data-icon="octicon-star"
-          data-size="large"
-          data-show-count="true">
-            <i class='bx bxs-home'></i>
-            <span> {{ showStores() }}</span>
-            <!-- {{ Auth::user()->name }} -->
-          </a>
-      </li>
+        @php
+            if(Auth::User())
+            {
+                $role = Auth::User()->roles()->first();
+            }
+        @endphp
+        @if($role->name == 'Store-Officer')
+        <li class="nav-item lh-1 me-3">
+            <a
+            class="btn"
+            href="#"
+            data-icon="octicon-star"
+            data-size="large"
+            data-show-count="true">
+                <i class='bx bxs-home'></i>
+                <span> {{ showStores() }}</span>
+                <!-- {{ Auth::user()->name }} -->
+            </a>
+        </li>
+        @endif
 
       <!-- User -->
       <li class="nav-item navbar-dropdown dropdown-user dropdown">
@@ -56,7 +64,7 @@
                       }
                   @endphp
 
-                  {{ $initials }}  
+                  {{ $initials }}
                 </text>
             </svg>
           </div>
@@ -80,7 +88,7 @@
                             }
                         @endphp
 
-                        {{ $initials }}  
+                        {{ $initials }}
                       </text>
                     </svg>
                   </div>

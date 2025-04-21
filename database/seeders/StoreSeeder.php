@@ -15,7 +15,6 @@ class StoreSeeder extends Seeder
     {
         $store = [
             [
-                'store_id' => 1,
                 'name' => 'Central Store',
                 'store_officer' => 1,
                 'location' => 2,
@@ -23,7 +22,6 @@ class StoreSeeder extends Seeder
                 'created_by' => 1
             ],
             [
-                'store_id' => 2,
                 'name' => 'Test Store 1',
                 'store_officer' => 2,
                 'location' => 1,
@@ -31,7 +29,6 @@ class StoreSeeder extends Seeder
                 'created_by' => 1
             ],
             [
-                'store_id' => 3,
                 'name' => 'Test Store 2',
                 'store_officer' => 3,
                 'location' => 3,

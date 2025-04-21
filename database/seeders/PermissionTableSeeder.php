@@ -1,5 +1,5 @@
 <?php
-  
+
 namespace Database\Seeders;
 
 
@@ -66,40 +66,45 @@ class PermissionTableSeeder extends Seeder
         Permission::create(['name' => 'view-srin']);
         Permission::create(['name' => 'index-srin']);
 
-        // create ledger permissions
-        Permission::create(['name' => 'view-ledger']);
-        Permission::create(['name' => 'index-ledger']);
-
-        // create bin-card permissions
-        Permission::create(['name' => 'view-bin-card']);
-        Permission::create(['name' => 'index-bin-card']);
-
         // Report Permission
         Permission::create(['name' => 'general-report']);
+        Permission::create(['name' => 'journal-report']);
+        Permission::create(['name' => 'bin-card']);
 
         // create store permissions
         Permission::create(['name' => 'create-store']);
-        Permission::create(['name' => 'modify-store']);
-        Permission::create(['name' => 'view-store']);
-        Permission::create(['name' => 'index-store']);
+        Permission::create(['name' => 'edit-store']);
+        Permission::create(['name' => 'stores']);
+
+        // create Unit permissions
+        Permission::create(['name' => 'create-unit']);
+        Permission::create(['name' => 'edit-unit']);
+        Permission::create(['name' => 'units']);
+
+        // create location permissions
+        Permission::create(['name' => 'create-location']);
+        Permission::create(['name' => 'edit-location']);
+        Permission::create(['name' => 'locations']);
 
         // create codes permissions
         Permission::create(['name' => 'create-codes']);
-        Permission::create(['name' => 'modify-codes']);
-        Permission::create(['name' => 'view-codes']);
-        Permission::create(['name' => 'index-codes']);
+        Permission::create(['name' => 'edit-codes']);
+        Permission::create(['name' => 'codes']);
 
         // create category permissions
         Permission::create(['name' => 'create-category']);
-        Permission::create(['name' => 'modify-category']);
-        Permission::create(['name' => 'view-category']);
-        Permission::create(['name' => 'index-category']);
+        Permission::create(['name' => 'edit-category']);
+        Permission::create(['name' => 'categories']);
 
         // create class permissions
         Permission::create(['name' => 'create-class']);
-        Permission::create(['name' => 'modify-class']);
-        Permission::create(['name' => 'view-class']);
-        Permission::create(['name' => 'index-class']);
+        Permission::create(['name' => 'edit-class']);
+        Permission::create(['name' => 'classes']);
+
+        // create general ledger permissions
+        Permission::create(['name' => 'create-ledger']);
+        Permission::create(['name' => 'edit-ledger']);
+        Permission::create(['name' => 'ledgers']);
 
         // Other Permission
         Permission::create(['name' => 'hod-approval']);
@@ -111,6 +116,8 @@ class PermissionTableSeeder extends Seeder
         Permission::create(['name' => 'index-stock']);
         Permission::create(['name' => 'issue']);
         Permission::create(['name' => 'receive']);
+        Permission::create(['name' => 'others']);
+        Permission::create(['name' => 'stocks']);
 
         // create roles and assign existing permissions
         $role1 = Role::create(['name' => 'Admin']);
@@ -137,8 +144,12 @@ class PermissionTableSeeder extends Seeder
         $role1->givePermissionTo('fa-approval');
         $role1->givePermissionTo('issue');
         $role1->givePermissionTo('receive');
+        $role1->givePermissionTo('others');
+        $role1->givePermissionTo('stocks');
 
         $role1->givePermissionTo('general-report');
+        $role1->givePermissionTo('journal-report');
+        $role1->givePermissionTo('bin-card');
 
         $role2 = Role::create(['name' => 'Store-Officer']);
         $role2->givePermissionTo('create-sra');
@@ -161,37 +172,45 @@ class PermissionTableSeeder extends Seeder
         $role2->givePermissionTo('view-srin');
         $role2->givePermissionTo('index-srin');
 
-        
-        $role2->givePermissionTo('view-ledger');
-        $role2->givePermissionTo('view-bin-card');
+        $role2->givePermissionTo('bin-card');
         $role2->givePermissionTo('issue');
         $role2->givePermissionTo('receive');
 
         $role3 = Role::create(['name' => 'Manager']);
         $role3->givePermissionTo('create-store');
-        $role3->givePermissionTo('modify-store');
-        $role3->givePermissionTo('view-store');
-        $role3->givePermissionTo('index-store');
+        $role3->givePermissionTo('edit-store');
+        $role3->givePermissionTo('stores');
+
+        $role3->givePermissionTo('create-unit');
+        $role3->givePermissionTo('edit-unit');
+        $role3->givePermissionTo('units');
+
+        $role3->givePermissionTo('create-location');
+        $role3->givePermissionTo('edit-location');
+        $role3->givePermissionTo('locations');
 
         $role3->givePermissionTo('create-class');
-        $role3->givePermissionTo('modify-class');
-        $role3->givePermissionTo('view-class');
-        $role3->givePermissionTo('index-class');
+        $role3->givePermissionTo('edit-class');
+        $role3->givePermissionTo('classes');
 
         $role3->givePermissionTo('create-codes');
-        $role3->givePermissionTo('modify-codes');
-        $role3->givePermissionTo('view-codes');
-        $role3->givePermissionTo('index-codes');
+        $role3->givePermissionTo('edit-codes');
+        $role3->givePermissionTo('codes');
 
         $role3->givePermissionTo('create-category');
-        $role3->givePermissionTo('modify-category');
-        $role3->givePermissionTo('view-category');
-        $role3->givePermissionTo('index-category');
+        $role3->givePermissionTo('edit-category');
+        $role3->givePermissionTo('categories');
+
+        $role3->givePermissionTo('create-ledger');
+        $role3->givePermissionTo('edit-ledger');
+        $role3->givePermissionTo('ledgers');
 
         $role3->givePermissionTo('index-stock');
         $role3->givePermissionTo('hod-approval');
         $role3->givePermissionTo('recommend');
         $role3->givePermissionTo('fa-approval');
+        $role3->givePermissionTo('others');
+        $role3->givePermissionTo('stocks');
 
         $role4 = Role::create(['name' => 'PO-Manager']);
         $role4->givePermissionTo('create-po');
@@ -205,27 +224,31 @@ class PermissionTableSeeder extends Seeder
         $user = \App\Models\User::factory()->create([
             'name' => 'Administrator',
             'email' => 'admin@jedplc.com',
+            'staff_id' => 1234,
         ]);
         $user->assignRole($role1);
         $user->assignRole($role2);
         $user->assignRole($role3);
         $user->assignRole($role4);
-        
+
         $user = \App\Models\User::factory()->create([
             'name' => 'Store Officer',
             'email' => 'store.officer@jedplc.com',
+            'staff_id' => 1235,
         ]);
         $user->assignRole($role2);
 
         $user = \App\Models\User::factory()->create([
             'name' => 'Manager',
             'email' => 'manager@jedplc.com',
+            'staff_id' => 1236,
         ]);
         $user->assignRole($role3);
 
         $user = \App\Models\User::factory()->create([
             'name' => 'PO Manager',
             'email' => 'po.manager@jedplc.com',
+            'staff_id' => 1237,
         ]);
         $user->assignRole($role4);
 

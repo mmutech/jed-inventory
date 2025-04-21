@@ -15,7 +15,6 @@ class Store extends Model
 
     protected $table = 'stores';
     protected $fillable = [
-        'store_id',
         'name',
         'store_officer',
         'location',

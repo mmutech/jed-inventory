@@ -12,7 +12,7 @@ use Livewire\WithPagination;
 class RequestIndex extends Component
 {
     use WithPagination;
-    
+
     public $storeID, $data, $srcnCount, $srinCount, $scn;
     public $search = '';
 

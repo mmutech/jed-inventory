@@ -7,7 +7,7 @@ use App\Models\HODApproval;
 use App\Models\RequestItemTable;
 use App\Models\StoreBook;
 use Livewire\Component;
-use Livewire\Attributes\Rule; 
+use Livewire\Attributes\Rule;
 use Livewire\Attributes\Locked;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -21,7 +21,7 @@ class Allocation extends Component
 
     public $allocationQty = [], $allocationQuantity;
 
-    public $hod_approved_note, $hod_approved_action, $reference, $items, $stockCodeIDs, 
+    public $hod_approved_note, $hod_approved_action, $reference, $items, $stockCodeIDs,
     $allocationStores, $balance, $requisitionStore;
 
     #[Rule('required')]
@@ -44,7 +44,7 @@ class Allocation extends Component
         } else{
             $this->dispatch('danger', message: 'Items Allocation Fails!');
         }
-     
+
     }
 
     public function update()
@@ -86,7 +86,7 @@ class Allocation extends Component
                 RequestItemTable::where('reference', $this->referenceId)->update([
                     'status' => 'Allocated',
                 ]);
-            } 
+            }
 
             $this->dispatch('success', message: 'Items Allocated Successfully!');
             return redirect()->to('request-view/' . $this->referenceId);
@@ -110,7 +110,7 @@ class Allocation extends Component
         $subquery = StoreBook::select('stock_code_id', DB::raw('MAX(created_at) as max_created_at'))
          ->whereIn('stock_code_id', $this->stockCodeIDs)
          ->groupBy('station_id', 'stock_code_id');
- 
+
         $this->allocationStores = StoreBook::joinSub($subquery, 'latest_records', function ($join) {
              $join->on('store_books.stock_code_id', '=', 'latest_records.stock_code_id');
              $join->on('store_books.created_at', '=', 'latest_records.max_created_at');

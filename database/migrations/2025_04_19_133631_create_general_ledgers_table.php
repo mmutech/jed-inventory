@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('units', function (Blueprint $table) {
+        Schema::create('general_ledgers', function (Blueprint $table) {
             $table->id();
-            $table->string('description');
-            $table->enum('status', ['Active', 'Inactive'])->default('Active');
+            $table->string('name');
+            $table->text('code');
+            $table->enum('category', ['B', 'P'])->default('B');
             $table->integer('created_by');
             $table->integer('updated_by')->nullable();
             $table->timestamps();
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('units');
+        Schema::dropIfExists('general_ledgers');
     }
 };

@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class pollinate_units extends Seeder
+class pollinate_Units extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,11 +15,11 @@ class pollinate_units extends Seeder
 
         /**
          * Created by pollinate.
-         * 
+         *
          * Table: jed_inventory.units
          * User:  MMUHADEJIA
          * Host:  DESKTOP-R740F0R
-         * Date:  2024-02-06 10:54:07 UTC
+         * Date:  2025-04-19 19:16:23 UTC
          * Env:   local
          */
 
@@ -30,7 +30,8 @@ class pollinate_units extends Seeder
         \DB::table('units')->insert([
             [
                 'id' => 1,
-                'description' => 'No',
+                'description' => 'Meters',
+                'status' => 'Active',
                 'created_by' => 1,
                 'updated_by' => null,
                 'created_at' => null,
@@ -38,7 +39,8 @@ class pollinate_units extends Seeder
             ],
             [
                 'id' => 2,
-                'description' => 'Mtrs',
+                'description' => 'No',
+                'status' => 'Active',
                 'created_by' => 1,
                 'updated_by' => null,
                 'created_at' => null,
@@ -46,7 +48,8 @@ class pollinate_units extends Seeder
             ],
             [
                 'id' => 3,
-                'description' => 'Drum',
+                'description' => 'Carton',
+                'status' => 'Active',
                 'created_by' => 1,
                 'updated_by' => null,
                 'created_at' => null,
@@ -54,69 +57,8 @@ class pollinate_units extends Seeder
             ],
             [
                 'id' => 4,
-                'description' => 'Pack',
-                'created_by' => 1,
-                'updated_by' => null,
-                'created_at' => null,
-                'updated_at' => null,
-            ],
-            [
-                'id' => 5,
-                'description' => 'Carton',
-                'created_by' => 1,
-                'updated_by' => null,
-                'created_at' => null,
-                'updated_at' => null,
-            ],
-        ]);
-
-        \DB::table('units')->insert([
-            [
-                'id' => 6,
-                'description' => 'Sqm',
-                'created_by' => 1,
-                'updated_by' => null,
-                'created_at' => null,
-                'updated_at' => null,
-            ],
-            [
-                'id' => 7,
-                'description' => 'Lot',
-                'created_by' => 1,
-                'updated_by' => null,
-                'created_at' => null,
-                'updated_at' => null,
-            ],
-            [
-                'id' => 8,
-                'description' => 'Ltr',
-                'created_by' => 1,
-                'updated_by' => null,
-                'created_at' => null,
-                'updated_at' => null,
-            ],
-            [
-                'id' => 9,
-                'description' => 'Roll',
-                'created_by' => 1,
-                'updated_by' => null,
-                'created_at' => null,
-                'updated_at' => null,
-            ],
-            [
-                'id' => 10,
-                'description' => 'Bundle',
-                'created_by' => 1,
-                'updated_by' => null,
-                'created_at' => null,
-                'updated_at' => null,
-            ],
-        ]);
-
-        \DB::table('units')->insert([
-            [
-                'id' => 11,
-                'description' => 'Other',
+                'description' => 'Packets',
+                'status' => 'Active',
                 'created_by' => 1,
                 'updated_by' => null,
                 'created_at' => null,

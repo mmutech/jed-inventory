@@ -13,7 +13,7 @@
                 <div class="row mb-3">
                     <div class="col-xl-12 col-sm-12 col-md-12 mx-auto d-flex justify-content-between align-items-center">
                         <div class="col-xl-4 col-sm-4 col-md-4">
-                           
+
                         </div>
                         <a class="" href="{{ route('users.index') }}"> <i class="bx bx-left-arrow-alt bx-sm align-middle"></i>Back</a>
                     </div>
@@ -45,6 +45,12 @@
                         <div class="form-group">
                             <strong>Email:</strong>
                             {!! Form::text('email', null, array('placeholder' => 'Email','class' => 'form-control')) !!}
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="form-group">
+                            <strong>Staff ID:</strong>
+                            {!! Form::text('staff_id', null, array('placeholder' => 'Staff ID','class' => 'form-control')) !!}
                         </div>
                     </div>
                     <!-- <div class="col-md-6 mb-3">

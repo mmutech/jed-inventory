@@ -30,10 +30,15 @@ class StockCode extends Model
     {
         return $this->belongsTo(StockCategory::class, 'stock_category_id');
     }
-    
+
     public function stockClassID(): BelongsTo
     {
         return $this->belongsTo(StockClass::class, 'stock_class_id');
+    }
+
+    public function gLedgerID(): BelongsTo
+    {
+        return $this->belongsTo(GeneralLedger::class, 'gl_code_id');
     }
 
     public function unitID(): BelongsTo
