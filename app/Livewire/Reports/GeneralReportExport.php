@@ -35,7 +35,6 @@ class GeneralReportExport implements FromCollection, WithHeadings, WithStyles
             'Reference',
             'Store',
             'StockCode',
-            'Description',
             'LedgerCode',
             'QuantityReceive',
             'QuantityIssue',
