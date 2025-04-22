@@ -237,7 +237,7 @@
                                         <td>{{ $item->quantity_returned }}</td>
                                         <td>{{ $item->status }}</td>
                                         <td>{{ $item->return_date }}</td>
-                                        @if (auth()->user()->hasRole('Store-Officer'))
+                                        @if (auth()->user()->hasRole('Store-Officer') && $item->status == "Pending")
                                         <td>
                                             <div class="d-flex justify-content-between">
                                                 <label for="allocation_store" class="mb-0"></label>

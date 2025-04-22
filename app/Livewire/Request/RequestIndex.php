@@ -74,7 +74,6 @@ class RequestIndex extends Component
         // if (auth()->user()->hasRole('Store-Officer')) {
         //     $query->where('requisition_store', $this->storeID);
         // }
-
         $this->data = $query->get();
 
         // dd($this->data);
