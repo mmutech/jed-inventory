@@ -28,10 +28,10 @@
                                 <h6 class="fw-bolder text-decoration-underline">STORES REQUISITION / ISSUE NOTE (SRIN)</h6>
                                 @endif
                             </div>
-                            
+
                             <div class="col-md-6">
                                 <span class="fw-bolder">Requisition Store:</span>
-                                <span>{{$data->requisitionStore->name}}</span>
+                                <span>{{$data->requisitionStore->name ?? 'N/A'}}</span>
                                 <hr class="mb-0 mt-0">
                             </div>
 
@@ -226,15 +226,18 @@
                                         <th>Reference</th>
                                         <th>Stock Code</th>
                                         <th>Quantity Return</th>
+                                        <th>Status</th>
                                         <th>Return Date</th>
                                     </tr>
-                                    
+
                                     @foreach ($scn as $item)
                                     <tr>
                                         <td>{{ $item->reference }}</td>
                                         <td>{{ $item->stockCodeId->stock_code }}</td>
                                         <td>{{ $item->quantity_returned }}</td>
+                                        <td>{{ $item->status }}</td>
                                         <td>{{ $item->return_date }}</td>
+                                        @if (auth()->user()->hasRole('Store-Officer'))
                                         <td>
                                             <div class="d-flex justify-content-between">
                                                 <label for="allocation_store" class="mb-0"></label>
@@ -252,9 +255,10 @@
                                                 </label>
                                             </div>
                                         </td>
+                                        @endif
                                     </tr>
-                                    @endforeach 
-                                </table>  
+                                    @endforeach
+                                </table>
                             </div>
                         </div>
                         @endif
@@ -262,10 +266,10 @@
                 </div>
             </div>
             <!-- Item Details -->
-            
+
             <!-- Actions -->
             <div class="col-lg-3 col-12 invoice-actions">
-                <div class="card-header mb-2"> 
+                <div class="card-header mb-2">
                     <!--Print-->
                     @if(!empty($hod_approval->hod_approved_by))
                     <button class="btn btn-label-primary d-grid w-100 mb-4" onclick="window.print()">
@@ -301,8 +305,8 @@
 
                     @if($title == 'SRCN' AND empty($approval->approved_by) AND !empty($recommend->recommend_by) AND !empty($hod_approval->hod_approved_by))
                         @can('haop-approval')
-                            <button class="btn btn-label-primary d-grid w-100 mt-2 mb-4" 
-                                data-bs-toggle="offcanvas" 
+                            <button class="btn btn-label-primary d-grid w-100 mt-2 mb-4"
+                                data-bs-toggle="offcanvas"
                                 data-bs-target="#approval">
                             <span class="d-flex align-items-center justify-content-center text-nowrap">
                                 <i class="bx bx-paper-plane bx-xs me-1"></i>Head Account Operation</span>
@@ -385,14 +389,14 @@
                             <option value="Recommend">Recommend</option>
                             <option value="Rejected">Reject</option>
                         </select>
-                        @error("recommend_action") <span class="error">{{ $message }}</span> @enderror 
+                        @error("recommend_action") <span class="error">{{ $message }}</span> @enderror
                     </div>
                     <div class="mb-3">
                         <label for="invoice-message" class="form-label">Recommendation Remark</label>
                         <textarea class="form-control" wire:model="recommend_note" id="invoice-message" cols="3" rows="3" required></textarea>
-                        @error("recommend_note") <span class="error">{{ $message }}</span> @enderror 
+                        @error("recommend_note") <span class="error">{{ $message }}</span> @enderror
                     </div>
-                
+
                     <div class="mb-3 d-flex flex-wrap">
                         <button type="submit" class="btn btn-primary me-3" data-bs-dismiss="offcanvas">Save</button>
                         <button type="button" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">Cancel</button>
@@ -418,14 +422,14 @@
                             <option value="Approved">Approve</option>
                             <option value="Rejected">Reject</option>
                         </select>
-                        @error("approved_action") <span class="error">{{ $message }}</span> @enderror 
+                        @error("approved_action") <span class="error">{{ $message }}</span> @enderror
                     </div>
                     <div class="mb-3">
                         <label for="invoice-message" class="form-label">HAOP Approval Remark</label>
                         <textarea class="form-control" wire:model="approved_note" id="invoice-message" cols="3" rows="3" required></textarea>
-                        @error("approved_note") <span class="error">{{ $message }}</span> @enderror 
+                        @error("approved_note") <span class="error">{{ $message }}</span> @enderror
                     </div>
-                
+
                     <div class="mb-3 d-flex flex-wrap">
                         <button type="submit" class="btn btn-primary me-3" data-bs-dismiss="offcanvas">Save</button>
                         <button type="button" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">Cancel</button>
@@ -447,11 +451,11 @@
                     <div class="mb-3">
                         <label for="invoice-message" class="form-label">Despatch Note</label>
                         <textarea class="form-control" wire:model="despatched_note" id="invoice-message" cols="3" rows="3"></textarea>
-                        @error("despatched_note") <span class="error">{{ $message }}</span> @enderror 
+                        @error("despatched_note") <span class="error">{{ $message }}</span> @enderror
                     </div>
                     <hr>
-                    
-                
+
+
                     <div class="mb-3 d-flex flex-wrap">
                         <button type="submit" class="btn btn-primary me-3" data-bs-dismiss="offcanvas">Save</button>
                         <button type="button" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">Cancel</button>
@@ -473,9 +477,9 @@
                     <div class="mb-3">
                         <label for="invoice-message" class="form-label">Received Note</label>
                         <textarea class="form-control" wire:model="received_note" id="invoice-message" cols="3" rows="3"></textarea>
-                        @error("received_note") <span class="error">{{ $message }}</span> @enderror 
+                        @error("received_note") <span class="error">{{ $message }}</span> @enderror
                     </div>
-                
+
                     <div class="mb-3 d-flex flex-wrap">
                         <button type="submit" class="btn btn-primary me-3" data-bs-dismiss="offcanvas">Save</button>
                         <button type="button" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">Cancel</button>
@@ -484,6 +488,6 @@
             </div>
         </div>
         <!-- /Received Sidebar -->
-        <!-- /Offcanvas -->             
+        <!-- /Offcanvas -->
     </div>
 </div>

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('allocation_models', function (Blueprint $table) {
             $table->id();
             $table->string('reference');
-            $table->integer('requisition_store');
+            $table->integer('requisition_store')->nullable();
             $table->integer('allocation_store');
             $table->integer('stock_code_id');
             $table->integer('quantity');

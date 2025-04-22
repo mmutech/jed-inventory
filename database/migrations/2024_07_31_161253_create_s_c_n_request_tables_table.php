@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('srin_id');
             $table->integer('stock_code_id');
             $table->integer('quantity_returned');
-            $table->date('return_date');
+            $table->date('return_date')->nullable();
+            $table->enum('status', ['Pending', 'Received'])->default('Pending');
             $table->integer('added_by');
             $table->integer('updated_by')->nullable();
             $table->timestamps();

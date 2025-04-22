@@ -13,9 +13,8 @@ class RequestIndex extends Component
 {
     use WithPagination;
 
-    public $storeID, $data, $srcnCount, $srinCount, $scn;
+    public $storeID, $data, $scn;
     public $search = '';
-
 
     public function srcnId()
     {
@@ -30,6 +29,10 @@ class RequestIndex extends Component
             })
             ->orderBy(DB::raw('MAX(created_at)'), 'desc');
 
+            if (auth()->user()->hasRole('Store-Officer')) {
+                $query->where('requisition_store', $this->storeID);
+            }
+
         $paginatedData = $query->paginate(10);
 
         // Extract only the items (data records) for Livewire property
@@ -40,7 +43,6 @@ class RequestIndex extends Component
     public function srinId()
     {
         $query = RequestItemTable::select('reference', DB::raw('COUNT(stock_code_id) AS count'), 'status')
-            // ->where('requisition_store', $this->storeID)
             ->where('reference', 'like', 'SRIN-%')
             ->groupBy('reference', 'status')
             ->where(function ($filter) {
@@ -49,6 +51,10 @@ class RequestIndex extends Component
                 }
             })
             ->orderBy(DB::raw('MAX(created_at)'), 'desc');
+
+            if (auth()->user()->hasRole('Store-Officer')) {
+                $query->where('requisition_store', $this->storeID);
+            }
 
         $paginatedData = $query->paginate(10);
 
@@ -61,25 +67,38 @@ class RequestIndex extends Component
         // Get Store ID
         $this->storeID = Store::where('store_officer', Auth()->user()->id)->pluck('id')->first();
 
-        $this->data = RequestItemTable::select('reference', DB::raw('COUNT(stock_code_id) AS count'), 'status')
-            ->groupBy('reference', 'status')
-            ->get();
+        // Get the requested data
+        $query = RequestItemTable::select('reference', DB::raw('COUNT(stock_code_id) AS count'), 'status')
+        ->groupBy('reference', 'status');
 
-        // Request Category Count
-        $this->srcnCount = RequestItemTable::select('reference')->where('reference', 'like', 'SRCN-%')
-        ->groupBy('reference')
-        ->get()
-        ->count();
+        if (auth()->user()->hasRole('Store-Officer')) {
+            $query->where('requisition_store', $this->storeID);
+        }
 
-        $this->srinCount = RequestItemTable::select('reference')->where('reference', 'like', 'SRIN-%')
-        ->groupBy('reference')
-        ->get()
-        ->count();
+        $this->data = $query->get();
 
+        // dd($this->data);
     }
 
     public function render()
     {
-        return view('livewire.request.request-index');
+        // Request Category Count
+        $srcn = RequestItemTable::select('reference')->where('reference', 'like', 'SRCN-%')
+          ->groupBy('reference')
+          ->get();
+
+        $srin = RequestItemTable::select('reference')->where('reference', 'like', 'SRIN-%')
+          ->groupBy('reference')
+          ->get();
+
+        if (auth()->user()->hasRole('Store-Officer')) {
+            $srin->where('requisition_store', $this->storeID);
+            $srcn->where('requisition_store', $this->storeID);
+        }
+
+        return view('livewire.request.request-index')->with([
+            'srcnCount' => $srcn->count(),
+            'srinCount' => $srin->count(),
+        ]);
     }
 }

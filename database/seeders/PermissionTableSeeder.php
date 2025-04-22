@@ -113,7 +113,6 @@ class PermissionTableSeeder extends Seeder
         Permission::create(['name' => 'quality-check']);
         Permission::create(['name' => 'haop-approval']);
         Permission::create(['name' => 'recommend']);
-        Permission::create(['name' => 'index-stock']);
         Permission::create(['name' => 'issue']);
         Permission::create(['name' => 'receive']);
         Permission::create(['name' => 'others']);
@@ -150,6 +149,26 @@ class PermissionTableSeeder extends Seeder
         $role1->givePermissionTo('general-report');
         $role1->givePermissionTo('journal-report');
         $role1->givePermissionTo('bin-card');
+
+        $role1->givePermissionTo('create-sra');
+        $role1->givePermissionTo('modify-sra');
+        $role1->givePermissionTo('view-sra');
+        $role1->givePermissionTo('index-sra');
+
+        $role1->givePermissionTo('create-scn');
+        $role1->givePermissionTo('modify-scn');
+        $role1->givePermissionTo('view-scn');
+        $role1->givePermissionTo('index-scn');
+
+        $role1->givePermissionTo('create-srcn');
+        $role1->givePermissionTo('modify-srcn');
+        $role1->givePermissionTo('view-srcn');
+        $role1->givePermissionTo('index-srcn');
+
+        $role1->givePermissionTo('create-srin');
+        $role1->givePermissionTo('modify-srin');
+        $role1->givePermissionTo('view-srin');
+        $role1->givePermissionTo('index-srin');
 
         $role2 = Role::create(['name' => 'Store-Officer']);
         $role2->givePermissionTo('create-sra');
@@ -205,12 +224,12 @@ class PermissionTableSeeder extends Seeder
         $role3->givePermissionTo('edit-ledger');
         $role3->givePermissionTo('ledgers');
 
-        $role3->givePermissionTo('index-stock');
         $role3->givePermissionTo('hod-approval');
         $role3->givePermissionTo('recommend');
         $role3->givePermissionTo('fa-approval');
         $role3->givePermissionTo('others');
         $role3->givePermissionTo('stocks');
+        $role3->givePermissionTo('receive');
 
         $role4 = Role::create(['name' => 'PO-Manager']);
         $role4->givePermissionTo('create-po');
@@ -227,28 +246,41 @@ class PermissionTableSeeder extends Seeder
             'staff_id' => 1234,
         ]);
         $user->assignRole($role1);
-        $user->assignRole($role2);
         $user->assignRole($role3);
         $user->assignRole($role4);
 
         $user = \App\Models\User::factory()->create([
-            'name' => 'Store Officer',
-            'email' => 'store.officer@jedplc.com',
+            'name' => 'Store Officer One',
+            'email' => 'store.officer1@jedplc.com',
             'staff_id' => 1235,
+        ]);
+        $user->assignRole($role2);
+
+        $user = \App\Models\User::factory()->create([
+            'name' => 'Store Officer Two',
+            'email' => 'store.officer2@jedplc.com',
+            'staff_id' => 1236,
+        ]);
+        $user->assignRole($role2);
+
+        $user = \App\Models\User::factory()->create([
+            'name' => 'Store Officer Three',
+            'email' => 'store.officer3@jedplc.com',
+            'staff_id' => 1237,
         ]);
         $user->assignRole($role2);
 
         $user = \App\Models\User::factory()->create([
             'name' => 'Manager',
             'email' => 'manager@jedplc.com',
-            'staff_id' => 1236,
+            'staff_id' => 1238,
         ]);
         $user->assignRole($role3);
 
         $user = \App\Models\User::factory()->create([
             'name' => 'PO Manager',
             'email' => 'po.manager@jedplc.com',
-            'staff_id' => 1237,
+            'staff_id' => 1239,
         ]);
         $user->assignRole($role4);
 

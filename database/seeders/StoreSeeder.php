@@ -16,21 +16,21 @@ class StoreSeeder extends Seeder
         $store = [
             [
                 'name' => 'Central Store',
-                'store_officer' => 1,
+                'store_officer' => 2,
                 'location' => 2,
                 'status' => 'Active',
                 'created_by' => 1
             ],
             [
                 'name' => 'Test Store 1',
-                'store_officer' => 2,
+                'store_officer' => 3,
                 'location' => 1,
                 'status' => 'Active',
                 'created_by' => 1
             ],
             [
                 'name' => 'Test Store 2',
-                'store_officer' => 3,
+                'store_officer' => 4,
                 'location' => 3,
                 'status' => 'Active',
                 'created_by' => 1

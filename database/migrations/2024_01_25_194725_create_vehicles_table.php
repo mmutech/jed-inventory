@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('lorry_no');
             $table->string('driver_name');
             $table->integer('pickup_station');
-            $table->integer('delivery_station');
+            $table->integer('delivery_station')->nullable();
             $table->date('pickup_date');
             $table->date('delivery_date')->nullable();
             $table->enum('status', ['Picked Up', 'Delivered'])->default('Picked Up');

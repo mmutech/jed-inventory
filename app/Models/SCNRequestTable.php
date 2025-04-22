@@ -17,6 +17,7 @@ class SCNRequestTable extends Model
         'quantity_returned',
         'srin_id',
         'return_date',
+        'status',
         'added_by',
         'updated_by'
     ];

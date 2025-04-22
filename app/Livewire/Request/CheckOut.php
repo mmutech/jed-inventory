@@ -28,14 +28,14 @@ class CheckOut extends Component
     //         //     ->where('stock_code_id', $stockCodeID)
     //         //     ->whereNotNull('quantity_issued')
     //         //     ->exists();
-        
+
     //         // if (!$requestItem) {
     //             // If no record exists with a non-null quantity_issued, fetch the allocation model
     //             $this->item = AllocationModel::where('stock_code_id', $stockCodeID)
     //                 ->where('reference', $this->referenceId)
     //                 ->where('allocation_store', $this->storeID)
     //                 ->first();
-        
+
     //             // Dispatch success message
     //             $this->dispatch('success', message: 'Stock Code Found: ' . $this->stock_code->name);
     //         // } else {
@@ -70,7 +70,7 @@ class CheckOut extends Component
                 ->orderBy('created_at', 'desc')
                 ->first();
         }
-        
+
         $valueOut = $storeBook->basic_price * $this->item->quantity;
 
         // Store to database
@@ -119,7 +119,7 @@ class CheckOut extends Component
             Despatched::create([
                 'despatched_note' => $this->despatched_note,
                 'reference' => $this->referenceId,
-                'store_id' => $this->item->requisition_store,
+                'store_id' => $this->storeID,
                 'despatched_date' => now(),
                 'despatched_by' => Auth()->user()->id,
             ]);

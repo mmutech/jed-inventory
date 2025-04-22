@@ -37,7 +37,7 @@ class StoreBook extends Model
     {
         return $this->belongsTo(Store::class, 'issue_store');
     }
-    
+
     public function stockCodeID(): BelongsTo
     {
         return $this->belongsTo(StockCode::class, 'stock_code_id');
@@ -46,6 +46,11 @@ class StoreBook extends Model
     public function jobOrderId(): BelongsTo
     {
         return $this->belongsTo(PurchaseOrders::class, 'purchase_order_id');
+    }
+
+    public function requestItem()
+    {
+        return $this->belongsTo(RequestItemTable::class, 'stock_code_id', 'stock_code_id');
     }
 
     public function createdBy(): BelongsTo

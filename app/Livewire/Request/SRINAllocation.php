@@ -35,7 +35,6 @@ class SRINAllocation extends Component
                 'stock_code_id'         => $stockCodeID,
                 'reference'             => $this->referenceId,
                 'allocation_store'      => $allocation_store,
-                'requisition_store'     => $this->requisitionStore,
                 'quantity'              => $this->allocationQty[$allocation_key],
                 'date'                  => now(),
                 'allocated_by'          => auth()->user()->id,
@@ -103,32 +102,28 @@ class SRINAllocation extends Component
         $referenceId = $this->referenceId;
         $this->title = substr($referenceId, 0, strpos($referenceId, '-'));
 
-        // $this->storeID = Store::where('store_officer', Auth()->user()->id)->pluck('store_id')->first();
+        $this->storeID = Store::where('store_officer', Auth()->user()->id)->pluck('id')->first();
         $items = RequestItemTable::where('reference', $this->referenceId)->get();
 
         $this->stockCodeIDs = $items->pluck('stock_code_id');
         $this->requisitionStore = $items->pluck('requisition_store')->first();
 
-         // Get the Issue Store
-         $this->allocationStores = RequestItemTable::select(
-            'store_books.qty_balance',
-            'request_item_tables.stock_code_id',
-            'request_item_tables.quantity_recommend',
-            'store_books.station_id',
-            'store_books.created_at'
-        )
-        ->join('store_books', 'store_books.stock_code_id', '=', 'request_item_tables.stock_code_id')
-        ->whereIn('store_books.stock_code_id', $this->stockCodeIDs)
-        ->where('request_item_tables.reference', $this->referenceId)
-        ->whereIn(DB::raw("(store_books.stock_code_id, store_books.created_at)"), function($query) {
-            $query->select(
-                'stock_code_id',
-                DB::raw('MAX(created_at)')
-            )
-            ->from('store_books')
-            ->whereIn('stock_code_id', $this->stockCodeIDs)
-            ->groupBy('stock_code_id');
-        })->get();
+        $latestStoreBooks = DB::table('store_books as sb1')
+            ->select('sb1.stock_code_id', 'sb1.station_id', DB::raw('MAX(sb1.created_at) as latest_created_at'))
+            ->whereIn('sb1.stock_code_id', $this->stockCodeIDs)
+            ->groupBy('sb1.stock_code_id', 'sb1.station_id');
+
+        $this->allocationStores = StoreBook::with(['stationID', 'requestItem'])
+            ->joinSub($latestStoreBooks, 'latest', function ($join) {
+                $join->on('store_books.stock_code_id', '=', 'latest.stock_code_id')
+                    ->on('store_books.station_id', '=', 'latest.station_id')
+                    ->on('store_books.created_at', '=', 'latest.latest_created_at');
+            })
+            ->whereHas('requestItem', function ($query) {
+                $query->where('reference', $this->referenceId);
+            })
+            ->whereIn('store_books.stock_code_id', $this->stockCodeIDs)
+            ->get();
 
         //  dd($this->allocationStores);
     }

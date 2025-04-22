@@ -5,6 +5,7 @@
 
     <div class="row g-4">
         <!-- SRCN -->
+        @if (auth()->user()->hasRole('Store-Officer') || auth()->user()->hasRole('Admin'))
         <div class="col">
             <div class="card">
                 <div class="card-body">
@@ -22,6 +23,7 @@
                 </div>
             </div>
         </div>
+        @endif
 
         <!-- SRIN -->
         <div class="col">
@@ -107,7 +109,7 @@
                                     </tr>
                                 @endif
                             </tbody>
-                        </table>  
+                        </table>
                     </div>
                 </div>
             </div>
@@ -121,7 +123,7 @@
             <div class="modal-content">
                 <div class="modal-header d-flex justify-content-center align-items-center">
                     <h5 class="modal-title">Request Timeline</strong></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> 
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div><hr>
                 <div class="modal-body" id="printSection">
                     <ul class="timeline ms-2">
@@ -131,7 +133,7 @@
                                 <div class="timeline-header mb-1">
                                     <h6 class="mb-0">Initiated</h6>
                                 </div>
-                                <span class="mb-0"></span>  
+                                <span class="mb-0"></span>
                             </div>
                         </li>
                         <li class="timeline-item timeline-item-transparent">
@@ -158,7 +160,7 @@
                                 <div class="timeline-header mb-1">
                                     <h6 class="mb-0">Head Account Operation</h6>
                                 </div>
-                                <span class="mb-0">Approved</span>  
+                                <span class="mb-0">Approved</span>
                             </div>
                         </li>
 

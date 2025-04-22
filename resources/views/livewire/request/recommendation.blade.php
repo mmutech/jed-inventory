@@ -29,15 +29,15 @@
                                 </tr>
                             </thead>
                             <tbody wire:ignore>
-                            @foreach ($items as $key => $item)               
+                            @foreach ($items as $key => $item)
                                 <tr class="input-container">
-                                    <td><p>{{$item->requisitionStore->name}}</p></td>
+                                    <td><p>{{$item->requisitionStore->name ?? 'N/A'}}</p></td>
                                     <td><p>{{$item->stockCodeID->stock_code}}</p></td>
                                     <td><p>{{$item->stockCodeID->name}}</p></td>
                                     <td><p>{{$item->quantity_required}}</p></td>
                                     <td class="col-sm-2">
                                         <input type="number" wire:model="recommendQty.{{$key}}" class="form-control invoice-item-qty">
-                                        @error("recommendQty") <span class="error">{{ $message }}</span> @enderror 
+                                        @error("recommendQty") <span class="error">{{ $message }}</span> @enderror
                                     </td>
                                     <td>
                                         <div class="d-flex justify-content-between">
@@ -61,13 +61,13 @@
                             </tbody>
                         </table>
                     </div>
-                </div>    
+                </div>
             </div>
             <div class="card-footer">
                 <div class="col-sm-12 mb-3">
                     <label class="form-label" for="recommend_note">Recommendation Note</label>
                     <textarea class="form-control" wire:model="recommend_note" id="recommend_note" cols="10" rows="2"></textarea>
-                    @error("recommend_note") <span class="error">{{ $message }}</span> @enderror 
+                    @error("recommend_note") <span class="error">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="col-12 d-flex justify-content-between">
@@ -77,6 +77,6 @@
                     </button>
                 </div>
             </div>
-        </form> 
+        </form>
     </div>
 </div>

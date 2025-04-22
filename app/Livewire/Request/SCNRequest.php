@@ -29,13 +29,13 @@ class SCNRequest extends Component
             // Extract the numeric part from the last reference
             $lastReference = $lastRecord->reference;
             $numericPart = (int) substr(strrchr($lastReference, '-'), 1);
-        
+
             // Increment the numeric part
             $newNumericPart = $numericPart + 1;
-        
+
             // Define the prefix (you can set this dynamically as needed)
             $prefix = 'SCN-';
-        
+
             // Generate the new reference ID
             $newReferenceId = $prefix . $newNumericPart;
         } else {
@@ -60,7 +60,7 @@ class SCNRequest extends Component
             'stockCode' => 'required|integer',
             'quantity_returned' => 'required|integer|min:1',
         ];
-        
+
         $this->validate($rules);
 
         // Add the stock data to the array
@@ -76,7 +76,6 @@ class SCNRequest extends Component
             'stock_code_id' => $this->stockCode,
             'quantity_returned' => $this->quantity_returned,
             'srin_id' => $this->srinId,
-            'return_date' => now(),
             'added_by' => Auth()->user()->id,
         ]);
 

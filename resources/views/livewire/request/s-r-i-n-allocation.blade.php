@@ -20,6 +20,7 @@
                         <table class="table" id="itemsTable">
                             <thead>
                                 <tr>
+                                    <th>Station</th>
                                     <th>Stock Code</th>
                                     <th>Description</th>
                                     <th>Available</th>
@@ -29,15 +30,16 @@
                                 </tr>
                             </thead>
                             <tbody wire:ignore>
-                            @foreach ($allocationStores as $key => $item)               
+                            @foreach ($allocationStores as $key => $item)
                                 <tr class="input-container">
+                                    <td><p>{{$item->stationID->name}}</p></td>
                                     <td><p>{{$item->stockCodeID->stock_code}}</p></td>
                                     <td><p>{{$item->stockCodeID->name}}</p></td>
                                     <td><p>{{$item->qty_balance}}</p></td>
-                                    <td><p>{{$item->quantity_recommend}}</p></td>
+                                    <td><p>{{$item->requestItem->quantity_recommend}}</p></td>
                                     <td class="col-sm-2">
                                         <input type="number" wire:model="allocationQty.{{$key}}" class="form-control invoice-item-qty">
-                                        @error("allocationQty") <span class="error">{{ $message }}</span> @enderror 
+                                        @error("allocationQty") <span class="error">{{ $message }}</span> @enderror
                                     </td>
                                     <td>
                                         <div class="d-flex justify-content-between">
@@ -61,7 +63,7 @@
                             </tbody>
                         </table>
                     </div>
-                </div>    
+                </div>
             </div>
             <div class="card-footer">
                 <div class="col-md-6 mb-1">
@@ -71,12 +73,12 @@
                         <option value="Approved">Approve</option>
                         <option value="Rejected">Reject</option>
                     </select>
-                    @error("hod_approved_action") <span class="error">{{ $message }}</span> @enderror 
+                    @error("hod_approved_action") <span class="error">{{ $message }}</span> @enderror
                 </div>
                 <div class="col-sm-12 mb-3">
                     <label class="form-label" for="hod_approved_note">HOD Note</label>
                     <textarea class="form-control" wire:model="hod_approved_note" id="hod_approved_note" cols="10" rows="2"></textarea>
-                    @error("hod_approved_note") <span class="error">{{ $message }}</span> @enderror 
+                    @error("hod_approved_note") <span class="error">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="col-12 d-flex justify-content-between">
@@ -86,6 +88,6 @@
                     </button>
                 </div>
             </div>
-        </form> 
+        </form>
     </div>
 </div>

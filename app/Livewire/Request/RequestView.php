@@ -94,6 +94,14 @@ class RequestView extends Component
                     'created_by' => Auth()->user()->id,
                 ]);
 
+                // Update Return Date
+                SCNRequestTable::where('reference', $referenceId)
+                ->where('stock_code_id', $stockCodeID)
+                ->update([
+                    'status' => 'Received',
+                    'return_date' => now(),
+                ]);
+
                 // Update Request Status
                 RequestItemTable::where('reference', $referenceId)
                 ->where('stock_code_id', $stockCodeID)
@@ -128,10 +136,10 @@ class RequestView extends Component
         $this->items = RequestItemTable::where('reference', $this->referenceId)->get();
         $this->allocation = AllocationModel::where('reference', $this->referenceId)->get();
         $this->scn = SCNRequestTable::where('srin_id', $this->referenceId)->get();
-        
+
         // Check if auth user hasRole Store-office
         if (auth()->user()->hasRole('Store-Officer')) {
-            $this->storeID = Store::where('store_officer', Auth()->user()->id)->pluck('store_id')->first();
+            $this->storeID = Store::where('store_officer', Auth()->user()->id)->pluck('id')->first();
         }
         // dd($this->scn);
     }
