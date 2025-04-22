@@ -26,7 +26,7 @@ class GeneralReport extends Component
             'stores.name AS Store',
             'stock_codes.stock_code AS stockCode',
             'stock_codes.name AS Description',
-            'stock_codes.gl_code_id  AS LedgerCode',
+            'general_ledgers.code  AS LedgerCode',
             'store_books.qty_in AS QuantityReceive',
             'store_books.qty_out AS QuantityIssue',
             'store_books.qty_balance AS QuantityBalance',
@@ -38,6 +38,7 @@ class GeneralReport extends Component
         ->leftJoin('purchase_orders', 'store_books.purchase_order_id', '=', 'purchase_orders.purchase_order_id')
         ->leftJoin('stock_codes', 'store_books.stock_code_id', '=', 'stock_codes.id')
         ->leftJoin('stores', 'store_books.station_id', '=', 'stores.id')
+        ->leftJoin('general_ledgers', 'store_books.gl_code_id', '=', 'general_ledgers.id')
         ->whereBetween('store_books.date', [$startDate, $endDate])
         ->get();
 
