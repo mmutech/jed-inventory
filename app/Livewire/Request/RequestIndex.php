@@ -71,9 +71,9 @@ class RequestIndex extends Component
         $query = RequestItemTable::select('reference', DB::raw('COUNT(stock_code_id) AS count'), 'status')
         ->groupBy('reference', 'status');
 
-        if (auth()->user()->hasRole('Store-Officer')) {
-            $query->where('requisition_store', $this->storeID);
-        }
+        // if (auth()->user()->hasRole('Store-Officer')) {
+        //     $query->where('requisition_store', $this->storeID);
+        // }
 
         $this->data = $query->get();
 
