@@ -1,36 +1,30 @@
 <div>
+    <h6 class="py-1 mb-2">
+        <span class="text-muted fw-light"><a href="{{url('dashboard');}}">Dashboard</a> /</span> General Report
+    </h6>
+    <div class="col-sm-12 col-md-12 col-lg-12 mb-4 mt-3">
+        <form wire:submit.prevent="exportReport">
+            <div class="input-group">
+                <button class="btn btn-outline-primary">
+                    <span class="tf-icons bx bx-calendar"></span>&nbsp; From
+                </button>
+                <input class="form-control" type="date" wire:model="startDate">
+                <button class="btn btn-outline-primary">
+                    <span class="tf-icons bx bx-calendar"></span>&nbsp; To
+                </button>
+                <input class="form-control" type="date" wire:model="endDate">
+                <button type="submit" class="btn btn-outline-primary">
+                    <span class="tf-icons bx bx-export"></span>&nbsp; Generate
+                </button>
+            </div>
+        </form>
+    </div><hr>
     <div class="col-xl-12 col-sm-12 col-md-10 mx-auto">
-        <h4 class="py-3 mb-2">General Report</h4>
         <!-- General Store Report -->
         <div class="card">
             <div class="card-datatable table-responsive">
                 <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
                     <div class="row mx-1 p-3">
-                        {{-- Export --}}
-                        <div class="col-sm-12 col-md-12 col-lg-12 mb-4 mt-3">
-                            <form wire:submit.prevent="exportReport">
-                                <div class="input-group">
-                                    <button class="btn btn-outline-primary">
-                                        <span class="tf-icons bx bx-calendar"></span>&nbsp; From
-                                    </button>
-                                    <input class="form-control" type="date" wire:model="startDate">
-                                    <button class="btn btn-outline-primary">
-                                        <span class="tf-icons bx bx-calendar"></span>&nbsp; To
-                                    </button>
-                                    <input class="form-control" type="date" wire:model="endDate">
-                                    <button type="submit" class="btn btn-outline-primary">
-                                        <span class="tf-icons bx bx-export"></span>&nbsp; Excel
-                                    </button>
-                                    <!-- <button type="submit" class="btn btn-outline-primary">
-                                        <span class="tf-icons bx bx-export"></span>&nbsp; CSV
-                                    </button>
-                                    <button type="submit" class="btn btn-outline-primary">
-                                        <span class="tf-icons bx bx-export"></span>&nbsp; PDF
-                                    </button> -->
-                                </div>
-                            </form>
-                        </div><hr>
-
                         {{-- List of Headings --}}
                         <div class="col-sm-12 col-md-12 col-lg-12 mt-3">
                             <h5 class="card-title">This provides a report of the selected options with the following parameters:</h5>
