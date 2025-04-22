@@ -38,7 +38,7 @@ class GeneralReport extends Component
         ->leftJoin('purchase_orders', 'store_books.purchase_order_id', '=', 'purchase_orders.purchase_order_id')
         ->leftJoin('stock_codes', 'store_books.stock_code_id', '=', 'stock_codes.id')
         ->leftJoin('stores', 'store_books.station_id', '=', 'stores.id')
-        ->leftJoin('general_ledgers', 'store_codes.gl_code_id', '=', 'general_ledgers.id')
+        ->leftJoin('general_ledgers', 'stock_codes.gl_code_id', '=', 'general_ledgers.id')
         ->whereBetween('store_books.date', [$startDate, $endDate])
         ->get();
 
