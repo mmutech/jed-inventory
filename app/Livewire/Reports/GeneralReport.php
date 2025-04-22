@@ -24,7 +24,7 @@ class GeneralReport extends Component
             'purchase_orders.purchase_order_no AS PurchaseOrderNumber',
             'store_books.reference AS Reference',
             'stores.name AS Store',
-            DB::raw("CONCAT(stock_codes.stock_code, '-', stock_codes.name) AS stockCode"),
+            DB::raw("CONCAT(stock_codes.name, ' ', '(', stock_codes.stock_code,')') AS stockCode"),
             'general_ledgers.code  AS LedgerCode',
             'store_books.qty_in AS QuantityReceive',
             'store_books.qty_out AS QuantityIssue',
