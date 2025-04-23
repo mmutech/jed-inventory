@@ -1,6 +1,6 @@
 <div>
     <h6 class="py-1 mb-2">
-    <span class="text-muted fw-light"><a href="{{url('sra');}}">Store Received Advice</a> /</span> {{$title}}
+    <span class="text-muted fw-light"><a href="{{url('sra');}}">Store Received Advice</a> /</span> Raise SRA
     </h6>
 
     <div class="row">
@@ -29,20 +29,6 @@
                         <span class="bs-stepper-label mt-1">
                             <span class="bs-stepper-title">Item Info</span>
                             <span class="bs-stepper-subtitle">Confirm Item info</span>
-                        </span>
-                        </button>
-                    </div>
-
-                    <!--Pointer-->
-                    <div class="line">
-                        <i class="bx bx-chevron-right"></i>
-                    </div>
-                    <div class="step" data-target="#document">
-                        <button type="button" class="step-trigger" aria-selected="false" disabled>
-                        <span class="bs-stepper-circle">2</span>
-                        <span class="bs-stepper-label mt-1">
-                            <span class="bs-stepper-title">Documents</span>
-                            <span class="bs-stepper-subtitle">Upload Documents</span>
                         </span>
                         </button>
                     </div>
@@ -83,7 +69,7 @@
                                 <h6 class="mb-0">Stores Received Advice</h6>
                                 <small>Enter Your SRA Details.</small>
                             </div>
-                            
+
                             <div class="row g-3 mb-3">
                                 <div class="col-sm-6">
                                     <label class="form-label" for="purchase_order_no">Purchase Order No:</label>
@@ -113,7 +99,7 @@
                                     @error('consignment_note_no') <span class="text-danger">{{ $message }}</span> @enderror
                                 </div>
                             </div><hr>
-                            
+
                             <!-- Documents-->
                             <div class="row mb-3">
                                 <div class="col-md-12 mb-3">
@@ -121,7 +107,7 @@
                                         <label>Documents <small class="text-danger">*</small></label>
                                     </h4>
                                     <span class="text-warning"><i class="bx bx-bell"></i> Allowed JPEG, JPG or PNG. Max size of 1MB</span>
-                                    
+
                                 </div>
                                 <div class="col-sm-12 col-md-4 col-lg-4">
                                     <label class="form-label" for="delivery_note">Delivery Note: </label>
@@ -191,7 +177,7 @@
                                                             $subtotal = 0;
                                                         @endphp
                                                         @foreach ($items as $key => $item)
-                                                            @php 
+                                                            @php
                                                                 $amount = $item->confirm_rate * $item->confirm_qty;
                                                                 $subtotal += $amount;
                                                             @endphp
@@ -203,8 +189,8 @@
                                                                         @foreach($stock_code as $stCode)
                                                                             <option value="{{$stCode->id}}">{{$stCode->stock_code}} - {{$stCode->name}}</option>
                                                                         @endforeach
-                                                                    </select>    
-                                                                    @error("stock_codes.$key") <span class="error">{{ $message }}</span> @enderror 
+                                                                    </select>
+                                                                    @error("stock_codes.$key") <span class="error">{{ $message }}</span> @enderror
                                                                 </td>
                                                                 <td><p>{{$item->description}}</p></td>
                                                                 <td><p>{{$item->confirm_qty}} ({{$item->unitID->description}})</p></td>
@@ -234,8 +220,8 @@
                                 <span class="align-middle d-sm-inline-block d-none">Previous</span>
                             </button>
                             <button class="btn btn-success btn-next btn-submit" wire:click="confirmed">Submit</button>
-                        </div> 
-                        
+                        </div>
+
                     @endif
                 </div>
             </div>

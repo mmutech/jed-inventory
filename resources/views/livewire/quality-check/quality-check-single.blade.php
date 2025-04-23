@@ -1,12 +1,12 @@
 <div>
     <h6 class="py-1 mb-2">
-        <span class="text-muted fw-light"><a href="{{url('purchase-order');}}">Purchase Order</a> /</span> {{$title}}
+        <span class="text-muted fw-light"><a href="{{url('quality-check');}}">Quality Check</a> /</span> Quality Check Single
     </h6>
 
     <div class="card">
         <div class="card-header">
-            <h6 class="mb-0">Purchase Order Items</h6>
-            <small>Quality Checks.</small>
+            <h6 class="mb-0">Quality Check</h6>
+            <small>Purchase Order Items</small>
         </div>
         <hr class="my-1">
         <div class="card-body">

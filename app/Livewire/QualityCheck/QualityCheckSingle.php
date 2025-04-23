@@ -1,18 +1,17 @@
 <?php
 
-namespace App\Livewire\PurchaseOrder;
+namespace App\Livewire\QualityCheck;
 
 use Livewire\Component;
-use Livewire\Attributes\Rule; 
+use Livewire\Attributes\Rule;
 use Livewire\Attributes\Locked;
 use App\Models\QualityChecks;
 use App\Models\Item;
+use App\Models\PurchaseOrders;
 use Illuminate\Support\Facades\Auth;
 
-class QualityCheck extends Component
+class QualityCheckSingle extends Component
 {
-    public $title = 'Quality Check';
-
     public $item;
 
     public $confirm_qtys = [], $confirm_rates = [], $quantity = [];
@@ -37,26 +36,31 @@ class QualityCheck extends Component
                 'confirm_by' => Auth::user()->id,
                 'confirm_date' => now()
             ]);
-    
-            $this->confirm_qtys[$key] = ''; 
-            $this->confirm_rates[$key] = ''; 
+
+            $this->confirm_qtys[$key] = '';
+            $this->confirm_rates[$key] = '';
             $balanceQty = '';
-    
+
             $this->dispatch('success', message: 'Checked and Confirmed!');
         }else{
             $this->dispatch('error', message: 'Already Checked and Confirmed!');
-        } 
+        }
 
     }
 
     public function qualityCheckRemark()
-    {    
+    {
         // Quality Check Remark
         QualityChecks::create([
             'reference' => $this->poID,
             'quality_check_note' => $this->quality_check_note,
             'quality_check_date' => now(),
             'quality_check_by' => Auth::user()->id
+        ]);
+
+        // Update PO Status
+        PurchaseOrders::where('purchase_order_id', $this->poID)->update([
+            'status' => 'Checked',
         ]);
 
         $this->dispatch('info', message: 'Quality Checks Completed!');
@@ -73,7 +77,7 @@ class QualityCheck extends Component
 
     public function render()
     {
-        return view('livewire.purchase-order.quality-check')->with([
+        return view('livewire.quality-check.quality-check-single')->with([
             'items' => Item::where('purchase_order_id', $this->poID)->get(),
         ]);
     }

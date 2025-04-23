@@ -3,7 +3,7 @@
 namespace App\Livewire\SRA;
 
 use Livewire\Component;
-use Livewire\Attributes\Rule; 
+use Livewire\Attributes\Rule;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Locked;
@@ -80,6 +80,12 @@ class ConfirmItem extends Component
                 ]);
             }
 
+            // Update PO Status
+            PurchaseOrders::where('purchase_order_id', $this->poID)->update([
+                'status' => 'Completed',
+            ]);
+
+
             $this->dispatch('success', message: 'SRA Created!');
             return redirect()->to('show-sra/' . $this->poID);
 
@@ -125,7 +131,7 @@ class ConfirmItem extends Component
             $this->dispatch('info', message: 'Purchase Order Items Not Exist!');
             return Redirect()->route('purchase-order-show', ['poID' => $this->editItemID]);
         }
- 
+
 
         // dd($approved);
     }

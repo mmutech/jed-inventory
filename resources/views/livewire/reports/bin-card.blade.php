@@ -73,7 +73,7 @@
                     @if(!empty($data))
                         @foreach ($data as $key => $bin)
                         <tr>
-                            <td><a href="{{ url('bin-card-show', $bin->stock_code_id) }}">
+                            <td><a href="{{ url('single-bin-card', $bin->stock_code_id) }}">
                                 <span class="fw-semibold d-block">{{ $bin->stockCodeID->stock_code }}</span>
                                 <small class="">{{ $bin->stockCodeID->name }}</small></a>
                             </td>

@@ -21,11 +21,13 @@ use App\Livewire\PurchaseOrder\POBalance;
 use App\Livewire\PurchaseOrder\PORecommendation;
 use App\Livewire\PurchaseOrder\QualityCheck;
 use App\Livewire\PurchaseOrder\Show;
-
+use App\Livewire\QualityCheck\QualityCheckIndex;
+use App\Livewire\QualityCheck\QualityCheckSingle;
 // Reports
 use App\Livewire\Reports\BinCard;
 use App\Livewire\Reports\GeneralReport;
 use App\Livewire\Reports\Journal;
+use App\Livewire\Reports\SingleBinCard;
 
 // Request
 use App\Livewire\Request\Allocation as RequestAllocation;
@@ -86,9 +88,12 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/purchase-order-show/{poID}', Show::class)->name('purchase-order-show/{poID}');
     Route::get('/purchase-order-edit/{editPoID}', Edit::class);
     Route::get('/purchase-order-edit-item/{editItemID}', EditItem::class);
-    Route::get('/quality-check/{poID}', QualityCheck::class);
     Route::get('/po-recommend/{poID}', PORecommendation::class);
     Route::get('/po-balance/{poID}', POBalance::class);
+
+    // Quality Check
+    Route::get('/quality-check', QualityCheckIndex::class);
+    Route::get('/quality-check-single/{poID}', QualityCheckSingle::class);
 
     //SRA
     Route::get('/sra', IndexSra::class);
@@ -114,6 +119,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/general-report', GeneralReport::class);
     Route::get('/journal-report', Journal::class);
     Route::get('/bin-card', BinCard::class);
+    Route::get('/single-bin-card/{binCardID}', SingleBinCard::class);
 
     //Stock Management
     Route::get('/stock-categories', StockCategoryManagement::class);

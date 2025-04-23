@@ -19,8 +19,7 @@ class CreateSra extends Component
     public function render()
     {
         $this->storeID = Store::where('store_officer', Auth()->user()->id)->pluck('id')->first();
-        $query = PurchaseOrders::where('status', 'Approved')
-        ->orwhere('status', 'Incomplete')->latest()
+        $query = PurchaseOrders::where('status', 'Checked')->latest()
         ->where(function ($filter){
                 $filter->where('status', 'like', '%'.$this->search.'%')
                     ->orWhere('purchase_order_no', 'like', '%'.$this->search.'%');

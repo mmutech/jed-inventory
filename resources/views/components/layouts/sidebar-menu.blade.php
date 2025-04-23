@@ -33,24 +33,35 @@
     </li>
     @endcan
 
+    @can('quality-check')
+    <li class="menu-item {{ Request::is('quality-check') || Request::is('quality-check-single/*') ? 'active open' : '' }}">
+        <a href="{{url('quality-check');}}" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-collection"></i>
+        <div data-i18n="Basic">Quality Check</div>
+        </a>
+    </li>
+    @endcan
+
     <!-- SRA -->
     @can('index-sra')
-    <li class="menu-item {{ Request::is('sra') || Request::is('create-sra') || Request::is('show-sra/*') || Request::is('confirm-item/*') || Request::is('quality-check/*') || Request::is('edit-sra/*') ? 'active open' : '' }}">
+    <li class="menu-item {{ Request::is('sra') || Request::is('create-sra') || Request::is('show-sra/*') || Request::is('confirm-item/*') || Request::is('edit-sra/*') ? 'active open' : '' }}">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons bx bx-folder-open"></i>
         <div data-i18n="sra Settings">SRA</div>
         </a>
         <ul class="menu-sub">
-        <li class="menu-item {{ Request::is('sra') ? 'active open' : '' }}">
-            <a href="{{url('sra');}}" class="menu-link">
-            <div data-i18n="sra">SRA</div>
-            </a>
-        </li>
-        <li class="menu-item {{ Request::is('create-sra') ? 'active open' : '' }}">
-            <a href="{{url('create-sra');}}" class="menu-link">
-            <div data-i18n="sra">New SRA</div>
-            </a>
-        </li>
+            <li class="menu-item {{ Request::is('sra') || Request::is('show-sra/*') ? 'active open' : '' }}">
+                <a href="{{url('sra');}}" class="menu-link">
+                <div data-i18n="sra">SRA</div>
+                </a>
+            </li>
+            @can('create-sra')
+            <li class="menu-item {{ Request::is('create-sra') || Request::is('confirm-item/*') ? 'active open' : '' }}">
+                <a href="{{url('create-sra');}}" class="menu-link">
+                <div data-i18n="sra">Raise SRA</div>
+                </a>
+            </li>
+            @endcan
         </ul>
     </li>
     @endcan
@@ -63,7 +74,7 @@
     </li>
 
     <!-- Report -->
-    <li class="menu-item {{ Request::is('bin-card') || Request::is('journal-report') || Request::is('general-report') ? 'active open' : '' }}">
+    <li class="menu-item {{ Request::is('bin-card') || Request::is('single-bin-card/*') || Request::is('journal-report') || Request::is('general-report') ? 'active open' : '' }}">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons bx bx-folder-open"></i>
         <div data-i18n="sra Settings">Report</div>
@@ -71,7 +82,7 @@
         <ul class="menu-sub">
         <!-- Store Bin Card-->
         @can('bin-card')
-        <li class="menu-item {{ Request::is('bin-card') ? 'active open' : '' }}">
+        <li class="menu-item {{ Request::is('bin-card') || Request::is('single-bin-card/*') ? 'active open' : '' }}">
             <a href="{{url('bin-card');}}" class="menu-link">
             <div data-i18n="bin_card">Stores Bin Card</div>
             </a>

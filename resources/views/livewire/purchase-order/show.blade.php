@@ -49,7 +49,7 @@
                             <hr class="mb-0 mt-0">
                         </div>
                     </div>
-            
+
                     <hr class="my-1 mx-n4">
                     <!-- Item Details-->
                     <h5 class="text-capitalize mb-0 text-nowrap text-center fw-bolder mt-2">
@@ -78,7 +78,7 @@
                                             @endphp
 
                                             @foreach ($items as $key => $item)
-                                            @php 
+                                            @php
                                             $amount = $item->rate * $item->quantity;
                                             $subtotal += $amount;
                                             @endphp
@@ -107,7 +107,7 @@
                                         @endif
                                     </tbody>
                                 </table>
-                                
+
                             </div>
                         </div>
                     </div>
@@ -138,7 +138,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Approval of Purchase Order Actions-->
                     <h6 class="text-capitalize mb-2 text-nowrap fw-bolder">Approval of Purchase Order</h6>
                     <div class="row">
@@ -196,7 +196,7 @@
                 </div>
             </div>
             <!-- /Purchase Order / Item Details-->
-        
+
             <!-- Approval Actions -->
             <div class="col-lg-3 col-12 invoice-actions">
                 @if(empty($recommend->recommend_by))
@@ -204,12 +204,12 @@
                         <a href="{{ url('po-recommend/'.$data->purchase_order_id) }}" class="btn btn-label-primary d-grid w-100 mb-2">
                         <span class="d-flex align-items-center justify-content-center text-nowrap">
                             <i class="bx bx-paper-plane bx-xs me-1"></i>Recommendation</span>
-                        </a> 
+                        </a>
                     @endcan
                 @elseif(empty($approval->approved_by))
                     @can('mds-approval')
-                        <button class="btn btn-label-primary d-grid w-100 mb-2" 
-                            data-bs-toggle="offcanvas" 
+                        <button class="btn btn-label-primary d-grid w-100 mb-2"
+                            data-bs-toggle="offcanvas"
                             data-bs-target="#approval">
                         <span class="d-flex align-items-center justify-content-center text-nowrap">
                             <i class="bx bx-paper-plane bx-xs me-1"></i>MDs Approval</span>
@@ -218,32 +218,6 @@
                 @endif
                 @if(!empty($approval->approved_action))
                     <div class="card-header mb-2">
-                        <!--Quality Check-->
-                        @can('quality-check')
-                            @if(empty($qualityCheck->quality_check_by))
-                                <a href="{{ url('quality-check/'.$data->purchase_order_id) }}" class="btn btn-label-primary d-grid w-100 mb-2">
-                                <span class="d-flex align-items-center justify-content-center text-nowrap">
-                                    <i class="bx bx-check bx-xs me-1"></i>Quality Check</span>
-                                </a>
-                            @endif
-                        @endcan
-
-                        <!--Raised SRA-->
-                        @can('index-sra')
-                            @if(!empty($qualityCheck->quality_check_by))
-                                <a href="{{ url('confirm-item/'.$data->purchase_order_id) }}" class="btn btn-label-primary d-grid w-100 mb-2">
-                                <span class="d-flex align-items-center justify-content-center text-nowrap">
-                                    <i class="bx bx-dock-top bx-xs me-1"></i>Raised SRA</span>
-                                </a>
-                            @endif
-                            @if($data->status == 'Incomplete')
-                            <a href="{{ url('po-balance/'.$data->purchase_order_id)}}" class="btn btn-label-primary d-grid w-100 mb-2">
-                                <span class="d-flex align-items-center justify-content-center text-nowrap">
-                                <i class="bx bx-dock-top bx-xs me-1"></i>Order Balance</span>
-                            </a>
-                            @endif
-                        @endcan
-
                         <!--Print-->
                         <button class="btn btn-label-primary d-grid w-100" onclick="window.print()">
                             <span class="d-flex align-items-center justify-content-center text-nowrap">
@@ -251,7 +225,7 @@
                         </button>
                     </div>
                 @endif
-                
+
                 <!-- Approval Note -->
                 @if(!empty($recommend->recommend_by))
                 <div class="card mb-4">
@@ -259,7 +233,7 @@
                         <h6 class="fw-bolder">Recommendation Note:</h6>
                         <p>{{$recommend->recommend_note}}</p>
                         <hr>
-                   
+
 
                         @if(!empty($approval->approved_by))
                             <h6 class="fw-bolder">MDs Approved Note:</h6>
@@ -288,7 +262,7 @@
                                     <span class="switch-label">
                                     <a href="{{ url('purchase-order-edit/'.$data->purchase_order_id)}}">
                                         <i class="bx bx-pencil bx-sm me-sm-n2"></i>
-                                    </a> 
+                                    </a>
                                     </span>
                                 </label>
                             </div>
@@ -299,7 +273,7 @@
             </div>
             <!-- /Approval Actions -->
         </div>
-        
+
         <!-- Offcanvas -->
         <!-- Send Approval Sidebar -->
         <div class="offcanvas offcanvas-end" id="approval" aria-hidden="true">
@@ -317,13 +291,13 @@
                             <option value="Approved">Approve</option>
                             <option value="Rejected">Reject</option>
                         </select>
-                        @error("approved_action") <span class="error">{{ $message }}</span> @enderror 
+                        @error("approved_action") <span class="error">{{ $message }}</span> @enderror
                     </div>
-                    
+
                     <div class="mb-3">
                         <label for="invoice-message" class="form-label">Message</label>
                         <textarea class="form-control" wire:model="approved_note" id="invoice-message" cols="3" rows="3" required></textarea>
-                        @error("approved_note") <span class="error">{{ $message }}</span> @enderror 
+                        @error("approved_note") <span class="error">{{ $message }}</span> @enderror
                     </div>
                     <div class="mb-3 d-flex flex-wrap">
                         <button type="submit" class="btn btn-primary me-3" data-bs-dismiss="offcanvas">Save</button>
@@ -333,9 +307,9 @@
             </div>
         </div>
         <!-- /Send Approval Sidebar -->
-        
+
         <!-- /Offcanvas -->
-                
-                
+
+
     </div>
 </div>
