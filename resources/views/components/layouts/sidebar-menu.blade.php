@@ -74,7 +74,7 @@
     </li>
 
     <!-- Report -->
-    <li class="menu-item {{ Request::is('bin-card') || Request::is('single-bin-card/*') || Request::is('journal-report') || Request::is('general-report') ? 'active open' : '' }}">
+    <li class="menu-item {{ Request::is('bin-card') || Request::is('single-bin-card/*') || Request::is('journal-report') || Request::is('single-journal/*') || Request::is('general-report') ? 'active open' : '' }}">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons bx bx-folder-open"></i>
         <div data-i18n="sra Settings">Report</div>
@@ -91,7 +91,7 @@
 
         <!-- Journal -->
         @can('journal-report')
-        <li class="menu-item {{ Request::is('journal-report') ? 'active open' : '' }}">
+        <li class="menu-item {{ Request::is('journal-report') || Request::is('single-journal/*') ? 'active open' : '' }}">
             <a href="{{url('journal-report');}}" class="menu-link">
             <div data-i18n="journal-report">Journal</div>
             </a>
