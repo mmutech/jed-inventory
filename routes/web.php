@@ -28,7 +28,7 @@ use App\Livewire\Reports\BinCard;
 use App\Livewire\Reports\GeneralReport;
 use App\Livewire\Reports\Journal;
 use App\Livewire\Reports\SingleBinCard;
-
+use App\Livewire\Reports\SingleJournal;
 // Request
 use App\Livewire\Request\Allocation as RequestAllocation;
 use App\Livewire\Request\CheckIn;
@@ -118,6 +118,7 @@ Route::group(['middleware' => ['auth']], function() {
     // Report
     Route::get('/general-report', GeneralReport::class);
     Route::get('/journal-report', Journal::class);
+    Route::get('/single-journal/{journalID}', SingleJournal::class);
     Route::get('/bin-card', BinCard::class);
     Route::get('/single-bin-card/{binCardID}', SingleBinCard::class);
 

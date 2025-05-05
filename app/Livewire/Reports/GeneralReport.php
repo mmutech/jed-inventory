@@ -18,13 +18,15 @@ class GeneralReport extends Component
         $startDate = Carbon::parse($this->startDate)->startOfDay();
         $endDate = Carbon::parse($this->endDate)->endOfDay();
 
-            // Retrieve data based on $startDate and $endDate
+        // Retrieve data based on $startDate and $endDate
         $data = StoreBook::select(
             'store_books.date AS Date',
             'purchase_orders.purchase_order_no AS PurchaseOrderNumber',
             'store_books.reference AS Reference',
             'stores.name AS Store',
             DB::raw("CONCAT(stock_codes.name, ' ', '(', stock_codes.stock_code,')') AS stockCode"),
+            'stock_classes.name AS StockClass',
+            'stock_categories.name AS StockCategory',
             'general_ledgers.code  AS LedgerCode',
             'store_books.qty_in AS QuantityReceive',
             'store_books.qty_out AS QuantityIssue',
@@ -37,6 +39,8 @@ class GeneralReport extends Component
         ->leftJoin('purchase_orders', 'store_books.purchase_order_id', '=', 'purchase_orders.purchase_order_id')
         ->leftJoin('stock_codes', 'store_books.stock_code_id', '=', 'stock_codes.id')
         ->leftJoin('stores', 'store_books.station_id', '=', 'stores.id')
+        ->leftJoin('stock_classes', 'stock_codes.stock_class_id', '=', 'stock_classes.id')
+        ->leftJoin('stock_categories', 'stock_codes.stock_category_id', '=', 'stock_categories.id')
         ->leftJoin('general_ledgers', 'stock_codes.gl_code_id', '=', 'general_ledgers.id')
         ->whereBetween('store_books.date', [$startDate, $endDate])
         ->get();
@@ -61,6 +65,8 @@ class GeneralReport extends Component
                 'Reference' => '',
                 'Store' => '',
                 'stockCode' => '',
+                'stockClass' => '',
+                'stockCategory' => '',
                 'LedgerCode' => 'Cumulative:',
                 'QuantityReceive' => $totalReceive,
                 'QuantityIssue' => $totalIssue,

@@ -34,7 +34,8 @@
                                 <li>Reference</li>
                                 <li>Store</li>
                                 <li>Stock Code</li>
-                                <li>Description</li>
+                                <li>Stock Class</li>
+                                <li>Stock Category</li>
                                 <li>Ledger Code</li>
                                 <li>Quantity Receive</li>
                                 <li>Quantity Issue</li>
