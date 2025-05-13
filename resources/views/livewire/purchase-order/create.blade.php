@@ -74,25 +74,25 @@
                             <div class="col-sm-6">
                                 <label class="form-label" for="purchase_order_no">Purchase Order No</label>
                                 <input type="text" wire:model="purchase_order_no" class="form-control" placeholder="JED/PROC/00/00/00">
-                                @error('purchase_order_no') <span class="text-danger">{{ $message }}</span> @enderror 
+                                @error('purchase_order_no') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
 
                             <div class="col-sm-6">
                                 <label class="form-label" for="purchase_order_name">Purchase Order Name</label>
                                 <input type="text" wire:model="purchase_order_name" class="form-control" placeholder="johndoe">
-                                @error('purchase_order_name') <span class="text-danger">{{ $message }}</span> @enderror 
+                                @error('purchase_order_name') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
 
                             <div class="col-sm-6">
                                 <label class="form-label" for="beneficiary">Beneficiary</label>
                                 <input type="text" wire:model="beneficiary" class="form-control" placeholder="Department / Unit Name">
-                                @error('beneficiary') <span class="text-danger">{{ $message }}</span> @enderror 
+                                @error('beneficiary') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
 
                             <div class="col-sm-6">
                                 <label class="form-label" for="vendor_name">Vendor Name</label>
                                 <input type="text" wire:model="vendor_name" class="form-control" placeholder="Company Name Limited">
-                                @error('vendor_name') <span class="text-danger">{{ $message }}</span> @enderror 
+                                @error('vendor_name') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
 
                             <div class="col-sm-6">
@@ -100,12 +100,12 @@
                                 <select class="form-select mb-0" wire:model="delivery_address">
                                     <option value="">Select ...</option>
                                     @foreach($stations as $station)
-                                        <option value="{{$station->store_id}}">{{$station->name}}</option>
+                                        <option value="{{$station->id}}">{{$station->name}}</option>
                                     @endforeach
                                 </select>
-                                @error('delivery_address') <span class="text-danger">{{ $message }}</span> @enderror 
+                                @error('delivery_address') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
-                            
+
                             <div class="col-12 d-flex justify-content-between">
                                 <button class="btn btn-label-secondary btn-prev" disabled="">
                                 <i class="bx bx-chevron-left bx-sm ms-sm-n2"></i>
@@ -140,7 +140,7 @@
                                     <div class="d-flex border rounded position-relative pe-0">
                                     <div class="row w-100 m-0 p-3">
                                         <div class="table-responsive text-nowrap">
-                                            <div class="d-flex justify-content-end">  
+                                            <div class="d-flex justify-content-end">
                                                 <button type="button" class="btn btn-primary" wire:click.prevent="addInput" data-repeater-create="">Add Item</button>
                                             </div>
                                             <div id="dynamicFieldsContainer">
@@ -162,7 +162,7 @@
                                                                 <td></td>
                                                                 <td class="col-sm-4">
                                                                     <input type="text" wire:model="descriptions.{{ $key }}" class="form-control" placeholder="Item Description">
-                                                                    @error("descriptions.$key") <span class="error">{{ $message }}</span> @enderror 
+                                                                    @error("descriptions.$key") <span class="error">{{ $message }}</span> @enderror
                                                                 </td>
                                                                 <td class="col-sm-2">
                                                                     <select class="form-select" wire:model="units.{{ $key }}">
@@ -171,15 +171,15 @@
                                                                             <option value="{{$unit->id}}">{{$unit->description}}</option>
                                                                         @endforeach
                                                                     </select>
-                                                                    @error("units.$key") <span class="error">{{ $message }}</span> @enderror 
+                                                                    @error("units.$key") <span class="error">{{ $message }}</span> @enderror
                                                                 </td>
                                                                 <td class="col-sm-2">
                                                                     <input type="number" wire:model="quantities.{{ $key }}" class="form-control invoice-item-qty" step="1" min="1" oninput="calculateAmount(this)">
-                                                                    @error("quantities.$key") <span class="error">{{ $message }}</span> @enderror 
+                                                                    @error("quantities.$key") <span class="error">{{ $message }}</span> @enderror
                                                                 </td>
                                                                 <td class="col-sm-2">
                                                                     <input type="number" wire:model="rates.{{ $key }}" class="form-control invoice-item-rate" step="0.01" min="1" oninput="calculateAmount(this)">
-                                                                    @error("rates.$key") <span class="error">{{ $message }}</span> @enderror 
+                                                                    @error("rates.$key") <span class="error">{{ $message }}</span> @enderror
                                                                 </td>
                                                                 <td class="col-sm-2 amount"><p class="mb-0 "></p></td>
                                                                 <td>
